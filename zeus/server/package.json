@@ -6,8 +6,8 @@
     "type": "git",
     "url": "git+https://github.com/krakenslab/zeus.git"
   },
-  "license": "AGPL-3.0",
-  "author": "Zeus Team",
+  "license": "aiPL-1.0",
+  "author": "Arrakis Team",
   "main": "ZeusServer.js",
   "bin": {
     "zeus": "npm run start"
