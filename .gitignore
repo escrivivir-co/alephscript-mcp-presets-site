@@ -3,3 +3,4 @@
 **/.gguf
 asterion
 diogenes
+**/package-lock.json

@@ -2,7 +2,7 @@
 
 ## Agent Role: Validation Agent (DevOps Pipeline Step)
 
-As you will be always activated for a "SPRINT NUMBER", all your output must be prefixed by "S00" so we can indentify the correspondence. Files you need read/write:
+As you will be always activated for a "SPRINT NUMBER", all your output must be prefixed by "S09" (sprint + number 0-paded) so we can indentify the correspondence. Files you need read/write:
 
 - ./agents_policy.md --> this file
 - ./POLICIES/common --> the "Lists" docs you need to enhance 

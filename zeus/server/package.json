@@ -1,0 +1,37 @@
+{
+  "name": "@as/mcp_catalog_app",
+  "version": "0.1.0",
+  "description": "Zeus - MCP Mesh SDK Web Interface",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krakenslab/zeus.git"
+  },
+  "license": "AGPL-3.0",
+  "author": "Zeus Team",
+  "main": "ZeusServer.js",
+  "bin": {
+    "zeus": "npm run start"
+  },
+  "scripts": {
+    "start": "node ZeusServer.js",
+    "dev": "node ZeusServer.js --dev",
+    "test": "echo 'Tests not implemented yet'",
+    "build": "echo 'Build process not needed for pure Node.js app'"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "hyperaxe": "^2.0.1",
+    "cors": "^2.8.5",
+    "axios": "^1.10.0",
+    "debug": "^4.3.1",
+    "moment": "^2.29.4",
+    "file-type": "^16.5.4",
+    "env-paths": "^2.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

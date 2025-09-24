@@ -1,0 +1,39 @@
+{
+  "server": {
+    "port": 3010,
+    "host": "localhost"
+  },
+  "features": {
+    "aiConversations": true,
+    "presetLibrary": true,
+    "mcpExplorer": true,
+    "themeSystem": true
+  },
+  "theme": {
+    "current": "default"
+  },
+  "ai": {
+    "endpoint": "http://localhost:4001",
+    "maxTokens": 2000,
+    "temperature": 0.7
+  },
+  "mcp": {
+    "servers": [{
+    "devops-mcp-server": {
+      "type": "http",
+      "url": "http://localhost:3003"
+    }
+  }],
+    "timeout": 30000
+  },
+  "presets": {
+    "library": "default",
+    "autoLoad": true
+  },
+  "ui": {
+    "language": "en",
+    "animations": true,
+    "darkMode": false
+  },
+  "debug": false
+}
