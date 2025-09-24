@@ -33,9 +33,7 @@ zeus/
 │       ├── js/                # Client-side JavaScript
 │       └── translations/      # i18n files
 │           ├── i18n.js        # Main i18n loader
-│           ├── zeus_en.js     # English translations
-│           ├── zeus_es.js     # Spanish translations
-│           └── zeus_fr.js     # French translations
+│           └── zeus_en.js     # English translations
 ├── configs/                   # Configuration management (diogenes pattern)
 │   ├── config-manager.js      # Main config manager
 │   ├── zeus-config.json       # Main configuration
