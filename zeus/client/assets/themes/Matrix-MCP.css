@@ -1,0 +1,132 @@
+/* Matrix MCP Theme - Zeus MCP Mesh SDK */
+/* Migrated from Asterion following diogenes patterns */
+
+:root {
+  /* Primary Colors - Asterion Matrix MCP Variables */
+  --primary-color: #00FF41;
+  --primary-hover: #00E639;
+  --primary-text: #000000;
+  --primary-color-alpha: rgba(0, 255, 65, 0.2);
+
+  /* Background Colors */
+  --background-primary: #000000;
+  --background-secondary: #001100;
+  --background-tertiary: #002200;
+  --background-hover: #003300;
+
+  /* Text Colors */
+  --text-primary: #00FF41;
+  --text-secondary: #00CC33;
+  --heading-color: #00FF41;
+
+  /* Border and Input */
+  --border-color: #004400;
+  --input-background: #001100;
+
+  /* Accent Colors */
+  --accent-color: #00FFFF;
+  --success-color: #00FF41;
+  --warning-color: #FFFF00;
+  --danger-color: #FF0040;
+  --danger-hover: #CC0033;
+  --danger-text: #FFFFFF;
+
+  /* Chat and Response */
+  --chat-background: #001100;
+  --response-background: #000A00;
+
+  /* Shadows */
+  --shadow-small: 0 2px 4px rgba(0, 255, 65, 0.2);
+  --shadow-medium: 0 4px 8px rgba(0, 255, 65, 0.3);
+  --shadow-large: 0 8px 16px rgba(0, 255, 65, 0.4);
+  
+  /* Layout - Zeus specific */
+  --sidebar-width: 250px;
+  --header-height: 60px;
+  --content-padding: 1rem;
+  --content-max-width: 1200px;
+  --border-radius: 0.375rem;
+  
+  /* Fonts */
+  --font-primary: 'Courier New', monospace;
+  --font-monospace: 'Consolas', 'Monaco', 'Lucida Console', monospace;
+  --font-size-small: 0.875rem;
+  --font-size-normal: 1rem;
+  --font-size-large: 1.25rem;
+  --font-size-xlarge: 1.5rem;
+}
+
+/* Matrix theme specific overrides */
+body {
+  background: radial-gradient(circle at center, #000A00 0%, #000000 100%);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+}
+
+.main-navigation {
+  background: rgba(0, 17, 0, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-content {
+  background-color: var(--background-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.main-footer {
+  background-color: var(--background-secondary);
+  border-top: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--primary-text);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--text-secondary);
+  color: var(--background-primary);
+}
+
+input, select, textarea {
+  background-color: var(--input-background);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-alpha);
+}
+
+/* Theme-specific component styles */
+.feature-card {
+  background: var(--background-secondary);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-small);
+}
+
+.feature-card:hover {
+  box-shadow: var(--shadow-medium);
+}
+
+.status-card {
+  background: var(--background-secondary);
+  border-left-color: var(--primary-color);
+}
+
+.section-title {
+  color: var(--heading-color);
+}
+
+.theme-sample-Matrix-MCP { 
+  background: linear-gradient(135deg, #000000 0%, #00FF41 100%); 
+}

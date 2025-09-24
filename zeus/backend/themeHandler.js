@@ -6,11 +6,11 @@ class ThemeHandler {
   constructor() {
     this.themesPath = path.join(__dirname, '..', 'client', 'assets', 'themes');
     this.availableThemes = [
-      'default',
-      'dark',
-      'light', 
-      'blue',
-      'green'
+      'Clear-MCP',
+      'Dark-MCP',
+      'Matrix-MCP',
+      'Purple-MCP',
+      'Orange-Dark-MCP'
     ];
   }
 
@@ -20,7 +20,7 @@ class ThemeHandler {
 
   getCurrentTheme() {
     const config = getConfig();
-    return config.theme.current || 'default';
+    return config.theme.current || 'Clear-MCP';
   }
 
   switchTheme(themeName) {
@@ -42,17 +42,29 @@ class ThemeHandler {
   }
 
   getThemeCSS(themeName) {
-    // Placeholder for theme CSS loading
-    // In a real implementation, this would load the actual CSS files
-    const themeStyles = {
-      default: "/* Default theme styles - not implemented yet */",
-      dark: "/* Dark theme styles - not implemented yet */",
-      light: "/* Light theme styles - not implemented yet */",
-      blue: "/* Blue theme styles - not implemented yet */",
-      green: "/* Green theme styles - not implemented yet */"
-    };
-
-    return themeStyles[themeName] || themeStyles.default;
+    const fs = require('fs');
+    const path = require('path');
+    
+    try {
+      const themePath = path.join(__dirname, '..', 'client', 'assets', 'themes', `${themeName}.css`);
+      
+      if (fs.existsSync(themePath)) {
+        return fs.readFileSync(themePath, 'utf8');
+      } else {
+        console.warn(`Theme file not found: ${themePath}`);
+        // Fallback to Clear-MCP theme
+        const defaultPath = path.join(__dirname, '..', 'client', 'assets', 'themes', 'Clear-MCP.css');
+        return fs.readFileSync(defaultPath, 'utf8');
+      }
+    } catch (error) {
+      console.error('Error loading theme CSS:', error);
+      // Return minimal fallback CSS
+      return `:root { 
+        --color-primary: #007bff; 
+        --color-background: #ffffff; 
+        --color-text: #212529; 
+      }`;
+    }
   }
 
   validateTheme(themeName) {
