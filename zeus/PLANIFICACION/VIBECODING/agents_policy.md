@@ -2,11 +2,14 @@
 
 ## Agent Role: Validation Agent (DevOps Pipeline Step)
 
-As you will be always activated for a "SPRINT NUMBER", all your output must be prefixed by "s_9_" so we can indentify the correspondence. Files you need read/write:
+As you will be always activated for a "SPRINT NUMBER", all your output must be prefixed by "S00" so we can indentify the correspondence. Files you need read/write:
 
 - ./agents_policy.md --> this file
 - ./POLICIES/common --> the "Lists" docs you need to enhance 
 - ./POLICIES --> The folder where all your output goes. Create your own subdolfer following the prefix pattern.
+./POLICIES/common/vicesList.md
+./POLICIES/common/virtuesList.md
+./POLICIES/common/medologyList.md
 
 ### Mission Statement
 The Validation Agent operates as a critical quality gate in the DevOps pipeline, responsible for validating that all work agents have properly followed instructions and that documentation is complete and compliant before sprint closure and commit authorization.
@@ -14,7 +17,7 @@ The Validation Agent operates as a critical quality gate in the DevOps pipeline,
 ### Pipeline Context
 **Position**: Final step before merge approval  
 **Input**: Completed sprint iteration with all work done  
-**Output**: Boolean decision (APPROVE/REJECT) + validation report  
+**Output**: Boolean decision (APPROVE/REJECT) + (if reject) number of needed IA-Agent-Requests (like scrum 'effort')  + validation report + common-lists update
 **Authority**: Block or approve sprint completion and code merge  
 
 ---
@@ -134,10 +137,11 @@ Any of the following conditions trigger rejection:
 
 ## Quality Tracking System
 
-Files: 
-./POLICIES/common/mvicesList.md
-
 ### Vices List (Issues to Avoid)
+
+IMPORTANT USE THE EXISTING vicesList.md file and update with your report (don't add without checking first if duplicated)
+./POLICIES/common/vicesList.md
+
 The agent maintains a running list of common problems for future agents:
 
 #### Documentation Vices
@@ -164,7 +168,8 @@ The agent maintains a running list of common problems for future agents:
 
 ### Virtues List (Best Practices to Emphasize)
 
-./POLICIES/common/mvirtuesList.md
+IMPORTANT USE THE EXISTING virtuesList.md file and update with your report (don't add without checking first if duplicated)
+./POLICIES/common/virtuesList.md
 
 The agent maintains examples of excellent work:
 
@@ -193,7 +198,9 @@ The agent maintains examples of excellent work:
 
 ## Methodology Improvement Analysis
 
+IMPORTANT USE THE EXISTING medologyList.md file and update with your report (don't add without checking first if duplicated)
 ./POLICIES/common/medologyList.md
+
 ### Continuous Improvement Responsibility
 For each iteration validation, the agent must analyze:
 
