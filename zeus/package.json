@@ -1,7 +1,7 @@
 {
-  "name": "zeus-mcp-interface",
+  "name": "alephscript-mcp-presets-sit",
   "version": "0.1.0",
-  "description": "Zeus MCP Mesh SDK Web Interface - Diogenes compatible refactoring",
+  "description": "Zeus MCP Mesh SDK Web Interface - Diogenes compatible refactoring. A only vibecoding project where humans only touch .md files as a MCP (model context protocol) simple catalog & presets handler to query AI Agents with content from alephscript-mcp-mesh-sdk",
   "private": true,
   "main": "server/ZeusServer.js",
   "scripts": {
@@ -19,6 +19,6 @@
     "env-paths": "^2.2.1"
   },
   "keywords": ["mcp", "mesh", "sdk", "interface", "diogenes", "zeus"],
-  "author": "Zeus Project Team",
-  "license": "MIT"
+  "author": "",
+  "license": "AIPLv1"
 }
