@@ -75,38 +75,140 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Main route handler (to be expanded)
-app.get("/", (req, res) => {
-  // For now, return a simple response
-  // This will be replaced with proper view rendering
-  res.json({ 
-    message: "Zeus MCP Mesh SDK Web Interface", 
-    version: "0.1.0",
-    status: "initializing"
-  });
+// Main route handler - Home page
+app.get("/", async (req, res) => {
+  try {
+    const homeView = require("../views/home_view");
+    const htmlResponse = homeView.homeView();
+    
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlResponse.outerHTML);
+  } catch (error) {
+    console.error('Error rendering home page:', error);
+    res.status(500).send(`
+      <html>
+        <head><title>Zeus - Error</title></head>
+        <body>
+          <h1>Error Loading Home</h1>
+          <p>Unable to load home page: ${error.message}</p>
+        </body>
+      </html>
+    `);
+  }
+});
+
+// AI Conversation route
+app.get("/ai", async (req, res) => {
+  try {
+    const aiView = require("../views/ai_view");
+    const htmlResponse = aiView.aiView();
+    
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlResponse.outerHTML);
+  } catch (error) {
+    console.error('Error rendering AI page:', error);
+    res.status(500).send(`
+      <html>
+        <head><title>AI Chat - Error</title></head>
+        <body>
+          <h1>Error Loading AI Chat</h1>
+          <p>Unable to load AI conversation page: ${error.message}</p>
+          <a href="/">Return to Home</a>
+        </body>
+      </html>
+    `);
+  }
+});
+
+// Presets Library route
+app.get("/presets", async (req, res) => {
+  try {
+    const presetView = require("../views/preset_view");
+    const htmlResponse = presetView.presetView();
+    
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlResponse.outerHTML);
+  } catch (error) {
+    console.error('Error rendering presets page:', error);
+    res.status(500).send(`
+      <html>
+        <head><title>Presets - Error</title></head>
+        <body>
+          <h1>Error Loading Presets</h1>
+          <p>Unable to load presets library: ${error.message}</p>
+          <a href="/">Return to Home</a>
+        </body>
+      </html>
+    `);
+  }
+});
+
+// MCP Editor route
+app.get("/editor", async (req, res) => {
+  try {
+    const editorView = require("../views/editor_view");
+    const htmlResponse = editorView.editorView();
+    
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlResponse.outerHTML);
+  } catch (error) {
+    console.error('Error rendering editor page:', error);
+    res.status(500).send(`
+      <html>
+        <head><title>MCP Editor - Error</title></head>
+        <body>
+          <h1>Error Loading MCP Editor</h1>
+          <p>Unable to load MCP editor: ${error.message}</p>
+          <a href="/">Return to Home</a>
+        </body>
+      </html>
+    `);
+  }
+});
+
+// Statistics route
+app.get("/stats", async (req, res) => {
+  try {
+    const statsView = require("../views/stats_view");
+    const htmlResponse = statsView.statsView();
+    
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlResponse.outerHTML);
+  } catch (error) {
+    console.error('Error rendering stats page:', error);
+    res.status(500).send(`
+      <html>
+        <head><title>Statistics - Error</title></head>
+        <body>
+          <h1>Error Loading Statistics</h1>
+          <p>Unable to load statistics page: ${error.message}</p>
+          <a href="/">Return to Home</a>
+        </body>
+      </html>
+    `);
+  }
 });
 
 // Settings page route
 app.get("/settings", async (req, res) => {
   try {
     const settingsView = require("../views/settings_view");
-    
-    // Fetch current settings from backend API
-    const { getConfig } = require("../configs/config-manager");
-    const config = getConfig();
-    
-    // Extract settings sections for the view
+    // Fetch current settings from configuration manager with safe defaults
+    const { getConfig, getSectionDefaults } = require("../configs/config-manager");
+    const cfg = getConfig();
+
+    // Extract settings sections for the view (fallback to config-manager defaults, not hardcoded URLs)
     const settings = {
-      theme: config.theme || { current: 'Clear-MCP' },
-      ui: config.ui || { language: 'en', animations: true, darkMode: false },
-      features: config.features || { aiConversations: true, presetLibrary: true, mcpExplorer: true, themeSystem: true },
-      ai: config.ai || { endpoint: 'http://localhost:4001', maxTokens: 2000, temperature: 0.7 },
-      mcp: config.mcp || { servers: [], timeout: 30000 },
-      presets: config.presets || { library: 'default', autoLoad: true }
+      theme: cfg.theme || getSectionDefaults('theme'),
+      ui: cfg.ui || getSectionDefaults('ui'),
+      features: cfg.features || getSectionDefaults('features'),
+      ai: cfg.ai || getSectionDefaults('ai'),
+      mcp: cfg.mcp || getSectionDefaults('mcp'),
+      presets: cfg.presets || getSectionDefaults('presets')
     };
     
-    // Render settings view with current configuration
-    const htmlResponse = settingsView.settingsView(settings);
+  // Render settings view with current configuration
+  const htmlResponse = settingsView.settingsView(settings);
     
     // Set content type and send as HTML using HyperAxe's outerHTML
     res.setHeader('Content-Type', 'text/html');

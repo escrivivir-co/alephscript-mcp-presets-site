@@ -28,3 +28,12 @@
 
 ### Process Vices
 **NONE IDENTIFIED** - Sprint 05 demonstrated exceptional quality standards across all dimensions
+
+## S06 Sprint 06 Vices (Integration Agent & Routing Fixes)
+
+### Technical Vices
+- Residual hardcoded localhost placeholders detected in settings view and tests (now fixed)
+- Navigation link mismatch for MCP Editor (/mcp vs /editor) causing route inconsistency (fixed)
+
+### Process Vices
+- Integration validation was introduced late (now institutionalized as Phase 6.5)

@@ -1,5 +1,6 @@
 const { div, h1, h2, h3, section, form, select, option, input, button, label, fieldset, legend, p, span, strong } = require('hyperaxe');
 const { template, pageContainer, contentSection } = require('./main_views');
+const configManager = require('../configs/config-manager.js');
 
 /**
  * Settings View Implementation
@@ -7,12 +8,12 @@ const { template, pageContainer, contentSection } = require('./main_views');
  */
 const settingsView = (settings = {}) => {
   const {
-    theme = { current: 'Clear-MCP' },
-    ui = { language: 'en', animations: true, darkMode: false },
-    features = { aiConversations: true, presetLibrary: true, mcpExplorer: true, themeSystem: true },
-    ai = { endpoint: 'http://localhost:4001', maxTokens: 2000, temperature: 0.7 },
-    mcp = { servers: [], timeout: 30000 },
-    presets = { library: 'default', autoLoad: true }
+    theme = configManager.getSectionDefaults('theme'),
+    ui = configManager.getSectionDefaults('ui'),
+    features = configManager.getSectionDefaults('features'),
+    ai = configManager.getSectionDefaults('ai'),
+    mcp = configManager.getSectionDefaults('mcp'),
+    presets = configManager.getSectionDefaults('presets')
   } = settings;
 
   return template(
@@ -316,7 +317,8 @@ const aiConfiguration = (ai) => {
         'data-section': 'ai',
         'data-field': 'endpoint',
         value: ai.endpoint,
-        placeholder: 'http://localhost:4001'
+        // Use config-manager defaults for placeholder instead of hardcoded localhost
+        placeholder: (require('../configs/config-manager.js').getSectionDefaults('ai') || {}).endpoint || ''
       })
     ),
     

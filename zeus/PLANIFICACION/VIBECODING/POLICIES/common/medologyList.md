@@ -50,3 +50,10 @@
 - Consider automated scanning for hardcoded localhost URLs in validation process
 - Add configuration schema validation for complex settings implementations
 
+## S06 Sprint 06 Methodology Improvements
+
+- Formalize Phase 6.5 Integration Agent with 4 sub-areas (architecture, implementation, E2E, protocol)
+- Add CI job to scan for hardcoded localhost/127.0.0.1 in Zeus JS (exclude configs)
+- Require env-driven base URLs in tests and tools
+- Add nav-to-route alignment check in validation scripts
+

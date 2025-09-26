@@ -7,7 +7,8 @@
 
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:3012/api';
+// Allow overriding base URL via environment variable to avoid hardcoded localhost
+const BASE_URL = process.env.ZEUS_API_BASE_URL || `http://${process.env.ZEUS_HOST || 'localhost'}:${process.env.ZEUS_PORT || '3012'}/api`;
 const TEST_TIMEOUT = 5000;
 
 // Test configuration

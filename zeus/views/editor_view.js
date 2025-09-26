@@ -1,5 +1,5 @@
 const { 
-  div, section, header, h1, h2, h3, button, input, select, option, form, 
+  div, section, header, h1, h2, h3, h4, button, input, select, option, form, 
   ul, li, p, span, strong, nav, a, label, details, summary
 } = require('hyperaxe');
 const { template, contentSection, pageContainer } = require('./main_views');

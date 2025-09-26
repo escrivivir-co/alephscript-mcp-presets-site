@@ -9,16 +9,24 @@
     "dev": "node server/ZeusServer.js"
   },
   "dependencies": {
-    "express": "^5.1.0",
-    "hyperaxe": "^2.0.1", 
-    "cors": "^2.8.5",
     "axios": "^1.10.0",
+    "cors": "^2.8.5",
     "debug": "^4.3.1",
-    "moment": "^2.29.4",
+    "env-paths": "^2.2.1",
+    "express": "^5.1.0",
     "file-type": "^16.5.4",
-    "env-paths": "^2.2.1"
+    "hyperaxe": "^2.0.1",
+    "moment": "^2.29.4",
+    "socket.io": "^4.8.1"
   },
-  "keywords": ["mcp", "mesh", "sdk", "interface", "diogenes", "zeus"],
+  "keywords": [
+    "mcp",
+    "mesh",
+    "sdk",
+    "interface",
+    "diogenes",
+    "zeus"
+  ],
   "author": "",
   "license": "AIPLv1"
 }

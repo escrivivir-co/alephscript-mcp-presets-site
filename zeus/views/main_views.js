@@ -61,7 +61,7 @@ const navigation = (currentPage = '') => {
       navLink({ href: '/', emoji: '🏠', text: 'Home', current: currentPage === 'home' }),
       navLink({ href: '/presets', emoji: '📚', text: 'Preset Library', current: currentPage === 'presets' }),
       navLink({ href: '/ai', emoji: '🤖', text: 'AI Conversations', current: currentPage === 'ai' }),
-      navLink({ href: '/mcp', emoji: '🔧', text: 'MCP Editor', current: currentPage === 'mcp' }),
+  navLink({ href: '/editor', emoji: '🔧', text: 'MCP Editor', current: currentPage === 'mcp' }),
       navLink({ href: '/stats', emoji: '📊', text: 'Statistics', current: currentPage === 'stats' }),
       navLink({ href: '/settings', emoji: '⚙️', text: 'Settings', current: currentPage === 'settings' })
     )
