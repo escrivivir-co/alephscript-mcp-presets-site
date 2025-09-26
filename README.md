@@ -7,6 +7,19 @@
 1. Seleccionar "State Restoration Agent" (Donde VsCode Copilot Chat tiene: "Ask, Edit, Agent" --> State Restoration Agent)
 2. Escribir: "Analiza Sprint 03"
 
+## Método 3: template mode
+
+1. sprint-iteration-template.prompt.md
+
+2. todo-iteration-manager.prompt.md
+```
+
+SPRINT_NUMBER: 05
+
+CONTEXT_FILE: #file:prompt8_handson.md
+
+```
+
 Proyecto Zeus: La Gran Refactorización de Asterion
 ==================================================
 
