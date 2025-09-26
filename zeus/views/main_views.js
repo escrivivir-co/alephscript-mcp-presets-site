@@ -24,7 +24,10 @@ const template = (pageTitle, content, options = {}) => {
       link({ 
         rel: 'stylesheet', 
         href: '/assets/styles/base.css' 
-      })
+      }),
+      
+      // Page-specific CSS
+      ...(options.styles ? options.styles.map(href => link({ rel: 'stylesheet', href })) : [])
     ),
     
     body({ class: `theme-${currentTheme}` },
@@ -41,7 +44,10 @@ const template = (pageTitle, content, options = {}) => {
       ),
       
       // Base JavaScript
-      script({ src: '/assets/js/base.js' })
+      script({ src: '/assets/js/base.js' }),
+      
+      // Page-specific JavaScript
+      ...(options.scripts ? options.scripts.map(src => script({ src })) : [])
     )
   );
 };

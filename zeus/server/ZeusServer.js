@@ -86,6 +86,46 @@ app.get("/", (req, res) => {
   });
 });
 
+// Settings page route
+app.get("/settings", async (req, res) => {
+  try {
+    const settingsView = require("../views/settings_view");
+    
+    // Fetch current settings from backend API
+    const { getConfig } = require("../configs/config-manager");
+    const config = getConfig();
+    
+    // Extract settings sections for the view
+    const settings = {
+      theme: config.theme || { current: 'Clear-MCP' },
+      ui: config.ui || { language: 'en', animations: true, darkMode: false },
+      features: config.features || { aiConversations: true, presetLibrary: true, mcpExplorer: true, themeSystem: true },
+      ai: config.ai || { endpoint: 'http://localhost:4001', maxTokens: 2000, temperature: 0.7 },
+      mcp: config.mcp || { servers: [], timeout: 30000 },
+      presets: config.presets || { library: 'default', autoLoad: true }
+    };
+    
+    // Render settings view with current configuration
+    const htmlResponse = settingsView.settingsView(settings);
+    
+    // Set content type and send as HTML using HyperAxe's outerHTML
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlResponse.outerHTML);
+  } catch (error) {
+    console.error('Error rendering settings page:', error);
+    res.status(500).send(`
+      <html>
+        <head><title>Settings - Error</title></head>
+        <body>
+          <h1>Error Loading Settings</h1>
+          <p>Unable to load settings page: ${error.message}</p>
+          <a href="/">Return to Home</a>
+        </body>
+      </html>
+    `);
+  }
+});
+
 // Backend handlers
 const backendRouter = require("../backend/backend.js");
 
