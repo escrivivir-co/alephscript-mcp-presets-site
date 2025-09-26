@@ -436,7 +436,7 @@ const statsView = (data) => {
 ## Backend API Reference for Frontend Integration
 
 ### Base URL
-All API endpoints are available at: `http://localhost:3000/api/`
+All API endpoints are available at: `http://localhost:3012/api/`
 
 ### Response Format
 All API responses follow a consistent format:
@@ -703,7 +703,7 @@ All API responses follow a consistent format:
 ## WebSocket Events
 
 ### Connection
-Connect to: `http://localhost:3000`
+Connect to: `http://localhost:3012`
 
 ### Client Events (Send)
 - `join_conversation` - Join conversation room
