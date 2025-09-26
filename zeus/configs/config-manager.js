@@ -16,7 +16,7 @@ if (!fs.existsSync(configFilePath)) {
       "themeSystem": true
     },
     "theme": {
-      "current": "default"
+      "current": "Clear-MCP"
     },
     "ai": {
       "endpoint": "http://localhost:4001",

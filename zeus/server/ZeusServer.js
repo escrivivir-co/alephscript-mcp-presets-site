@@ -31,7 +31,7 @@ try {
         mcpExplorer: true,
         themeSystem: true
       },
-      theme: "default",
+      theme: { current: "Clear-MCP" },
       debug: false
     };
     debug("Using default configuration");

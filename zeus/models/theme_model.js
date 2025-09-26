@@ -2,9 +2,9 @@
 
 class ThemeModel {
   constructor(data = {}) {
-    this.name = data.name || 'default';
-    this.displayName = data.displayName || 'Default Theme';
-    this.description = data.description || 'Default theme for Zeus';
+    this.name = data.name || 'Clear-MCP';
+    this.displayName = data.displayName || 'Clear MCP';
+    this.description = data.description || 'Default MCP theme for Zeus';
     this.colors = data.colors || this.getDefaultColors();
     this.fonts = data.fonts || this.getDefaultFonts();
     this.layout = data.layout || this.getDefaultLayout();
@@ -88,12 +88,24 @@ class ThemeModel {
   }
 
   generateCSS() {
-    // Generate CSS variables for the theme
+    // Generate CSS variables for the theme using Asterion-compatible names
     let css = ':root {\n';
     
-    // Colors
+    // Map legacy keys to Asterion variable names when possible
+    const colorMap = {
+      primary: '--primary-color',
+      success: '--success-color',
+      danger: '--danger-color',
+      warning: '--warning-color',
+      info: '--info-color',
+      background: '--background-primary',
+      text: '--text-primary',
+      border: '--border-color'
+    };
+
     Object.entries(this.colors).forEach(([name, value]) => {
-      css += `  --color-${name}: ${value};\n`;
+      const varName = colorMap[name] || `--color-${name}`;
+      css += `  ${varName}: ${value};\n`;
     });
     
     // Fonts

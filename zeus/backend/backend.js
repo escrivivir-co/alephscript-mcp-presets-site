@@ -1,7 +1,9 @@
 const express = require('../server/node_modules/express');
-const { getConfig } = require('../configs/config-manager');
+const { getConfig, setTheme } = require('../configs/config-manager');
+const ThemeHandler = require('./themeHandler');
 
 const router = express.Router();
+const themeHandler = new ThemeHandler();
 
 // Health check endpoint
 router.get('/health', (req, res) => {
@@ -73,20 +75,52 @@ router.get('/mcp/tools', (req, res) => {
   });
 });
 
-// Theme endpoints (placeholder)
+// Theme endpoints (diogenes-compatible)
 router.get('/themes', (req, res) => {
-  res.json({ 
-    themes: ['default', 'dark', 'light', 'blue', 'green'],
-    current: 'default',
-    message: 'Theme system not fully implemented yet'
-  });
+  try {
+    const themes = themeHandler.getAvailableThemes();
+    const current = themeHandler.getCurrentTheme();
+    res.json({ themes, current });
+  } catch (error) {
+    console.error('Error listing themes:', error);
+    res.status(500).json({ error: 'Failed to list themes' });
+  }
 });
 
+// Alias for single theme status (optional)
+router.get('/theme', (req, res) => {
+  try {
+    const current = themeHandler.getCurrentTheme();
+    res.json({ current });
+  } catch (error) {
+    console.error('Error getting current theme:', error);
+    res.status(500).json({ error: 'Failed to get current theme' });
+  }
+});
+
+// Frontend uses '/api/theme/switch'
+router.post('/theme/switch', (req, res) => {
+  try {
+    const { theme } = req.body || {};
+    if (!theme) {
+      return res.status(400).json({ error: "Missing 'theme' in request body" });
+    }
+    if (!themeHandler.validateTheme(theme)) {
+      return res.status(400).json({ error: `Theme '${theme}' not available` });
+    }
+    const result = themeHandler.switchTheme(theme);
+    res.json(result);
+  } catch (error) {
+    console.error('Error switching theme:', error);
+    res.status(500).json({ error: 'Failed to switch theme' });
+  }
+});
+
+// Backward-compatible alias
 router.post('/themes/switch', (req, res) => {
-  res.json({ 
-    error: 'Theme switching endpoint not implemented yet',
-    received: req.body
-  });
+  // Delegate to the canonical endpoint
+  req.url = '/theme/switch';
+  router.handle(req, res);
 });
 
 module.exports = router;

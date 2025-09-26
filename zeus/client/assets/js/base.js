@@ -58,7 +58,7 @@ const Zeus = {
         
         // Update body class
         document.body.className = document.body.className
-          .replace(/theme-\w+/, `theme-${themeName}`);
+          .replace(/theme-[\w-]+/, `theme-${themeName}`);
         
         // Update theme CSS link
         this.updateThemeCSS(themeName);
@@ -156,15 +156,15 @@ const notificationStyles = `
   }
   
   .notification-success {
-    background-color: var(--color-success);
+    background-color: var(--success-color);
   }
   
   .notification-error {
-    background-color: var(--color-danger);
+    background-color: var(--danger-color);
   }
   
   .notification-info {
-    background-color: var(--color-info);
+    background-color: var(--info-color);
   }
   
   @keyframes slideIn {

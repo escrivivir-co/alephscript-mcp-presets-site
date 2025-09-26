@@ -78,9 +78,9 @@ const homeView = (options = {}) => {
         'Theme Preview',
         div({ class: 'theme-preview-section' },
           p({ class: 'text-muted mb-2' },
-            `Current theme: ${config.theme.current || 'default'}`
+            `Current theme: ${config.theme.current || 'Clear-MCP'}`
           ),
-          themePreview(config.theme.current || 'default')
+          themePreview(config.theme.current || 'Clear-MCP')
         )
       ),
       

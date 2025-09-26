@@ -47,7 +47,6 @@ class ThemeHandler {
     
     try {
       const themePath = path.join(__dirname, '..', 'client', 'assets', 'themes', `${themeName}.css`);
-      
       if (fs.existsSync(themePath)) {
         return fs.readFileSync(themePath, 'utf8');
       } else {
@@ -58,11 +57,14 @@ class ThemeHandler {
       }
     } catch (error) {
       console.error('Error loading theme CSS:', error);
-      // Return minimal fallback CSS
+      // Return minimal fallback CSS using Asterion variables
       return `:root { 
-        --color-primary: #007bff; 
-        --color-background: #ffffff; 
-        --color-text: #212529; 
+        --primary-color: #2563EB; 
+        --background-primary: #FFFFFF; 
+        --text-primary: #0F172A; 
+        --success-color: #059669; 
+        --warning-color: #D97706; 
+        --danger-color: #DC2626; 
       }`;
     }
   }
