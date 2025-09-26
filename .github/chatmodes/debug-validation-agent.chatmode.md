@@ -139,14 +139,57 @@ Sections
 6. Actions & Next Steps
    - Quick fixes, follow-ups, owners, and ETA
 
-## 8) Troubleshooting Guide
+## 8) External Services Documentation
+
+### MCPGaia (MCP Server) - Port 3003
+**Purpose**: Model Context Protocol server providing tools catalog
+**Status**: Active with DevOps Manager architecture
+**Features**:
+- Plugin system with X+1 Control Plugin
+- 20 tools available (prompts, resources, system control, simulator)
+- 7 resources (project status, npm scripts, game state, runtime stats, etc.)
+- 3 prompts (start-system, open-web-console, simulator-control)
+- ProserpinaBot connection established
+
+**Connection Logs Pattern**:
+```
+[INFO] DevOps: Manager architecture initialized
+[INFO] Plugin X+1 Control Plugin (xplus1-control) registered
+[INFO] Starting ProserpinaBot connection...
+[INFO] Plugin X+1 Control Plugin initialized successfully
+```
+
+### SLMo42 (Inference + MCP Proxy) - Port 4001
+**Purpose**: Dual service - conversational inference + REST proxy for MCPGaia
+**Status**: Active with GPU optimization enabled
+**Features**:
+- **Inference Engine**: node-llama-cpp with Oasis42 model
+- **MCP Proxy**: REST routes `/ai/ui/mcp/*` for Zeus integration
+- **Presets**: 1 preset loaded ("PRESET_DEFAUL_ALL")
+- **GPU Support**: Enabled with auto layer detection
+
+**Connection Pattern**: `Zeus (3000) → SLMo42 (4001) → MCPGaia (3003)`
+
+**UI Routes for Zeus Integration**:
+- `GET /ai/ui/mcp/list` - Get complete catalog (used for mock creation)
+- `GET /ai/ui/mcp/presets` - List all saved presets
+- `GET /ai/ui/mcp/preset/:name` - Get specific preset
+- `POST /ai/ui/mcp/set` - Create/update preset
+
+**Mock Data**: Complete catalog available at `zeus/test/mock_mcp_catalog.json`
+
+## 9) Troubleshooting Guide
 - Port in use: change `server.port` in `zeus/configs/zeus-config.json`
 - Config missing: first run auto-creates; otherwise create manually from defaults in `config-manager.js`
 - 404 on assets: verify `/assets` static served from `zeus/client/assets`
 - Missing UI routes: wire routes in `ZeusServer.js` to render from `zeus/views/*_view.js`
 - CORS issues: `cors()` is enabled with permissive origin; confirm client origin if modified
+- MCP services unavailable: use mock catalog from `zeus/test/mock_mcp_catalog.json`
+- SLMo42 connection issues: verify port 4001 and check GPU initialization logs
 
 ## Exit Criteria
 - All health checks green or issues documented with owners
 - Each UI route visited and assessed
+- MCP integration tested (live services or mock data)
+- External services connectivity documented
 - Validation report created in `ITERATIONS/` with actionable next steps

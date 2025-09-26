@@ -1,5 +1,20 @@
 # Dev tip
 
+## Método 0: Chat Modes
+
+Eres X y quiero... donde X es:
+
+.github\chatmodes\backend-agent.chatmode.md
+.github\chatmodes\config-agent.chatmode.md
+.github\chatmodes\debug-validation-agent.chatmode.md
+.github\chatmodes\frontend-agent.chatmode.md
+.github\chatmodes\integration-agent.chatmode.md
+.github\chatmodes\state-restoration.chatmode.md
+.github\chatmodes\validation-agent.chatmode.md
+.github\chatmodes\zeus-architect.chatmode.md
+
+Hay que hilar la diferencia entre agregar el chatmode como contexto o escogerlo en el selector de la Chat de Copilot.
+
 ## Método 1: Prompt directo
 /sprint-state-restoration sprint_number=03
 
@@ -12,7 +27,30 @@
 1. sprint-iteration-template.prompt.md
 
 2. todo-iteration-manager.prompt.md
-```
+
+## Método 4: debugger
+
+1. **[debug-setup-external-services.prompt.md]**
+
+    -   **Tipo**: Comando ejecutable (`/debug-setup-external-services`)
+    -   **Propósito**: Setup rápido de servicios externos MCPGaia + SLMo42
+    -   **Contenido**:
+        -   Arquitectura de servicios con puertos actualizados (Zeus 3012)
+        -   Checklist de setup con indicadores de estado esperados
+        -   Protocolo de validación paso a paso
+        -   Troubleshooting y fallback a mock data
+
+2. **[debug-agent.instructions.md]**
+
+    -   **Tipo**: Instrucciones persistentes para el Debug Agent
+    -   **Propósito**: Conocimiento completo para debug y validación
+    -   **Contenido**:
+        -   Responsabilidades del agente de debug
+        -   Protocolo completo de validación (5 pasos)
+        -   Integración de servicios externos documentada
+        -   Estrategia de mock data y fallback
+        -   Generación de reportes de validación
+        -   Quality gates y criterios de aprobación
 
 SPRINT_NUMBER: 05
 
