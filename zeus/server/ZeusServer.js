@@ -22,7 +22,7 @@ try {
     // Default configuration
     config = {
       server: {
-        port: 3000,
+        port: 3012,
         host: "localhost"
       },
       features: {
@@ -133,7 +133,7 @@ const backendRouter = require("../backend/backend.js");
 app.use("/api", backendRouter);
 
 // Start server
-const port = config.server.port || 3000;
+const port = config.server.port || 3012;
 const host = config.server.host || "localhost";
 
 const server = app.listen(port, host, () => {

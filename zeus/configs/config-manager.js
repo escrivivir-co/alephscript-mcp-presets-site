@@ -6,7 +6,7 @@ const configFilePath = path.join(__dirname, 'zeus-config.json');
 if (!fs.existsSync(configFilePath)) {
   const defaultConfig = {
     "server": {
-      "port": 3000,
+      "port": 3012,
       "host": "localhost"
     },
     "features": {
@@ -226,7 +226,7 @@ function validateSection(section, data) {
 function getSectionDefaults(section) {
   const defaultConfig = {
     "server": {
-      "port": 3000,
+      "port": 3012,
       "host": "localhost"
     },
     "features": {

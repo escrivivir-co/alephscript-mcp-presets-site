@@ -7,7 +7,7 @@
 
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'http://localhost:3012/api';
 const TEST_TIMEOUT = 5000;
 
 // Test configuration
