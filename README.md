@@ -1,3 +1,12 @@
+# Dev tip
+
+## Método 1: Prompt directo
+/sprint-state-restoration sprint_number=03
+
+## Método 2: Chat Mode  
+1. Seleccionar "State Restoration Agent" (Donde VsCode Copilot Chat tiene: "Ask, Edit, Agent" --> State Restoration Agent)
+2. Escribir: "Analiza Sprint 03"
+
 Proyecto Zeus: La Gran Refactorización de Asterion
 ==================================================
 
