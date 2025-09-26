@@ -10,7 +10,7 @@
     "themeSystem": true
   },
   "theme": {
-    "current": "Clear-MCP"
+    "current": "Dark-MCP"
   },
   "ai": {
     "endpoint": "http://localhost:4001",
