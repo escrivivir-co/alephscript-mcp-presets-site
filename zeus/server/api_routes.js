@@ -521,7 +521,7 @@ router.get('/presets/export', async (req, res) => {
  */
 router.get('/mcp/servers', async (req, res) => {
   try {
-    const servers = mcpHandler.getAllServers();
+    const servers = await mcpHandler.getAllServers();
     
     res.json({
       success: true,
@@ -546,7 +546,7 @@ router.get('/mcp/servers/:id/tools', async (req, res) => {
     const { id } = req.params;
     const { search = '', category = '' } = req.query;
     
-    const tools = mcpHandler.getServerTools(id);
+    const tools = await mcpHandler.getServerTools(id);
     
     if (!tools) {
       return res.status(404).json({
@@ -592,7 +592,7 @@ router.get('/mcp/servers/:id/resources', async (req, res) => {
     const { id } = req.params;
     const { search = '', type = '' } = req.query;
     
-    const resources = mcpHandler.getServerResources(id);
+    const resources = await mcpHandler.getServerResources(id);
     
     if (!resources) {
       return res.status(404).json({
@@ -638,7 +638,7 @@ router.get('/mcp/servers/:id/prompts', async (req, res) => {
     const { id } = req.params;
     const { search = '', category = '' } = req.query;
     
-    const prompts = mcpHandler.getServerPrompts(id);
+    const prompts = await mcpHandler.getServerPrompts(id);
     
     if (!prompts) {
       return res.status(404).json({
@@ -744,10 +744,10 @@ router.get('/stats/overview', async (req, res) => {
       
       // MCP server statistics
       mcpServers: {
-        total: mcpHandler.getAllServers().length,
-        connected: mcpHandler.getConnectedServers().length,
-        totalTools: mcpHandler.getTotalToolsCount(),
-        totalResources: mcpHandler.getTotalResourcesCount()
+        total: (await mcpHandler.getAllServers()).length,
+        connected: (await mcpHandler.getConnectedServers()).length,
+        totalTools: await mcpHandler.getTotalToolsCount(),
+        totalResources: await mcpHandler.getTotalResourcesCount()
       },
       
       // System statistics

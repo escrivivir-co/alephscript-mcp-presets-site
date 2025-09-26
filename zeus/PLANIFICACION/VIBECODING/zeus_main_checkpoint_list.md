@@ -91,6 +91,7 @@
 ## Phase 6: Backend Services
 ### 6.1 Core Handlers
 - [x] mcpHandler.js for MCP integration
+  - **ADDENDA S06**: ⚠️ **MCPHandler Live Integration Required** - Current implementation uses placeholder/mock data instead of live axios calls to SLMo42 proxy (localhost:4001). Integration validated external services are operational, but Zeus requires implementation of real HTTP calls to `/ai/ui/mcp/list` endpoint. **Target**: Sprint 6.6 - Backend Agent + Integration Agent coordination.
 - [x] presetHandler.js for preset management
 - [x] aiHandler.js for AI conversations
 - [x] themeHandler.js for theme operations
