@@ -649,31 +649,31 @@ $ cd /c/Users/oracl/Documents/REPOS/REFACTORER/zeus && node server/
 
 ZeusServer.js
 
-Zeus server running on http://localhost:3010
+Zeus server running on http://localhost:3012
 
 Environment: production
 
-GitHub Copilot: ¡Excelente! El servidor está funcionando perfectamente en el puerto 3010. Ahora voy a realizar pruebas de los nuevos endpoints de settings para verificar que todo funciona correctamente.
+GitHub Copilot: ¡Excelente! El servidor está funcionando perfectamente en el puerto 3012. Ahora voy a realizar pruebas de los nuevos endpoints de settings para verificar que todo funciona correctamente.
 
-Ran terminal command: curl -s http://localhost:3010/api/health | jq .
+Ran terminal command: curl -s http://localhost:3012/api/health | jq .
 
-Ran terminal command: curl -s http://localhost:3010/api/health
+Ran terminal command: curl -s http://localhost:3012/api/health
 
-Ran terminal command: curl -s http://localhost:3010/api/settings
+Ran terminal command: curl -s http://localhost:3012/api/settings
 
-Ran terminal command: curl -s -X POST -H "Content-Type: application/json" -d '{"current":"Dark-MCP"}' http://localhost:3010/api/settings/theme
+Ran terminal command: curl -s -X POST -H "Content-Type: application/json" -d '{"current":"Dark-MCP"}' http://localhost:3012/api/settings/theme
 
 Hay un error - el endpoint PUT no está funcionando correctamente. Veo el problema: necesito usar el método PUT, no POST. Además, déjame verificar que el endpoint esté correctamente implementado:
 
-Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"current":"Dark-MCP"}' http://localhost:3010/api/settings/theme
+Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"current":"Dark-MCP"}' http://localhost:3012/api/settings/theme
 
 ¡Perfecto! Los endpoints están funcionando correctamente. Ahora voy a probar el endpoint de UI settings:
 
-Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"language":"es","animations":false}' http://localhost:3010/api/settings/ui
+Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"language":"es","animations":false}' http://localhost:3012/api/settings/ui
 
 ¡Excelente! Ahora voy a verificar que los cambios se persistieron correctamente:
 
-Ran terminal command: curl -s http://localhost:3010/api/settings
+Ran terminal command: curl -s http://localhost:3012/api/settings
 
 ¡Perfect! Los cambios se persistieron correctamente:
 
@@ -713,7 +713,7 @@ Perfecto! He creado el documento de handoff completo para el Frontend Agent.
 
 4\. **Documentation Complete** - Sprint documentation y handoff guide
 
-5\. **Server Operational** - Zeus server corriendo en puerto 3010
+5\. **Server Operational** - Zeus server corriendo en puerto 3012
 
 ### 📄 Archivos Creados/Modificados:
 
@@ -757,7 +757,7 @@ Perfecto! He creado el documento de handoff completo para el Frontend Agent.
 
 El Backend Agent ha completado exitosamente Sprint 04. ¡Frontend Agent, es tu turno! 🚀
 
-**Server running at: http://localhost:3010**  
+**Server running at: http://localhost:3012**  
 
 **API Documentation: S04_frontend_handoff.md**
 
@@ -818,7 +818,7 @@ escrivivir-co: C:\Users\oracl\Documents\REPOS\REFACTORER\zeus\server>npm start
 
 > node ZeusServer.js
 
-Zeus server running on http://localhost:3010
+Zeus server running on http://localhost:3012
 
 Environment: production
 
@@ -970,7 +970,7 @@ escrivivir-co: oracle@ORACLE MINGW64 ~/Documents/REPOS/REFACTORER/zeus (main)
 
 $ node server/ZeusServer.js
 
-Zeus server running on http://localhost:3010
+Zeus server running on http://localhost:3012
 
 Environment: production
 
@@ -1006,7 +1006,7 @@ La arquitectura correcta es tener **dependencias centralizadas en Zeus root** pe
 
 Ahora voy a probar que la página de settings funcione correctamente:
 
-Ran terminal command: curl -s http://localhost:3010/settings | head -20
+Ran terminal command: curl -s http://localhost:3012/settings | head -20
 
 escrivivir-co: ¿entonces hago npm i también en server?
 
@@ -1048,11 +1048,11 @@ Pero las **dependencias reales** se resuelven desde Zeus root.
 
 - ✅ Server: usa dependencias del root via module resolution
 
-- ✅ Servidor funcionando en localhost:3010
+- ✅ Servidor funcionando en localhost:3012
 
 Ahora voy a probar que la página de settings cargue correctamente:
 
-Opened Simple Browser at http://localhost:3010/settings
+Opened Simple Browser at http://localhost:3012/settings
 
 escrivivir-co: Un momento, antes de continuar, refactoriza #file:zeus-architect.chatmode.md para que aprenda esta información que hemos conversado.
 
@@ -1138,7 +1138,7 @@ Updated todo list
 
 Primero, voy a verificar que el servidor esté funcionando correctamente:
 
-Ran terminal command: curl -s http://localhost:3010/api/health || (cd /c/Users/oracl/Documents/REPOS/REFACTORER/zeus && node server/ZeusServer.js &)
+Ran terminal command: curl -s http://localhost:3012/api/health || (cd /c/Users/oracl/Documents/REPOS/REFACTORER/zeus && node server/ZeusServer.js &)
 
 escrivivir-co: C:\Users\oracl\Documents\REPOS\REFACTORER\zeus\server>npm start
 
@@ -1146,13 +1146,13 @@ escrivivir-co: C:\Users\oracl\Documents\REPOS\REFACTORER\zeus\server>npm start
 
 > node ZeusServer.js
 
-Zeus server running on http://localhost:3010
+Zeus server running on http://localhost:3012
 
 Environment: production
 
-GitHub Copilot: ¡Perfecto! El servidor está funcionando correctamente en http://localhost:3010. Ahora voy a validar que la página de Settings cargue correctamente con la solución arquitectural implementada:
+GitHub Copilot: ¡Perfecto! El servidor está funcionando correctamente en http://localhost:3012. Ahora voy a validar que la página de Settings cargue correctamente con la solución arquitectural implementada:
 
-Ran terminal command: curl -s http://localhost:3010/settings | head -30
+Ran terminal command: curl -s http://localhost:3012/settings | head -30
 
 Hay un error de estructura circular en JSON. Este es un problema típico con HyperAxe cuando se trata de serializar elementos DOM. Déjame revisar el código de settings_view.js para identificar el problema:
 
@@ -1186,11 +1186,11 @@ Using "Replace String in File"
 
 Ahora voy a probar nuevamente la página de settings:
 
-Ran terminal command: curl -s http://localhost:3010/settings | head -20
+Ran terminal command: curl -s http://localhost:3012/settings | head -20
 
 Made changes.
 
-escrivivir-co: Zeus server running on http://localhost:3010
+escrivivir-co: Zeus server running on http://localhost:3012
 
 Environment: production
 
@@ -1256,7 +1256,7 @@ Error rendering settings page: TypeError: Converting circular structure to JSON
 
 oracle@ORACLE MINGW64 ~/Documents/REPOS/REFACTORER/zeus (main)
 
-$ curl -s http://localhost:3010/settings | head -20
+$ curl -s http://localhost:3012/settings | head -20
 
       <html>
 
@@ -1292,7 +1292,7 @@ Using "Replace String in File"
 
 Ahora voy a probar la página de settings nuevamente:
 
-Ran terminal command: curl -s http://localhost:3010/settings | head -15
+Ran terminal command: curl -s http://localhost:3012/settings | head -15
 
 El problema persiste. El HyperAxe element no se está convirtiendo correctamente a string. Déjame revisar cómo funciona HyperAxe. Probablemente necesite importar y usar la función toString de manera diferente. Déjame verificar cómo se maneja en diogenes o en otros proyectos similares:
 
@@ -1312,7 +1312,7 @@ Using "Replace String in File"
 
 Ahora voy a probar la página de settings con la conversión correcta:
 
-Ran terminal command: curl -s http://localhost:3010/settings | head -20
+Ran terminal command: curl -s http://localhost:3012/settings | head -20
 
 ¡Excelente! 🎉 ¡La página de Settings está cargando perfectamente! Puedo ver el HTML completo y bien formado con:
 
@@ -1334,13 +1334,13 @@ Starting (5/6) *Complete functional testing*
 
 Ahora voy a probar la funcionalidad de la API para asegurarme de que el backend y frontend estén integrados correctamente:
 
-Ran terminal command: curl -s http://localhost:3010/api/settings
+Ran terminal command: curl -s http://localhost:3012/api/settings
 
 ¡Perfecto! Los endpoints del backend están funcionando correctamente. Ahora voy a probar el theme switching para verificar la integración completa:
 
-Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"current":"Purple-MCP"}' http://localhost:3010/api/settings/theme
+Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"current":"Purple-MCP"}' http://localhost:3012/api/settings/theme
 
-Ran terminal command: curl -s http://localhost:3010/settings | grep -o 'Purple-MCP.*selected'
+Ran terminal command: curl -s http://localhost:3012/settings | grep -o 'Purple-MCP.*selected'
 
 ¡Perfecto! Puedo ver que:
 

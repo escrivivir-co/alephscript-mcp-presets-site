@@ -132,19 +132,19 @@ $ npm start
 
 > node server/ZeusServer.js
 
-Zeus server running on http://localhost:3010
+Zeus server running on http://localhost:3012
 
 Environment: production
 
 GitHub Copilot: Great! The server is running successfully. Let me continue with the Integration Quality Review by testing the settings endpoint functionality.
 
-Ran terminal command: curl -s http://localhost:3010/api/settings
+Ran terminal command: curl -s http://localhost:3012/api/settings
 
-Ran terminal command: curl -s -I http://localhost:3010/settings
+Ran terminal command: curl -s -I http://localhost:3012/settings
 
 Excellent! Both the API and frontend routes are working. Let me test theme switching functionality:
 
-Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"current":"Clear-MCP"}' http://localhost:3010/api/settings/theme
+Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"current":"Clear-MCP"}' http://localhost:3012/api/settings/theme
 
 Perfect! The API integration is working. Let me check CSS theme compatibility by examining the theme files:
 

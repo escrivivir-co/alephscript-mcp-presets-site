@@ -374,31 +374,31 @@ $ cd /c/Users/oracl/Documents/REPOS/REFACTORER/zeus && node server/
 
 ZeusServer.js
 
-Zeus server running on http://localhost:3010
+Zeus server running on http://localhost:3012
 
 Environment: production
 
-GitHub Copilot: ¡Excelente! El servidor está funcionando perfectamente en el puerto 3010. Ahora voy a realizar pruebas de los nuevos endpoints de settings para verificar que todo funciona correctamente.
+GitHub Copilot: ¡Excelente! El servidor está funcionando perfectamente en el puerto 3012. Ahora voy a realizar pruebas de los nuevos endpoints de settings para verificar que todo funciona correctamente.
 
-Ran terminal command: curl -s http://localhost:3010/api/health | jq .
+Ran terminal command: curl -s http://localhost:3012/api/health | jq .
 
-Ran terminal command: curl -s http://localhost:3010/api/health
+Ran terminal command: curl -s http://localhost:3012/api/health
 
-Ran terminal command: curl -s http://localhost:3010/api/settings
+Ran terminal command: curl -s http://localhost:3012/api/settings
 
-Ran terminal command: curl -s -X POST -H "Content-Type: application/json" -d '{"current":"Dark-MCP"}' http://localhost:3010/api/settings/theme
+Ran terminal command: curl -s -X POST -H "Content-Type: application/json" -d '{"current":"Dark-MCP"}' http://localhost:3012/api/settings/theme
 
 Hay un error - el endpoint PUT no está funcionando correctamente. Veo el problema: necesito usar el método PUT, no POST. Además, déjame verificar que el endpoint esté correctamente implementado:
 
-Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"current":"Dark-MCP"}' http://localhost:3010/api/settings/theme
+Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"current":"Dark-MCP"}' http://localhost:3012/api/settings/theme
 
 ¡Perfecto! Los endpoints están funcionando correctamente. Ahora voy a probar el endpoint de UI settings:
 
-Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"language":"es","animations":false}' http://localhost:3010/api/settings/ui
+Ran terminal command: curl -s -X PUT -H "Content-Type: application/json" -d '{"language":"es","animations":false}' http://localhost:3012/api/settings/ui
 
 ¡Excelente! Ahora voy a verificar que los cambios se persistieron correctamente:
 
-Ran terminal command: curl -s http://localhost:3010/api/settings
+Ran terminal command: curl -s http://localhost:3012/api/settings
 
 ¡Perfect! Los cambios se persistieron correctamente:
 
@@ -438,7 +438,7 @@ Perfecto! He creado el documento de handoff completo para el Frontend Agent.
 
 4\. **Documentation Complete** - Sprint documentation y handoff guide
 
-5\. **Server Operational** - Zeus server corriendo en puerto 3010
+5\. **Server Operational** - Zeus server corriendo en puerto 3012
 
 ### 📄 Archivos Creados/Modificados:
 
@@ -482,7 +482,7 @@ Perfecto! He creado el documento de handoff completo para el Frontend Agent.
 
 El Backend Agent ha completado exitosamente Sprint 04. ¡Frontend Agent, es tu turno! 🚀
 
-**Server running at: http://localhost:3010**  
+**Server running at: http://localhost:3012**  
 
 **API Documentation: S04_frontend_handoff.md**
 
@@ -574,21 +574,21 @@ Using "Replace String in File"
 
 Ahora voy a probar la implementación. Primero, déjame verificar que el servidor esté corriendo:
 
-Ran terminal command: curl -s http://localhost:3010/api/health
+Ran terminal command: curl -s http://localhost:3012/api/health
 
-Ran terminal command: curl -s http://localhost:3010/api/health
+Ran terminal command: curl -s http://localhost:3012/api/health
 
 Made changes.
 
 escrivivir-co: oracle@ORACLE MINGW64 ~/Documents/REPOS/REFACTORER (main)
 
-$ curl -s http://localhost:3010/api/health
+$ curl -s http://localhost:3012/api/health
 
 {"status":"ok","service":"zeus-backend","timestamp":"2025-09-26T14:54:32.647Z"}
 
 GitHub Copilot: ¡Perfecto! El servidor está funcionando. Ahora voy a probar la nueva página de settings:
 
-Ran terminal command: curl -s http://localhost:3010/settings | head -20
+Ran terminal command: curl -s http://localhost:3012/settings | head -20
 
 Ah, hay un error! El módulo `hyperaxe` no está instalado. Necesito instalarlo. Déjame verificar las dependencias en el package.json:
 
@@ -658,7 +658,7 @@ Using "Replace String in File"
 
 Ahora voy a probar la página de settings nuevamente:
 
-Ran terminal command: curl -s http://localhost:3010/settings | head -30
+Ran terminal command: curl -s http://localhost:3012/settings | head -30
 
 El error persiste. Creo que hay un problema con la estructura de archivos. Déjame verificar cómo está importando main_views.js el `hyperaxe`. También hay que asegurarme de que la vista home_view.js funcione, ya que debería usar el mismo patrón:
 

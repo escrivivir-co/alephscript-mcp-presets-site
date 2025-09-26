@@ -4,14 +4,14 @@
 
 Eres X y quiero... donde X es:
 
-.github\chatmodes\backend-agent.chatmode.md
-.github\chatmodes\config-agent.chatmode.md
-.github\chatmodes\debug-validation-agent.chatmode.md
-.github\chatmodes\frontend-agent.chatmode.md
-.github\chatmodes\integration-agent.chatmode.md
-.github\chatmodes\state-restoration.chatmode.md
-.github\chatmodes\validation-agent.chatmode.md
-.github\chatmodes\zeus-architect.chatmode.md
+- .github\chatmodes\backend-agent.chatmode.md
+- .github\chatmodes\config-agent.chatmode.md
+- .github\chatmodes\debug-validation-agent.chatmode.md
+- .github\chatmodes\frontend-agent.chatmode.md
+- .github\chatmodes\integration-agent.chatmode.md
+- .github\chatmodes\state-restoration.chatmode.md
+- .github\chatmodes\validation-agent.chatmode.md
+- .github\chatmodes\zeus-architect.chatmode.md
 
 Hay que hilar la diferencia entre agregar el chatmode como contexto o escogerlo en el selector de la Chat de Copilot.
 
@@ -52,11 +52,12 @@ Hay que hilar la diferencia entre agregar el chatmode como contexto o escogerlo 
         -   Generación de reportes de validación
         -   Quality gates y criterios de aprobación
 
+```
 SPRINT_NUMBER: 05
 
 CONTEXT_FILE: #file:prompt8_handson.md
-
 ```
+
 
 Proyecto Zeus: La Gran Refactorización de Asterion
 ==================================================

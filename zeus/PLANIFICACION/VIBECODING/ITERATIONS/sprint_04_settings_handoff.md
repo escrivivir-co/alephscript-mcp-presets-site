@@ -149,12 +149,12 @@ app.get("/settings", (req, res) => {
 
 **Backend endpoints tested and working:**
 ```bash
-✅ curl http://localhost:3010/api/settings
-✅ curl -X PUT -H "Content-Type: application/json" -d '{"current":"Dark-MCP"}' http://localhost:3010/api/settings/theme
-✅ curl -X PUT -H "Content-Type: application/json" -d '{"language":"es"}' http://localhost:3010/api/settings/ui
+✅ curl http://localhost:3012/api/settings
+✅ curl -X PUT -H "Content-Type: application/json" -d '{"current":"Dark-MCP"}' http://localhost:3012/api/settings/theme
+✅ curl -X PUT -H "Content-Type: application/json" -d '{"language":"es"}' http://localhost:3012/api/settings/ui
 ```
 
-**Server Status:** Running on http://localhost:3010
+**Server Status:** Running on http://localhost:3012
 
 ---
 

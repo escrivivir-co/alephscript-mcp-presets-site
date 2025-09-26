@@ -235,7 +235,7 @@ Here's my assessment based on the current state of the `codebase`.
 
         ```bash
 
-        curl http://localhost:3010/api/settings
+        curl http://localhost:3012/api/settings
 
         ```
 
@@ -243,7 +243,7 @@ Here's my assessment based on the current state of the `codebase`.
 
         ```bash
 
-        curl -X PUT -H "Content-Type: application/json" -d '{"language": "es"}' http://localhost:3010/api/settings/ui
+        curl -X PUT -H "Content-Type: application/json" -d '{"language": "es"}' http://localhost:3012/api/settings/ui
 
         ```
 
@@ -251,7 +251,7 @@ Here's my assessment based on the current state of the `codebase`.
 
         ```bash
 
-        curl -X PUT -H "Content-Type: application/json" -d '{"current": "Diogenes-Dark"}' http://localhost:3010/api/settings/theme
+        curl -X PUT -H "Content-Type: application/json" -d '{"current": "Diogenes-Dark"}' http://localhost:3012/api/settings/theme
 
         ```
 
@@ -259,7 +259,7 @@ Here's my assessment based on the current state of the `codebase`.
 
         ```bash
 
-        curl -X PUT -H "Content-Type: application/json" -d '{"foo": "bar"}' http://localhost:3010/api/settings/invalidSection
+        curl -X PUT -H "Content-Type: application/json" -d '{"foo": "bar"}' http://localhost:3012/api/settings/invalidSection
 
         ```
 

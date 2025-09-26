@@ -1,4 +1,4 @@
-const axios = require('../server/node_modules/axios');
+const axios = require('axios');
 const { getConfig } = require('../configs/config-manager');
 const fs = require('fs');
 const path = require('path');

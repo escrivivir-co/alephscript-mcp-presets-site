@@ -12,7 +12,7 @@
 **From**: Backend Agent (Sprint_04_Settings_Backend)  
 **Backend Status**: COMPLETE  
 **APIs Available**: `/api/settings`, `/api/settings/:section`, theme switching  
-**Server Status**: Running on http://localhost:3010  
+**Server Status**: Running on http://localhost:3012  
 
 ## Objectives
 ### Primary Goals
