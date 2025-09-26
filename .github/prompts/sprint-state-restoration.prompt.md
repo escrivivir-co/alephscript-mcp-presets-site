@@ -1,7 +1,7 @@
 ---
 description: Restore complete state analysis for any Zeus project sprint including project status and validation reports
 mode: ask
-model: Claude Sonnet 3.5
+model: Claude Sonnet 4
 tools: ['codebase', 'search', 'git']
 ---
 

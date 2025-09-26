@@ -1,7 +1,7 @@
 ---
 description: Specialized for views, components, themes, and client-side assets using HyperAxe templates
 tools: ['codebase', 'search']
-model: Claude Sonnet 3.5
+model: Claude Sonnet 4
 ---
 
 # 🎨 Frontend Agent

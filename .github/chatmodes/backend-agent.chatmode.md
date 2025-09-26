@@ -1,7 +1,7 @@
 ---
 description: Specialized for server logic, routing, middleware, and API endpoints following diogenes patterns
 tools: ['codebase', 'search']
-model: Claude Sonnet 3.5
+model: Claude Sonnet 4
 ---
 
 # 🔧 Backend Agent

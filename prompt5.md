@@ -375,7 +375,7 @@ description: Restore complete state analysis for any Zeus project sprint includi
 
 mode: ask
 
-model: Claude Sonnet 3.5
+model: Claude Sonnet 4
 
 tools: ['codebase', 'search', 'git']
 
@@ -539,7 +539,7 @@ description: Specialized in project state analysis and sprint validation reports
 
 tools: ['codebase', 'search', 'git']
 
-model: Claude Sonnet 3.5
+model: Claude Sonnet 4
 
 ---
 

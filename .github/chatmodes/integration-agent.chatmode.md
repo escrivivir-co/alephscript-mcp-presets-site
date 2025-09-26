@@ -1,7 +1,7 @@
 ---
 description: Specialized for MCP integration, external APIs, and diogenes compatibility
 tools: ['codebase', 'search', 'fetch']
-model: Claude Sonnet 3.5
+model: Claude Sonnet 4
 ---
 
 # 🔗 Integration Agent

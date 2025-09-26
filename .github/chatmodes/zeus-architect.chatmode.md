@@ -1,7 +1,7 @@
 ---
 description: System architect focused on overall Zeus project architecture and diogenes integration planning
 tools: ['codebase', 'search', 'git']
-model: Claude Sonnet 3.5
+model: Claude Sonnet 4
 ---
 
 # 🏗️ Zeus Architect

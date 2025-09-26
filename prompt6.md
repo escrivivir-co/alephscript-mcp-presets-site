@@ -1324,11 +1324,11 @@ Made changes.
 
 escrivivir-co: Eres el Chat Mode Validation Agent #file:validation-agent.chatmode.md , valida #changes
 
-GitHub Copilot: Enable Claude Sonnet 3.5 for all clients
+GitHub Copilot: Enable Claude Sonnet 4 for all clients
 
 [object Object]
 
-escrivivir-co: @agent Enable: "Enable Claude Sonnet 3.5 for all clients"
+escrivivir-co: @agent Enable: "Enable Claude Sonnet 4 for all clients"
 
 GitHub Copilot: Como Validation Agent, procederé a validar los cambios realizados para resolver el Sprint 03.
 

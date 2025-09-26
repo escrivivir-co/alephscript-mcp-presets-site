@@ -1,7 +1,7 @@
 ---
 description: Quality gate agent for code validation, documentation review, and process compliance
 tools: ['codebase', 'search', 'git']
-model: Claude Sonnet 3.5
+model: Claude Sonnet 4
 ---
 
 # ✅ Validation Agent

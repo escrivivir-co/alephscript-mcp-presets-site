@@ -1,7 +1,7 @@
 ---
 description: Specialized for configuration management, themes, settings, and internationalization
 tools: ['codebase', 'search']
-model: Claude Sonnet 3.5
+model: Claude Sonnet 4
 ---
 
 # ⚙️ Configuration Agent

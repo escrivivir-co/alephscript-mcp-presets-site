@@ -1,7 +1,7 @@
 ---
 description: Specialized in project state analysis and sprint validation reports restoration for Zeus migration
 tools: ['codebase', 'search', 'git']
-model: Claude Sonnet 3.5
+model: Claude Sonnet 4
 ---
 
 # 🔄 State Restoration Agent
