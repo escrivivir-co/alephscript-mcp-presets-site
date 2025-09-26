@@ -118,6 +118,33 @@ class AIHandler {
     return true;
   }
 
+  createConversation(conversationData) {
+    try {
+      // Ensure unique ID
+      if (!conversationData.id) {
+        conversationData.id = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+      }
+      
+      // Validate required fields
+      if (!conversationData.title || conversationData.title.trim().length === 0) {
+        throw new Error('Conversation title is required');
+      }
+      
+      // Set default values
+      conversationData.messages = conversationData.messages || [];
+      conversationData.createdAt = conversationData.createdAt || new Date().toISOString();
+      conversationData.updatedAt = conversationData.updatedAt || new Date().toISOString();
+      conversationData.status = conversationData.status || 'active';
+      
+      this.conversations.push(conversationData);
+      this.saveConversations();
+      return conversationData;
+    } catch (error) {
+      console.error('Error creating conversation:', error);
+      return null;
+    }
+  }
+
   clearAllConversations() {
     this.conversations = [];
     this.saveConversations();

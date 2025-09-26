@@ -2,6 +2,9 @@ const express = require('express');
 const { getConfig, setTheme } = require('../configs/config-manager');
 const ThemeHandler = require('./themeHandler');
 
+// Import the new comprehensive API routes
+const apiRoutes = require('../server/api_routes');
+
 const router = express.Router();
 const themeHandler = new ThemeHandler();
 
@@ -30,50 +33,9 @@ router.get('/config', (req, res) => {
   }
 });
 
-// AI conversation endpoints (placeholder)
-router.get('/ai/conversations', (req, res) => {
-  res.json({ 
-    conversations: [],
-    message: 'AI conversation endpoints not implemented yet'
-  });
-});
-
-router.post('/ai/chat', (req, res) => {
-  res.json({ 
-    error: 'AI chat endpoint not implemented yet',
-    received: req.body
-  });
-});
-
-// Preset library endpoints (placeholder)
-router.get('/presets', (req, res) => {
-  res.json({ 
-    presets: [],
-    message: 'Preset library endpoints not implemented yet'
-  });
-});
-
-router.post('/presets', (req, res) => {
-  res.json({ 
-    error: 'Preset creation endpoint not implemented yet',
-    received: req.body
-  });
-});
-
-// MCP server endpoints (placeholder)
-router.get('/mcp/servers', (req, res) => {
-  res.json({ 
-    servers: [],
-    message: 'MCP server endpoints not implemented yet'
-  });
-});
-
-router.get('/mcp/tools', (req, res) => {
-  res.json({ 
-    tools: [],
-    message: 'MCP tools endpoint not implemented yet'
-  });
-});
+// Integrate comprehensive API routes for Phase 5 advanced views
+// All AI, Preset, MCP, and Statistics endpoints are now handled by apiRoutes
+router.use('/', apiRoutes);
 
 // Theme endpoints (diogenes-compatible)
 router.get('/themes', (req, res) => {

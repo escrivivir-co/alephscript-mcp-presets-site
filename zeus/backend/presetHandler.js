@@ -97,6 +97,46 @@ class PresetHandler {
       preset.category.toLowerCase().includes(lowercaseQuery)
     );
   }
+
+  importPresets(presetsArray, overwrite = false) {
+    const results = {
+      imported: 0,
+      skipped: 0,
+      errors: 0,
+      details: []
+    };
+
+    presetsArray.forEach(presetData => {
+      try {
+        // Check if preset already exists
+        const existingPreset = this.presets.find(p => 
+          p.name === presetData.name || p.id === presetData.id
+        );
+
+        if (existingPreset && !overwrite) {
+          results.skipped++;
+          results.details.push(`Skipped: ${presetData.name} (already exists)`);
+          return;
+        }
+
+        // Create or update preset
+        if (existingPreset && overwrite) {
+          this.updatePreset(existingPreset.id, presetData);
+          results.imported++;
+          results.details.push(`Updated: ${presetData.name}`);
+        } else {
+          this.createPreset(presetData);
+          results.imported++;
+          results.details.push(`Imported: ${presetData.name}`);
+        }
+      } catch (error) {
+        results.errors++;
+        results.details.push(`Error: ${presetData.name} - ${error.message}`);
+      }
+    });
+
+    return results;
+  }
 }
 
 module.exports = PresetHandler;

@@ -145,6 +145,11 @@ const server = app.listen(port, host, () => {
   }
 });
 
+// Initialize WebSocket support for real-time features (Phase 5)
+const WebSocketHandler = require('./websocket_handler');
+const wsHandler = new WebSocketHandler(server);
+console.log('WebSocket server initialized for real-time chat functionality');
+
 // Graceful shutdown (following diogenes pattern)
 process.on('SIGTERM', () => {
   debug('SIGTERM received, shutting down gracefully');

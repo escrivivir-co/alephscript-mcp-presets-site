@@ -1,0 +1,667 @@
+/**
+ * AI Chat Interface - Zeus MCP Mesh SDK
+ * Real-time chat functionality with WebSocket integration
+ * Following diogenes patterns with enhanced UX
+ */
+
+class AIChat {
+  constructor() {
+    this.socket = null;
+    this.currentConversation = null;
+    this.conversations = [];
+    this.presets = [];
+    this.isConnected = false;
+    this.messageQueue = [];
+    this.typingTimeout = null;
+    
+    this.init();
+  }
+
+  async init() {
+    try {
+      await this.loadInitialData();
+      this.setupWebSocket();
+      this.bindEvents();
+      this.updateUI();
+      console.log('AI Chat initialized successfully');
+    } catch (error) {
+      console.error('Failed to initialize AI Chat:', error);
+      this.showError('Failed to initialize chat system');
+    }
+  }
+
+  // Load initial data from API
+  async loadInitialData() {
+    try {
+      // Load conversations
+      const conversationsResponse = await fetch('/api/ai/conversations');
+      const conversationsData = await conversationsResponse.json();
+      if (conversationsData.success) {
+        this.conversations = conversationsData.conversations;
+      }
+
+      // Load presets
+      const presetsResponse = await fetch('/api/presets?limit=20');
+      const presetsData = await presetsResponse.json();
+      if (presetsData.success) {
+        this.presets = presetsData.presets;
+      }
+
+      // Set active conversation from URL or first conversation
+      const urlParams = new URLSearchParams(window.location.search);
+      const conversationId = urlParams.get('conversation');
+      if (conversationId) {
+        this.selectConversation(conversationId);
+      } else if (this.conversations.length > 0) {
+        this.selectConversation(this.conversations[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading initial data:', error);
+      throw error;
+    }
+  }
+
+  // Setup WebSocket connection
+  setupWebSocket() {
+    try {
+      this.socket = io();
+      
+      this.socket.on('connect', () => {
+        console.log('Connected to WebSocket server');
+        this.isConnected = true;
+        this.updateConnectionStatus();
+        
+        // Join current conversation room if available
+        if (this.currentConversation) {
+          this.socket.emit('join_conversation', this.currentConversation.id);
+        }
+        
+        // Process queued messages
+        this.processMessageQueue();
+      });
+
+      this.socket.on('disconnect', () => {
+        console.log('Disconnected from WebSocket server');
+        this.isConnected = false;
+        this.updateConnectionStatus();
+      });
+
+      this.socket.on('new_message', (data) => {
+        this.handleNewMessage(data);
+      });
+
+      this.socket.on('ai_typing', (data) => {
+        this.handleAITyping(data);
+      });
+
+      this.socket.on('user_typing', (data) => {
+        this.handleUserTyping(data);
+      });
+
+      this.socket.on('error', (data) => {
+        console.error('WebSocket error:', data);
+        this.showError(data.message || 'WebSocket error occurred');
+      });
+
+    } catch (error) {
+      console.error('Failed to setup WebSocket:', error);
+      this.showError('Real-time features unavailable');
+    }
+  }
+
+  // Bind UI event listeners
+  bindEvents() {
+    // New conversation button
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('[data-action="new-conversation"]')) {
+        e.preventDefault();
+        this.createNewConversation();
+      }
+    });
+
+    // Select conversation
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('[data-action="select-conversation"]')) {
+        e.preventDefault();
+        const conversationItem = e.target.closest('.conversation-item');
+        const conversationId = conversationItem.dataset.conversationId;
+        this.selectConversation(conversationId);
+      }
+    });
+
+    // Delete conversation
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('[data-action="delete-conversation"]')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const conversationId = e.target.dataset.conversationId;
+        this.deleteConversation(conversationId);
+      }
+    });
+
+    // Chat form submission
+    const chatForm = document.getElementById('chat-form');
+    if (chatForm) {
+      chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        this.sendMessage();
+      });
+    }
+
+    // Message input keyboard shortcuts
+    const messageInput = document.getElementById('message-input');
+    if (messageInput) {
+      messageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          this.sendMessage();
+        }
+      });
+
+      // Character count and typing indicators
+      messageInput.addEventListener('input', (e) => {
+        this.updateCharacterCount();
+        this.handleTypingIndicator();
+      });
+    }
+
+    // Search conversations
+    const conversationSearch = document.getElementById('conversation-search');
+    if (conversationSearch) {
+      conversationSearch.addEventListener('input', (e) => {
+        this.searchConversations(e.target.value);
+      });
+    }
+
+    // Search presets
+    const presetSearch = document.getElementById('preset-search');
+    if (presetSearch) {
+      presetSearch.addEventListener('input', (e) => {
+        this.searchPresets(e.target.value);
+      });
+    }
+
+    // Use preset
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('[data-action="use-preset"]')) {
+        e.preventDefault();
+        const presetId = e.target.dataset.presetId;
+        this.usePreset(presetId);
+      }
+    });
+
+    // Copy message
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('.copy-message')) {
+        e.preventDefault();
+        const messageId = e.target.dataset.messageId;
+        this.copyMessage(messageId);
+      }
+    });
+
+    // Export conversation
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('[data-action="export-conversation"]')) {
+        e.preventDefault();
+        const conversationId = e.target.dataset.conversationId;
+        this.exportConversation(conversationId);
+      }
+    });
+
+    // Edit conversation title
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('[data-action="edit-title"]')) {
+        e.preventDefault();
+        const conversationId = e.target.dataset.conversationId;
+        this.editConversationTitle(conversationId);
+      }
+    });
+  }
+
+  // Create new conversation
+  async createNewConversation() {
+    try {
+      const title = prompt('Enter conversation title:') || 'New Conversation';
+      
+      const response = await fetch('/api/ai/conversations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        this.conversations.unshift(data.conversation);
+        this.selectConversation(data.conversation.id);
+        this.updateConversationList();
+        this.showSuccess('New conversation created');
+      } else {
+        this.showError(data.error || 'Failed to create conversation');
+      }
+    } catch (error) {
+      console.error('Error creating conversation:', error);
+      this.showError('Failed to create conversation');
+    }
+  }
+
+  // Select conversation
+  async selectConversation(conversationId) {
+    try {
+      // Leave current conversation room
+      if (this.currentConversation && this.socket && this.isConnected) {
+        this.socket.emit('leave_conversation', this.currentConversation.id);
+      }
+
+      // Find conversation in local data first
+      let conversation = this.conversations.find(c => c.id === conversationId);
+      
+      // If not found locally, fetch from API
+      if (!conversation) {
+        const response = await fetch(`/api/ai/conversations/${conversationId}`);
+        const data = await response.json();
+        if (data.success) {
+          conversation = data.conversation;
+        } else {
+          this.showError('Conversation not found');
+          return;
+        }
+      }
+
+      this.currentConversation = conversation;
+      
+      // Join new conversation room
+      if (this.socket && this.isConnected) {
+        this.socket.emit('join_conversation', conversationId);
+      }
+
+      // Update UI
+      this.updateActiveConversation();
+      this.updateMessages();
+      this.updateURL();
+      
+      // Enable chat input
+      this.enableChatInput();
+      
+    } catch (error) {
+      console.error('Error selecting conversation:', error);
+      this.showError('Failed to load conversation');
+    }
+  }
+
+  // Send message
+  async sendMessage() {
+    const messageInput = document.getElementById('message-input');
+    if (!messageInput || !this.currentConversation) return;
+
+    const message = messageInput.value.trim();
+    if (!message) return;
+
+    try {
+      // Clear input and disable form
+      messageInput.value = '';
+      this.updateCharacterCount();
+      this.setFormLoading(true);
+
+      // Send via WebSocket if connected, otherwise via HTTP
+      if (this.socket && this.isConnected) {
+        this.socket.emit('send_message', {
+          conversationId: this.currentConversation.id,
+          message: message,
+          role: 'user'
+        });
+      } else {
+        // Fallback to HTTP API
+        const response = await fetch(`/api/ai/conversations/${this.currentConversation.id}/messages`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message, role: 'user' })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          this.addMessageToUI(data.message);
+          this.updateConversationInList();
+        } else {
+          this.showError(data.error || 'Failed to send message');
+        }
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      this.showError('Failed to send message');
+      messageInput.value = message; // Restore message on error
+    } finally {
+      this.setFormLoading(false);
+    }
+  }
+
+  // Handle new message from WebSocket
+  handleNewMessage(data) {
+    if (data.conversationId === this.currentConversation?.id) {
+      this.addMessageToUI(data.message);
+    }
+    
+    // Update conversation in list
+    this.updateConversationInList(data.conversationId);
+  }
+
+  // Handle AI typing indicator
+  handleAITyping(data) {
+    if (data.conversationId === this.currentConversation?.id) {
+      this.showAITyping(data.typing);
+    }
+  }
+
+  // Add message to UI
+  addMessageToUI(message) {
+    const messagesContainer = document.getElementById('messages-container');
+    if (!messagesContainer) return;
+
+    // Remove typing indicator
+    const typingIndicator = messagesContainer.querySelector('.typing');
+    if (typingIndicator) {
+      typingIndicator.remove();
+    }
+
+    // Create message element
+    const messageElement = this.createMessageElement(message);
+    messagesContainer.appendChild(messageElement);
+
+    // Update current conversation
+    if (this.currentConversation) {
+      this.currentConversation.messages.push(message);
+      this.currentConversation.updatedAt = message.timestamp;
+    }
+
+    // Scroll to bottom
+    this.scrollToBottom();
+  }
+
+  // Create message DOM element
+  createMessageElement(message) {
+    const isUser = message.role === 'user';
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+    messageDiv.dataset.messageId = message.id;
+
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+
+    const messageText = document.createElement('div');
+    messageText.className = 'message-text';
+    messageText.textContent = message.content;
+
+    const messageTime = document.createElement('time');
+    messageTime.className = 'message-time';
+    messageTime.textContent = this.formatTime(message.timestamp);
+
+    const messageActions = document.createElement('div');
+    messageActions.className = 'message-actions';
+    
+    const copyButton = document.createElement('button');
+    copyButton.className = 'btn-icon copy-message';
+    copyButton.dataset.messageId = message.id;
+    copyButton.title = 'Copy message';
+    copyButton.textContent = '📋';
+
+    messageActions.appendChild(copyButton);
+
+    if (!isUser) {
+      const regenerateButton = document.createElement('button');
+      regenerateButton.className = 'btn-icon regenerate-message';
+      regenerateButton.dataset.messageId = message.id;
+      regenerateButton.title = 'Regenerate response';
+      regenerateButton.textContent = '🔄';
+      messageActions.appendChild(regenerateButton);
+    }
+
+    messageContent.appendChild(messageText);
+    messageContent.appendChild(messageTime);
+    messageDiv.appendChild(messageContent);
+    messageDiv.appendChild(messageActions);
+
+    return messageDiv;
+  }
+
+  // Show AI typing indicator
+  showAITyping(typing) {
+    const messagesContainer = document.getElementById('messages-container');
+    if (!messagesContainer) return;
+
+    const existingTyping = messagesContainer.querySelector('.typing');
+    
+    if (typing && !existingTyping) {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'message ai-message typing';
+      
+      const content = document.createElement('div');
+      content.className = 'message-content';
+      
+      const dots = document.createElement('div');
+      dots.className = 'typing-dots';
+      dots.innerHTML = '<span>.</span><span>.</span><span>.</span>';
+      
+      const text = document.createElement('span');
+      text.className = 'typing-text';
+      text.textContent = 'AI is thinking...';
+      
+      content.appendChild(dots);
+      content.appendChild(text);
+      typingDiv.appendChild(content);
+      
+      messagesContainer.appendChild(typingDiv);
+      this.scrollToBottom();
+    } else if (!typing && existingTyping) {
+      existingTyping.remove();
+    }
+  }
+
+  // Update UI components
+  updateUI() {
+    this.updateConversationList();
+    this.updatePresetList();
+    this.updateActiveConversation();
+    this.updateMessages();
+  }
+
+  updateConversationList() {
+    // Implementation for updating conversation list in sidebar
+    const conversationList = document.querySelector('.conversation-items');
+    if (!conversationList) return;
+
+    conversationList.innerHTML = '';
+    this.conversations.forEach(conversation => {
+      const item = this.createConversationItem(conversation);
+      conversationList.appendChild(item);
+    });
+  }
+
+  updateActiveConversation() {
+    // Update active state in sidebar
+    document.querySelectorAll('.conversation-item').forEach(item => {
+      const isActive = item.dataset.conversationId === this.currentConversation?.id;
+      item.classList.toggle('active', isActive);
+    });
+  }
+
+  updateMessages() {
+    const messagesContainer = document.getElementById('messages-container');
+    if (!messagesContainer || !this.currentConversation) return;
+
+    messagesContainer.innerHTML = '';
+    this.currentConversation.messages.forEach(message => {
+      const messageElement = this.createMessageElement(message);
+      messagesContainer.appendChild(messageElement);
+    });
+
+    this.scrollToBottom();
+  }
+
+  // Utility methods
+  scrollToBottom() {
+    const messagesContainer = document.getElementById('messages-container');
+    if (messagesContainer) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+  }
+
+  formatTime(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
+  }
+
+  updateCharacterCount() {
+    const messageInput = document.getElementById('message-input');
+    const characterCount = document.querySelector('.character-count');
+    if (messageInput && characterCount) {
+      const count = messageInput.value.length;
+      characterCount.textContent = `${count}/4000`;
+      characterCount.classList.toggle('warning', count > 3500);
+    }
+  }
+
+  setFormLoading(loading) {
+    const sendButton = document.querySelector('.send-button');
+    const messageInput = document.getElementById('message-input');
+    
+    if (sendButton) {
+      sendButton.disabled = loading;
+      sendButton.textContent = loading ? 'Sending...' : 'Send';
+    }
+    
+    if (messageInput) {
+      messageInput.disabled = loading;
+    }
+  }
+
+  enableChatInput() {
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.querySelector('.send-button');
+    
+    if (messageInput && sendButton) {
+      const hasConversation = !!this.currentConversation;
+      messageInput.disabled = !hasConversation;
+      sendButton.disabled = !hasConversation;
+      
+      messageInput.placeholder = hasConversation 
+        ? 'Type your message...'
+        : 'Select a conversation to start chatting...';
+    }
+  }
+
+  updateURL() {
+    if (this.currentConversation) {
+      const url = new URL(window.location);
+      url.searchParams.set('conversation', this.currentConversation.id);
+      window.history.replaceState({}, '', url);
+    }
+  }
+
+  // Notification methods
+  showError(message) {
+    console.error('AI Chat Error:', message);
+    // Implement toast notification or error display
+    this.showNotification(message, 'error');
+  }
+
+  showSuccess(message) {
+    console.log('AI Chat Success:', message);
+    this.showNotification(message, 'success');
+  }
+
+  showNotification(message, type = 'info') {
+    // Simple notification implementation
+    // In a full implementation, use a proper toast library
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 1rem;
+      background: ${type === 'error' ? 'var(--danger-color)' : 'var(--success-color)'};
+      color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-medium);
+      z-index: 1000;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  }
+
+  // Process queued messages when WebSocket connects
+  processMessageQueue() {
+    while (this.messageQueue.length > 0) {
+      const message = this.messageQueue.shift();
+      this.socket.emit('send_message', message);
+    }
+  }
+
+  updateConnectionStatus() {
+    // Update UI to show connection status
+    const statusElement = document.querySelector('.connection-status');
+    if (statusElement) {
+      statusElement.textContent = this.isConnected ? 'Connected' : 'Disconnected';
+      statusElement.className = `connection-status ${this.isConnected ? 'connected' : 'disconnected'}`;
+    }
+  }
+
+  // Additional placeholder methods for full functionality
+  deleteConversation(conversationId) {
+    // Implement conversation deletion
+    console.log('Delete conversation:', conversationId);
+  }
+
+  searchConversations(query) {
+    // Implement conversation search
+    console.log('Search conversations:', query);
+  }
+
+  searchPresets(query) {
+    // Implement preset search
+    console.log('Search presets:', query);
+  }
+
+  usePreset(presetId) {
+    // Implement preset usage
+    console.log('Use preset:', presetId);
+  }
+
+  copyMessage(messageId) {
+    // Implement message copying
+    console.log('Copy message:', messageId);
+  }
+
+  exportConversation(conversationId) {
+    // Implement conversation export
+    console.log('Export conversation:', conversationId);
+  }
+
+  editConversationTitle(conversationId) {
+    // Implement title editing
+    console.log('Edit conversation title:', conversationId);
+  }
+}
+
+// Initialize AI Chat when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.body.classList.contains('ai-page')) {
+    window.aiChat = new AIChat();
+  }
+});
+
+// Export for module usage
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = AIChat;
+}
