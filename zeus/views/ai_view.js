@@ -289,19 +289,18 @@ const typingIndicator = () => {
  * Chat input area with message form
  */
 const chatInput = (activeConversation) => {
-  const isDisabled = !activeConversation;
+  const isDisabled = false; // Always enable input - let JS handle conversation creation
   
   return div({ class: 'chat-input-area' },
     form({ 
       class: 'chat-form',
-      id: 'chat-form',
-      ...(isDisabled && { disabled: true })
+      id: 'chat-form'
     },
       div({ class: 'input-container' },
         textarea({
           id: 'message-input',
-          placeholder: isDisabled 
-            ? 'Select a conversation to start chatting...'
+          placeholder: !activeConversation 
+            ? 'Type your message to start a new conversation...'
             : 'Type your message...',
           rows: '3',
           disabled: isDisabled,

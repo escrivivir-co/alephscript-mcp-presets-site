@@ -293,12 +293,21 @@ class AIChat {
   // Send message
   async sendMessage() {
     const messageInput = document.getElementById('message-input');
-    if (!messageInput || !this.currentConversation) return;
+    if (!messageInput) return;
 
     const message = messageInput.value.trim();
     if (!message) return;
 
     try {
+      // Auto-create conversation if none exists
+      if (!this.currentConversation) {
+        await this.createNewConversation();
+        if (!this.currentConversation) {
+          this.showError('Failed to create conversation');
+          return;
+        }
+      }
+
       // Clear input and disable form
       messageInput.value = '';
       this.updateCharacterCount();
@@ -465,6 +474,8 @@ class AIChat {
     this.updatePresetList();
     this.updateActiveConversation();
     this.updateMessages();
+    // Always enable chat input after UI updates
+    this.enableChatInput();
   }
 
   updateConversationList() {
@@ -546,12 +557,13 @@ class AIChat {
     
     if (messageInput && sendButton) {
       const hasConversation = !!this.currentConversation;
-      messageInput.disabled = !hasConversation;
-      sendButton.disabled = !hasConversation;
+      // Always keep input enabled - conversation will be created if needed
+      messageInput.disabled = false;
+      sendButton.disabled = false;
       
       messageInput.placeholder = hasConversation 
         ? 'Type your message...'
-        : 'Select a conversation to start chatting...';
+        : 'Type your message to start a new conversation...';
     }
   }
 

@@ -58,7 +58,16 @@ class MCPEditor {
    * Handle all click events with delegation
    */
   handleClick(event) {
-    const action = event.target.dataset.action;
+    // Look for action on clicked element or its parents
+    let element = event.target;
+    let action = null;
+    
+    while (element && !action) {
+      action = element.dataset ? element.dataset.action : null;
+      if (action) break;
+      element = element.parentElement;
+    }
+    
     if (!action) return;
 
     event.preventDefault();
@@ -93,7 +102,7 @@ class MCPEditor {
         this.changeContentView(event.target.dataset.view);
         break;
       case 'toggle-selection':
-        this.toggleItemSelection(event.target.closest('[data-item-id]'));
+        this.toggleItemSelection(element.closest('[data-item-id]'));
         break;
       case 'clear-selection':
         this.clearSelection();

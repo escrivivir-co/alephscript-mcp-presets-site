@@ -57,3 +57,19 @@
 - Require env-driven base URLs in tests and tools
 - Add nav-to-route alignment check in validation scripts
 
+## S06.6 Sprint 06.6 Methodology Improvements
+
+### E2E Testing Protocol Standardization
+- **E2E Quality Gate Standard**: Establish 90% pass rate as minimum quality gate for sprint completion
+- **JavaScript Initialization Pattern**: Mandate explicit `waitForFunction()` waits for client-side initialization in all E2E tests
+- **Multi-Agent Coordination Protocol**: Document successful Frontend → Integration → Validation handoff patterns for complex implementations
+
+### Architecture Decision Enhancement  
+- **ADR Documentation**: Require ADR documentation for all architectural decisions (following ADR-005 Hybrid Dependencies Pattern)
+- **Module Resolution Standards**: Enforce centralized dependency management with clear isolation boundaries for specialized components
+
+### Integration Validation Framework
+- **Debug Protocol Enhancement**: Integrate E2E testing as standard Phase 5 in Debug Agent validation protocol
+- **Event Delegation Standards**: Require DOM traversal patterns for robust event handling in component interactions
+- **Production Readiness Metrics**: All user workflows must achieve 100% E2E validation before sprint completion certification
+

@@ -87,6 +87,17 @@ zeus/
 **Impact**: Simplified module resolution, reduced coupling, improved maintainability
 **Status**: Implemented in Sprint 04
 
+### ADR-005: E2E Testing Dependencies Strategy
+**Problem**: E2E testing infrastructure requires specialized dependencies while maintaining centralized pattern
+**Solution**: Hybrid architecture - E2E dependencies isolated in test/e2e/ but execution from Zeus root
+**Implementation**:
+- E2E-specific dependencies (Playwright) in `zeus/test/e2e/package.json`
+- Production dependencies remain in root `zeus/package.json`
+- Execution scripts in root package.json for proper context
+- Zeus server dependencies accessible via standard Node.js resolution
+**Impact**: Clean separation of concerns, maintains production package cleanliness
+**Status**: Implemented in Sprint 06
+
 ## Troubleshooting Common Issues
 ### Module Resolution Problems
 - **Symptom**: "Cannot find module 'hyperaxe'" or similar dependency errors

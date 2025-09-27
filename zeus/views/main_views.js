@@ -30,7 +30,7 @@ const template = (pageTitle, content, options = {}) => {
       ...(options.styles ? options.styles.map(href => link({ rel: 'stylesheet', href })) : [])
     ),
     
-    body({ class: `theme-${currentTheme}` },
+    body({ class: `theme-${currentTheme} ${options.currentPage ? options.currentPage + '-page' : ''}` },
       navigation(options.currentPage),
       
       main({ class: 'main-content' },

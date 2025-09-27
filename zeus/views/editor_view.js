@@ -399,10 +399,12 @@ const toolsGrid = (tools, selectedItems) => {
  */
 const toolItem = (tool, isSelected) => {
   return div({ 
-    class: `item-card tool-item ${isSelected ? 'selected' : ''}`,
+    class: `item-card tool-item ${isSelected ? 'selected' : ''} clickable`,
     'data-item-id': tool.id || tool.name,
     'data-item-type': 'tool',
-    'data-action': 'toggle-selection'
+    'data-action': 'toggle-selection',
+    style: 'cursor: pointer;',
+    onclick: 'if(event.target === this || event.target.classList.contains("item-name")) { /* Allow click on item itself */ }'
   },
     div({ class: 'item-header' },
       div({ class: 'item-icon tool-icon' }, '🛠️'),
@@ -412,7 +414,8 @@ const toolItem = (tool, isSelected) => {
           class: 'btn-icon test-tool',
           'data-tool-name': tool.name,
           'data-action': 'test-tool',
-          title: 'Test tool'
+          title: 'Test tool',
+          onclick: 'event.stopPropagation();'
         }, '▶️'),
         
         isSelected && span({ class: 'selected-indicator' }, '✓')
@@ -442,10 +445,12 @@ const resourcesGrid = (resources, selectedItems) => {
  */
 const resourceItem = (resource, isSelected) => {
   return div({ 
-    class: `item-card resource-item ${isSelected ? 'selected' : ''}`,
+    class: `item-card resource-item ${isSelected ? 'selected' : ''} clickable`,
     'data-item-id': resource.id || resource.name,
     'data-item-type': 'resource',
-    'data-action': 'toggle-selection'
+    'data-action': 'toggle-selection',
+    style: 'cursor: pointer;',
+    onclick: 'if(event.target === this || event.target.classList.contains("item-name")) { /* Allow click on item itself */ }'
   },
     div({ class: 'item-header' },
       div({ class: 'item-icon resource-icon' }, '📦'),
@@ -455,7 +460,8 @@ const resourceItem = (resource, isSelected) => {
           class: 'btn-icon preview-resource',
           'data-resource-name': resource.name,
           'data-action': 'preview-resource',
-          title: 'Preview resource'
+          title: 'Preview resource',
+          onclick: 'event.stopPropagation();'
         }, '👁️'),
         
         isSelected && span({ class: 'selected-indicator' }, '✓')
@@ -485,10 +491,12 @@ const promptsGrid = (prompts, selectedItems) => {
  */
 const promptItem = (prompt, isSelected) => {
   return div({ 
-    class: `item-card prompt-item ${isSelected ? 'selected' : ''}`,
+    class: `item-card prompt-item ${isSelected ? 'selected' : ''} clickable`,
     'data-item-id': prompt.id || prompt.name,
     'data-item-type': 'prompt',
-    'data-action': 'toggle-selection'
+    'data-action': 'toggle-selection',
+    style: 'cursor: pointer;',
+    onclick: 'if(event.target === this || event.target.classList.contains("item-name")) { /* Allow click on item itself */ }'
   },
     div({ class: 'item-header' },
       div({ class: 'item-icon prompt-icon' }, '💭'),
@@ -498,7 +506,8 @@ const promptItem = (prompt, isSelected) => {
           class: 'btn-icon use-prompt',
           'data-prompt-name': prompt.name,
           'data-action': 'use-prompt',
-          title: 'Use prompt'
+          title: 'Use prompt',
+          onclick: 'event.stopPropagation();'
         }, '🚀'),
         
         isSelected && span({ class: 'selected-indicator' }, '✓')

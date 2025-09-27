@@ -13,7 +13,7 @@ echo ""
 ZEUS_PORT=3012
 MCP_PROXY_PORT=4001
 MCP_SERVER_PORT=3003
-REPORT_DIR="zeus/PLANIFICACION/ITERATIONS"
+REPORT_DIR="./reports"
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 
 # Colors for output

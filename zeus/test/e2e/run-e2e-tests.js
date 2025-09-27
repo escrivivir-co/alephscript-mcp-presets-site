@@ -11,7 +11,7 @@ const path = require('path');
 
 class E2ETestRunner {
   constructor() {
-    this.reportPath = path.join(__dirname, '../../PLANIFICACION/ITERATIONS/');
+    this.reportPath = path.join(__dirname, 'reports');
     this.isHeaded = process.env.HEADED === 'true';
   }
 
@@ -19,16 +19,33 @@ class E2ETestRunner {
     console.log('🔍 Checking Zeus server availability...');
     
     try {
-      const response = await fetch('http://localhost:3012/health');
-      if (response.ok) {
-        console.log('✅ Zeus server is running on port 3012');
-        return true;
-      } else {
-        throw new Error(`Server returned ${response.status}`);
-      }
+      // Use require for http since this runs in Node.js context
+      const http = require('http');
+      
+      return new Promise((resolve) => {
+        const req = http.get('http://localhost:3012/health', (res) => {
+          if (res.statusCode === 200) {
+            console.log('✅ Zeus server is running on port 3012');
+            resolve(true);
+          } else {
+            console.log(`❌ Zeus server returned ${res.statusCode}`);
+            resolve(false);
+          }
+        });
+        
+        req.on('error', (error) => {
+          console.error('❌ Zeus server not available:', error.message);
+          console.log('💡 Please start Zeus server with: cd zeus && npm start');
+          resolve(false);
+        });
+        
+        req.setTimeout(3000, () => {
+          console.error('❌ Zeus server connection timeout');
+          resolve(false);
+        });
+      });
     } catch (error) {
-      console.error('❌ Zeus server not available:', error.message);
-      console.log('💡 Please start Zeus server with: cd zeus && npm start');
+      console.error('❌ Error checking Zeus server:', error.message);
       return false;
     }
   }
