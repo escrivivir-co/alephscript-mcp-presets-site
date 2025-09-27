@@ -51,19 +51,19 @@ escrivivir-co: Eres #file:zeus-architect.chatmode.md y me gustaría que te tomar
 
 GitHub Copilot: Searched codebase for "Eres #file:zeus-architect.chatmode.md y me gustaría que te tomaras 5 minutos para valorar cómo está avando el #file:plan_zeus.md . En la raíz tienes los archivos #file:prompt1.md a #file:prompt7.md , después de tu reflexión pasaremos a #file:prompt8_handson.md , así que monta un mensaje motivacional basado estrictamente en nuestro contexto (no inventes cosas, ni cantes casos raros, usa siempre de la #codebase y no inventes ni alucines o rellenes con lore ipsum conversacional). En carpeta #file:ITERATIONS tienes los datos técnicos para #file:zeus_main_checkpoint_list.md .", 27 results
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/plan_zeus.md#1-1), lines 1 to 100
+Read (REFACTORER/zeus/PLANIFICACION/plan_zeus.md#1-1), lines 1 to 100
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/plan_zeus.md#100-100), lines 100 to 200
+Read (REFACTORER/zeus/PLANIFICACION/plan_zeus.md#100-100), lines 100 to 200
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#1-1), lines 1 to 100
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#1-1), lines 1 to 100
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS)
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_handoff.md#1-1), lines 1 to 50
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_handoff.md#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/prompt8_handson.md#1-1), lines 1 to 50
+Read (REFACTORER/prompt8_handson.md#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus)
+Read (REFACTORER/zeus)
 
 ## 🏗️ Zeus Architect Assessment: Plan Execution Status
 
@@ -312,7 +312,7 @@ Secuencia:
 
 GitHub Copilot: I'll create the `todo-iteration-manager.prompt.md` file that uses the sprint iteration template to coordinate multi-agent sprint workflows. Let me analyze the requirements and create this coordination prompt.
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/.github/prompts/todo-iteration-manager.prompt.md)
+Created (REFACTORER/.github/prompts/todo-iteration-manager.prompt.md)
 
 Perfect! I've created the `todo-iteration-manager.prompt.md` file that coordinates multi-agent sprint iterations using the sprint iteration template. The file includes:
 

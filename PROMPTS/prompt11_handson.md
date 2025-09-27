@@ -6,7 +6,7 @@ Searched for files matching `**/*.chatmode.md`, 16 matches
 
 Perfect! I can see you have several Chat Mode agents available. Based on your custom instructions, it looks like you've activated the **Debug & Validation Agent**. Let me read that file to confirm:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/chatmodes/debug-validation-agent.chatmode.md#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/.github/chatmodes/debug-validation-agent.chatmode.md#1-1), lines 1 to 50
 
 ¡Perfecto! Has activado el **Debug & Validation Agent** - exactamente el agente especializado que necesitamos para tu proyecto Zeus.
 
@@ -176,7 +176,7 @@ Así, que si te parece hacemos 2 cosas:
 
 GitHub Copilot: Perfecto! Voy a documentar este aprendizaje en mi hoja de Chat Mode y luego obtener el catálogo. Empiezo por actualizar la documentación:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/chatmodes/debug-validation-agent.chatmode.md)
+Read (alephscript-mcp-presets-site/.github/chatmodes/debug-validation-agent.chatmode.md)
 
 Ahora voy a agregar la documentación de MCPGaia y SLMo42. Voy a crear un archivo con la versión actualizada:
 
@@ -184,11 +184,11 @@ Searched codebase for "zeus PLANIFICACION ITERATIONS directory structure", 22 re
 
 Ahora voy a crear un archivo con la documentación actualizada del chat mode. Primero voy a buscar dónde está el directorio ITERATIONS para agregar la nueva información:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION)
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING)
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS)
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS)
 
 Perfecto! Ahora voy a crear el archivo de documentación actualizado y después obtener el catálogo. Primero voy a documentar la nueva información en mi chat mode:
 
@@ -252,7 +252,7 @@ Searched codebase for "zeus test mock data directory", 20 results
 
 Ahora voy a crear el mock file y el archivo de documentación actualizado. Primero, creo el mock file con el catálogo:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/test)
+Read (alephscript-mcp-presets-site/zeus/test)
 
 Perfecto! Voy a crear el archivo mock del catálogo en el directorio de test y luego actualizar la documentación del chat mode:
 
@@ -316,7 +316,7 @@ Starting (1/3) *Create MCP catalog mock file*
 
 Ahora voy a crear el archivo mock con el catálogo completo obtenido de SLMo42:
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/test/mock_mcp_catalog.json)
+Created (alephscript-mcp-presets-site/zeus/test/mock_mcp_catalog.json)
 
 Starting (2/3) *Update debug-validation chat mode*
 
@@ -332,7 +332,7 @@ Starting (3/3) *Create Sprint 05 iteration file*
 
 Ahora voy a crear el archivo de iteración Sprint 05 para documentar este trabajo:
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_05_debug_setup.md)
+Created (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_05_debug_setup.md)
 
 Completed (3/3) *Create Sprint 05 iteration file*
 
@@ -396,21 +396,21 @@ escrivivir-co: Investiga los formatos válidos de #file:.github para distribuir 
 
 GitHub Copilot: Voy a investigar la estructura de la carpeta .github para entender los formatos válidos y determinar cómo distribuir el contenido del archivo `sprint_05_debug_setup.md` como prompts o instructions.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/README.md#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/.github/README.md#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/prompts/sprint-iteration-template.prompt.md#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/.github/prompts/sprint-iteration-template.prompt.md#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/instructions/validation-agent.instructions.md#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/.github/instructions/validation-agent.instructions.md#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/prompts/diogenes-patterns.prompt.md#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/.github/prompts/diogenes-patterns.prompt.md#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/prompts)
+Read (alephscript-mcp-presets-site/.github/prompts)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/instructions)
+Read (alephscript-mcp-presets-site/.github/instructions)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/prompts/todo-iteration-manager.prompt.md#1-1), lines 1 to 30
+Read (alephscript-mcp-presets-site/.github/prompts/todo-iteration-manager.prompt.md#1-1), lines 1 to 30
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/instructions/state-restoration.instructions.md#1-1), lines 1 to 30
+Read (alephscript-mcp-presets-site/.github/instructions/state-restoration.instructions.md#1-1), lines 1 to 30
 
 Ahora entiendo perfectamente la estructura. Basándome en el análisis de la carpeta .github, veo que hay dos formatos principales para distribuir contenido:
 
@@ -466,7 +466,7 @@ escrivivir-co: Adelante
 
 GitHub Copilot: Perfecto! Voy a crear ambos archivos para distribuir el conocimiento del `sprint_05_debug_setup.md` en los formatos apropiados de .github. Primero voy a verificar el contenido actual del archivo por si has hecho cambios.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_05_debug_setup.md#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_05_debug_setup.md#1-1), lines 1 to 50
 
 Veo que has actualizado el puerto de Zeus a 3012. Ahora voy a crear los dos archivos de distribución:
 
@@ -478,13 +478,13 @@ Starting (1/2) *Create debug setup prompt*
 
 ### **1. Creando el prompt ejecutable para debug setup**
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/prompts/debug-setup-external-services.prompt.md)
+Created (alephscript-mcp-presets-site/.github/prompts/debug-setup-external-services.prompt.md)
 
 Starting (2/2) *Create debug agent instructions*
 
 ### **2. Creando las instructions para el Debug Agent**
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/instructions/debug-agent.instructions.md)
+Created (alephscript-mcp-presets-site/.github/instructions/debug-agent.instructions.md)
 
 Completed (2/2) *Create debug agent instructions*
 

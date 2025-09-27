@@ -220,7 +220,7 @@ Ran terminal command: curl -s "http://localhost:3012/api/mcp/servers" | head -5
 
 Zeus está devolviendo datos mock, no los datos reales de SLMo42. Vamos a verificar el código de integración:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/backend/mcpHandler.js#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/zeus/backend/mcpHandler.js#1-1), lines 1 to 50
 
 El MCPHandler está usando datos placeholder. Vamos a verificar si hay integración real con SLMo42:
 
@@ -228,7 +228,7 @@ Searched text for `4001|localhost:4001|SLMo42` (`**/zeus/**/*.js`), 2 results
 
 Excelente, la configuración apunta a SLMo42. Vamos a verificar si el mcpHandler está implementado para usar esta configuración:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/backend/mcpHandler.js#80-80), lines 80 to 120
+Read (alephscript-mcp-presets-site/zeus/backend/mcpHandler.js#80-80), lines 80 to 120
 
 Ahora veo el problema: Zeus está usando datos mock hardcodeados. Vamos a verificar si hay una implementación real para la integración con SLMo42:
 
@@ -254,7 +254,7 @@ Starting (6/6) *Integration Report Generation*
 
 ### 6. Integration Report Generation
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/ITERATIONS/S05_integration_test_report_indra.md)
+Created (alephscript-mcp-presets-site/zeus/PLANIFICACION/ITERATIONS/S05_integration_test_report_indra.md)
 
 Completed (6/6) *Integration Report Generation*
 

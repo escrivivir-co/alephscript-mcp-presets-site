@@ -32,15 +32,15 @@ Starting (1/4) *Crear SPRINT 06 Indra con Config Agent*
 
 Voy a activar el Config Agent para generar la documentación del Sprint 06 usando el template de iteración:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/chatmodes/config-agent.chatmode.md#1-1), lines 1 to 30
+Read (alephscript-mcp-presets-site/.github/chatmodes/config-agent.chatmode.md#1-1), lines 1 to 30
 
 Perfecto, ahora voy a usar las instrucciones del Config Agent junto con el template de Sprint para crear la documentación del Sprint 06. Primero necesito leer el template completo:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/prompts/sprint-iteration-template.prompt.md#1-1), lines 1 to 100
+Read (alephscript-mcp-presets-site/.github/prompts/sprint-iteration-template.prompt.md#1-1), lines 1 to 100
 
 Ahora voy a crear la documentación del Sprint 06 siguiendo el template y las especificaciones para el agente Indra:
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_06_integration_agent_indra.md)
+Created (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_06_integration_agent_indra.md)
 
 Starting (2/4) *Actualizar Checkpoint List con Validation Agent*
 
@@ -50,13 +50,13 @@ Starting (2/4) *Actualizar Checkpoint List con Validation Agent*
 
 Ahora voy a usar el Validation Agent para hacer la edición autorizada del checkpoint list, agregando la fase de integración entre 6 y 7:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/agents_policy.md#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/agents_policy.md#1-1), lines 1 to 50
 
 Perfecto, ahora voy a proceder como Validation Agent S06 para autorizar la actualización del checkpoint list:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#80-80), lines 80 to 100
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#80-80), lines 80 to 100
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#100-100), lines 100 to 130
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#100-100), lines 100 to 130
 
 Ahora voy a realizar la edición autorizada como Validation Agent S06, insertando la nueva Fase 6.5 entre las fases 6 y 7:
 
@@ -68,9 +68,9 @@ Using "Replace String in File"
 
 Ahora voy a crear el reporte de validación como Validation Agent S06:
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_checkpoint_authorization)
+Created (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_checkpoint_authorization)
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_checkpoint_authorization/validation_report.md)
+Created (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_checkpoint_authorization/validation_report.md)
 
 Starting (3/4) *Construir Integration Agent Indra*
 
@@ -80,15 +80,15 @@ Starting (3/4) *Construir Integration Agent Indra*
 
 Ahora voy a usar las directrices del Zeus Architect para crear el Integration Agent "Indra" siguiendo las especificaciones del prompt12.md:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/chatmodes/zeus-architect.chatmode.md#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/.github/chatmodes/zeus-architect.chatmode.md#1-1), lines 1 to 50
 
 Perfecto, ahora voy a crear el Integration Agent "Indra" siguiendo las especificaciones arquitectónicas y las instrucciones del prompt12.md:
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/chatmodes/integration-agent-indra.chatmode.md)
+Created (alephscript-mcp-presets-site/.github/chatmodes/integration-agent-indra.chatmode.md)
 
 Ahora voy a crear el protocolo de integration testing como documento complementario:
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/integration_testing_protocol.md)
+Created (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/integration_testing_protocol.md)
 
 Starting (4/4) *Validar y preparar para fixes*
 
@@ -244,15 +244,15 @@ Starting (1/7) *Backend Agent: Implementar rutas de vista faltantes*
 
 Primero, voy a examinar el estado actual del ZeusServer.js y las vistas disponibles:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/server/ZeusServer.js#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/zeus/server/ZeusServer.js#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/server/ZeusServer.js#51-51), lines 51 to 100
+Read (alephscript-mcp-presets-site/zeus/server/ZeusServer.js#51-51), lines 51 to 100
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/server/ZeusServer.js#101-101), lines 101 to 170
+Read (alephscript-mcp-presets-site/zeus/server/ZeusServer.js#101-101), lines 101 to 170
 
 Ahora voy a revisar las vistas disponibles para verificar qué necesitamos integrar:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views)
+Read (alephscript-mcp-presets-site/zeus/views)
 
 Perfecto. Todas las vistas están implementadas. Ahora, como Backend Agent, voy a agregar las rutas faltantes en ZeusServer.js:
 
@@ -270,19 +270,19 @@ Starting (2/7) *Frontend Agent: Validar componentes de vista*
 
 **Activando Frontend Agent** para verificar que las vistas están correctamente implementadas:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/home_view.js#1-1), lines 1 to 30
+Read (alephscript-mcp-presets-site/zeus/views/home_view.js#1-1), lines 1 to 30
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/ai_view.js#1-1), lines 1 to 30
+Read (alephscript-mcp-presets-site/zeus/views/ai_view.js#1-1), lines 1 to 30
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/preset_view.js#1-1), lines 1 to 30
+Read (alephscript-mcp-presets-site/zeus/views/preset_view.js#1-1), lines 1 to 30
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/editor_view.js#1-1), lines 1 to 30
+Read (alephscript-mcp-presets-site/zeus/views/editor_view.js#1-1), lines 1 to 30
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/stats_view.js#1-1), lines 1 to 30
+Read (alephscript-mcp-presets-site/zeus/views/stats_view.js#1-1), lines 1 to 30
 
 Perfecto. Todas las vistas están correctamente implementadas con HyperAxe y siguiendo los patrones diogenes. Voy a verificar que el main_views.js tenga la función template correctamente implementada:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/main_views.js#1-1), lines 1 to 50
+Read (alephscript-mcp-presets-site/zeus/views/main_views.js#1-1), lines 1 to 50
 
 Starting (3/7) *Config Agent: Verificar configuración del servidor*
 
@@ -292,11 +292,11 @@ Starting (3/7) *Config Agent: Verificar configuración del servidor*
 
 **Activando Config Agent** para validar la configuración del servidor:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/configs/zeus-config.json)
+Read (alephscript-mcp-presets-site/zeus/configs/zeus-config.json)
 
 Veo que hay una inconsistencia. El server dice puerto 3012 pero en el código del servidor está configurado para usar 3012 también, esto está bien. Voy a verificar que el config-manager.js esté funcionando correctamente:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/configs/config-manager.js#1-1), lines 1 to 30
+Read (alephscript-mcp-presets-site/zeus/configs/config-manager.js#1-1), lines 1 to 30
 
 La configuración se ve correcta. Como Config Agent, voy a corregir una inconsistencia menor en la configuración del puerto para que sea consistente:
 
@@ -304,9 +304,9 @@ Using "Replace String in File"
 
 La configuración ya está correcta en 3012. Voy a verificar que las rutas de assets estén correctamente configuradas. Voy a revisar la estructura de assets:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/client)
+Read (alephscript-mcp-presets-site/zeus/client)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/client/assets)
+Read (alephscript-mcp-presets-site/zeus/client/assets)
 
 Perfecto. La estructura de assets está en su lugar. La configuración está correcta para el servidor.
 
@@ -378,7 +378,7 @@ Starting (5/7) *Zeus Architect: Validar arquitectura y patrones*
 
 Voy a revisar la estructura implementada y validar que sigue los patrones arquitectónicos establecidos:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/server/ZeusServer.js#50-50), lines 50 to 75
+Read (alephscript-mcp-presets-site/zeus/server/ZeusServer.js#50-50), lines 50 to 75
 
 **Zeus Architect Analysis:**
 
@@ -434,7 +434,7 @@ Ran terminal command: curl -s http://localhost:3012/editor
 
 El problema es que falta importar `h4` en el editor_view.js. Como Zeus Architect, voy a corregir esto:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/editor_view.js#1-1), lines 1 to 10
+Read (alephscript-mcp-presets-site/zeus/views/editor_view.js#1-1), lines 1 to 10
 
 Efectivamente, falta `h4` en la importación. Voy a corregir esto:
 
@@ -492,9 +492,9 @@ Ran terminal command: curl -s -o /dev/null -w "Home: %{http_code} " http://local
 
 ¡Perfecto! **Todas las rutas están respondiendo 200**. Como Validation Agent, voy a crear el reporte de validación:
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_sprint_completion)
+Created (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_sprint_completion)
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_sprint_completion/final_validation_report.md)
+Created (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_sprint_completion/final_validation_report.md)
 
 Starting (7/7) *Integration Agent Indra: Testing E2E completo y cierre*
 
@@ -648,7 +648,7 @@ Ran terminal command: git add .
 
 Made changes.
 
-escrivivir-co: Follow instructions in [quality-gate-process.prompt.md](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/prompts/quality-gate-process.prompt.md).
+escrivivir-co: Follow instructions in [quality-gate-process.prompt.md](alephscript-mcp-presets-site/.github/prompts/quality-gate-process.prompt.md).
 
 para SPRINT 06
 
@@ -662,15 +662,15 @@ Ran terminal command: bash -lc "pwd && git status --porcelain=v1 -b && echo '---
 
 I'll quickly read the Zeus instruction files to ensure any edits and reports comply with project-wide rules before running codebase scans.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/instructions/backend-agent.instructions.md)
+Read (alephscript-mcp-presets-site/.github/instructions/backend-agent.instructions.md)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/instructions/config-agent.instructions.md)
+Read (alephscript-mcp-presets-site/.github/instructions/config-agent.instructions.md)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/instructions/frontend-agent.instructions.md)
+Read (alephscript-mcp-presets-site/.github/instructions/frontend-agent.instructions.md)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/instructions/validation-agent.instructions.md)
+Read (alephscript-mcp-presets-site/.github/instructions/validation-agent.instructions.md)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/.github/instructions/zeus-project-context.instructions.md)
+Read (alephscript-mcp-presets-site/.github/instructions/zeus-project-context.instructions.md)
 
 I'll run the repository-wide scans for language, TypeScript patterns in JS, hardcoded URLs, navigation component usage, and CSS variable usage to assess compliance with the quality gate.
 
@@ -688,13 +688,13 @@ I'll scope the quality scans to the Zeus folder and read key Zeus files (server 
 
 Ran terminal command: bash -lc "echo 'Spanish scan (zeus/):'; grep -RIn 'español\|comentario\|función\|archivo\|configuración' zeus/ --exclude-dir=node_modules --exclude-dir=.git || true; echo '---'; echo 'TS-like scan (zeus/*.js):'; grep -RIn --include='*.js' -E '(^|[^a-zA-Z])(interface\b|type[[:space:]]*=|as[[:space:]]*:)' zeus/ | grep -v node_modules || true; echo '---'; echo 'Hardcoded localhost in zeus/*.js (exclude config)'; grep -RIn --include='*.js' -E 'localhost:[0-9]|127\\.0\\.1' zeus/ --exclude-dir=node_modules --exclude='*config*' || true; echo '---'; echo 'Nav usage in zeus/views:'; grep -RIn "navLink\|nav\(" zeus/views || true; echo '---'; echo 'CSS variables in zeus assets/styles:'; ls -la zeus/client/assets/styles || true; grep -RIn 'var\(--' zeus/client/assets/styles || true; echo 'Themes dir:'; ls -la zeus/client/assets/themes || true"
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/server/ZeusServer.js)
+Read (alephscript-mcp-presets-site/zeus/server/ZeusServer.js)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/main_views.js)
+Read (alephscript-mcp-presets-site/zeus/views/main_views.js)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_06_integration_agent_indra.md)
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_06_integration_agent_indra.md)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md)
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md)
 
 Starting (2/12) *Language/TS/URL scans*
 
@@ -712,37 +712,37 @@ Ran terminal command: bash -lc "ls -la zeus/client/assets/styles; echo '---'; gr
 
 I'll open the Zeus config-manager to see how to properly get defaults and avoid hardcoded URLs, then adjust server and views to read from config instead of embedding localhost values.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/configs/config-manager.js)
+Read (alephscript-mcp-presets-site/zeus/configs/config-manager.js)
 
 Gathering key Zeus views and policy list files to validate patterns and prepare updates; also checking existing S06 validation report file path.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/ai_view.js#1-1), lines 1 to 120
+Read (alephscript-mcp-presets-site/zeus/views/ai_view.js#1-1), lines 1 to 120
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/editor_view.js#1-1), lines 1 to 200
+Read (alephscript-mcp-presets-site/zeus/views/editor_view.js#1-1), lines 1 to 200
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/preset_view.js#1-1), lines 1 to 140
+Read (alephscript-mcp-presets-site/zeus/views/preset_view.js#1-1), lines 1 to 140
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/stats_view.js#1-1), lines 1 to 160
+Read (alephscript-mcp-presets-site/zeus/views/stats_view.js#1-1), lines 1 to 160
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_sprint_completion/validation_report.md)
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_sprint_completion/validation_report.md)
 
 I'm going to open settings_view.js to remove hardcoded localhost placeholders and ensure values come from configuration defaults.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/settings_view.js#1-1), lines 1 to 380
+Read (alephscript-mcp-presets-site/zeus/views/settings_view.js#1-1), lines 1 to 380
 
 I'll open the Zeus LICENSE file and common quality tracking lists to plan updates, then proceed to implement code and doc fixes to pass the quality gate.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/LICENSE.md)
+Read (alephscript-mcp-presets-site/zeus/LICENSE.md)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/common/vicesList.md)
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/common/vicesList.md)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/common/virtuesList.md)
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/common/virtuesList.md)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/common/medologyList.md)
+Read (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/common/medologyList.md)
 
 I'll open the API test suite to assess the hardcoded BASE_URL and then adjust it to read from an environment variable with a localhost fallback.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/test/api_test_suite.js#1-1), lines 1 to 80
+Read (alephscript-mcp-presets-site/zeus/test/api_test_suite.js#1-1), lines 1 to 80
 
 Applying targeted code fixes to remove hardcoded localhost URLs, align navigation route to '/editor', and make the test suite config-driven to satisfy quality gate checks.
 
@@ -754,7 +754,7 @@ Using "Apply Patch"
 
 Using "Apply Patch"
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/views/main_views.js)
+Read (alephscript-mcp-presets-site/zeus/views/main_views.js)
 
 Using "Apply Patch"
 
@@ -794,7 +794,7 @@ Starting (4/12) *File organization review*
 
 I'll create the Sprint 06 Quality Gate Validation Report per the provided template and place it under S06_sprint_completion.
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_sprint_completion/quality_gate_validation_report.md)
+Created (alephscript-mcp-presets-site/zeus/PLANIFICACION/VIBECODING/POLICIES/S06_sprint_completion/quality_gate_validation_report.md)
 
 Starting (5/12) *Documentation standards review*
 
@@ -826,7 +826,7 @@ Ran terminal command: bash -lc "git add -A && git commit -m 'S06 Quality Gate: A
 
 I'll quickly inspect package.json to see available scripts, then run a fast test or lint if present to finalize the validation.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/alephscript-mcp-presets-site/zeus/package.json)
+Read (alephscript-mcp-presets-site/zeus/package.json)
 
 Ran terminal command: bash -lc "node -e \"const {getSectionDefaults}=require('./zeus/configs/config-manager.js');console.log('AI default endpoint:', getSectionDefaults('ai').endpoint)\" && node -e \"process.env.ZEUS_API_BASE_URL='http://localhost:3012/api'; console.log('Test BASE_URL env ok')\""
 

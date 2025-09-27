@@ -14,11 +14,11 @@ Secuencia:
 
 GitHub Copilot: Como **Validation Agent** según `agents_policy.md`, voy a inicializar el Sprint 05 siguiendo el contexto de prompt8_handson.md y coordinar la secuencia de agentes establecida.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/.github/instructions/validation-agent.instructions.md#1-1), lines 1 to 50
+Read (REFACTORER/.github/instructions/validation-agent.instructions.md#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/prompt8_handson.md#1-1), lines 1 to 50
+Read (REFACTORER/prompt8_handson.md#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/prompt8.md#1-1), lines 1 to 100
+Read (REFACTORER/prompt8.md#1-1), lines 1 to 100
 
 Created 6 todos
 
@@ -26,25 +26,25 @@ Starting (1/6) *Initialize Sprint 05 Context*
 
 Ahora voy a leer el contexto completo de prompt8_handson.md para entender los objetivos del Sprint 05:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/prompt8_handson.md#150-150), lines 150 to 200
+Read (REFACTORER/prompt8_handson.md#150-150), lines 150 to 200
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/prompt8_handson.md#300-300), lines 300 to 350
+Read (REFACTORER/prompt8_handson.md#300-300), lines 300 to 350
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/prompt8_handson.md#450-450), lines 450 to 515
+Read (REFACTORER/prompt8_handson.md#450-450), lines 450 to 515
 
 Starting (2/6) *Check Current Project State*
 
 Ahora voy a revisar el estado actual del proyecto y los checkpoints para entender qué necesita abordarse en Sprint 05:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#1-1), lines 1 to 100
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#1-1), lines 1 to 100
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#100-100), lines 100 to 167
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#100-100), lines 100 to 167
 
 Ahora voy a verificar qué problemas de deuda técnica fueron identificados en el Sprint 04 para entender el alcance del Sprint 05:
 
 Searched for files matching `**/POLICIES/S04*`, 2 matches
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/S04_settings/code_validation_report.md#1-1), lines 1 to 100
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/S04_settings/code_validation_report.md#1-1), lines 1 to 100
 
 Starting (3/6) *Coordinate Zeus Architect Analysis*
 

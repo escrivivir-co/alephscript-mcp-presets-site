@@ -1,4 +1,4 @@
-escrivivir-co: Follow instructions in [quality-gate-process.prompt.md](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/.github/prompts/quality-gate-process.prompt.md).
+escrivivir-co: Follow instructions in [quality-gate-process.prompt.md](REFACTORER/.github/prompts/quality-gate-process.prompt.md).
 
 ¿ya hemos acabado el sprint 04? Commit entonces. O handoff a los agentes (backend, frontend o zeus architect) con el reject. Deben intervenir en la generación los 2 chat modes: #file:agents_policy.md y #file:agents_policy code.md
 
@@ -22,35 +22,35 @@ Searched for files matching `**/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_
 
 Let me check the main checkpoint list to understand the current Sprint 04 status.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#1-1), lines 1 to 100
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#1-1), lines 1 to 100
 
 Let me read the rest to understand Phase 4 status better:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#100-100), lines 100 to 167
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#100-100), lines 100 to 167
 
 Now let me examine the Sprint 04 iteration files to understand what was supposed to be accomplished:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_backend.md#1-1), lines 1 to 100
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_backend.md#1-1), lines 1 to 100
 
 Let me continue reading this file and also check the frontend and handoff files:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_backend.md#100-100), lines 100 to 208
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_backend.md#100-100), lines 100 to 208
 
 Now let me check the frontend and handoff files:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_frontend.md#1-1), lines 1 to 100
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_frontend.md#1-1), lines 1 to 100
 
 Let me continue reading this file and check the handoff document:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_frontend.md#200-200), lines 200 to 281
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_frontend.md#200-200), lines 200 to 281
 
 Now let me check the handoff document:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_handoff.md#1-1), lines 1 to 100
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_handoff.md#1-1), lines 1 to 100
 
 Let me read the rest of the handoff document:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_handoff.md#100-100), lines 100 to 192
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/ITERATIONS/sprint_04_settings_handoff.md#100-100), lines 100 to 192
 
 Now let me move to Phase 2 of the quality gate review by checking the technical standards. Let me update my todo list and check for language consistency first:
 
@@ -78,15 +78,15 @@ Ran terminal command: grep -r "localhost:[0-9]\|127\.0\.0\.1" --include="*.js" -
 
 I found some hardcoded URLs that should use configuration. Let me check if these files properly use the configuration system. Now let me examine the actual implementation files to see the code patterns:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/views/settings_view.js#1-1), lines 1 to 50
+Read (REFACTORER/zeus/views/settings_view.js#1-1), lines 1 to 50
 
 I can see the hardcoded URL issue. Let me check the backend.js file to see the pattern:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/backend/backend.js#1-1), lines 1 to 50
+Read (REFACTORER/zeus/backend/backend.js#1-1), lines 1 to 50
 
 Now let me check file organization by looking at the main HyperAxe usage pattern:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/views/main_views.js#1-1), lines 1 to 30
+Read (REFACTORER/zeus/views/main_views.js#1-1), lines 1 to 30
 
 Good HyperAxe pattern usage. Let me now move to checking documentation standards. Let me update my progress and move to Phase 3:
 
@@ -94,7 +94,7 @@ Starting (3/6) *Documentation Standards Review*
 
 Now let me check if all sprint iteration files follow the template structure. Let me first read the iteration template to understand the required structure:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/iteration_template.md#1-1), lines 1 to 100
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/iteration_template.md#1-1), lines 1 to 100
 
 Now let me check if the Sprint 04 files follow this template. I've already seen they do follow the structure quite well. Let me check for checkpoint status accuracy by looking at what checkpoints were supposed to be addressed. Let me check the current checkpoint list status:
 
@@ -102,7 +102,7 @@ Searched text for `4.2` (`**/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_
 
 Let me check the exact checkbox status of the 4.2 section:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#50-50), lines 50 to 60
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md#50-50), lines 50 to 60
 
 The checkboxes show that 4.2 Settings View is marked as complete. Let me now check if the actual implementation files exist and work. Let me move to Phase 4 - Process Compliance Review:
 
@@ -158,7 +158,7 @@ Ran terminal command: head -20 zeus/client/assets/themes/Clear-MCP.css
 
 Ran terminal command: ls /c/Users/oracl/Documents/REPOS/REFACTORER/zeus/client/assets/themes/
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/client/assets/themes/Clear-MCP.css#1-1), lines 1 to 30
+Read (REFACTORER/zeus/client/assets/themes/Clear-MCP.css#1-1), lines 1 to 30
 
 Excellent! The CSS uses proper CSS variables compatible with diogenes patterns. Now let me move to the final phase - making the validation decision.
 
@@ -166,17 +166,17 @@ Starting (6/6) *Generate Validation Decision*
 
 Now let me read the existing policy lists to update them as part of the validation process:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/common/vicesList.md)
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/common/vicesList.md)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/common/virtuesList.md)
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/common/virtuesList.md)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/common/medologyList.md)
+Read (REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/common/medologyList.md)
 
 Based on my comprehensive review, I need to generate my validation decision. I found several issues, particularly hardcoded URLs that violate the configuration-driven principle, which requires a REJECT decision.
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/S04)
+Created (REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/S04)
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/S04/S04_Validation_Report.md)
+Created (REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/S04/S04_Validation_Report.md)
 
 Now let me update the common policy lists with new findings:
 
@@ -302,11 +302,11 @@ Ran terminal command: git status --porcelain | grep -E "\.(js|json|css|md)$"
 
 Ahora voy a realizar mi análisis técnico profundo de los cambios específicos del Sprint 04. Empiezo por examinar los archivos críticos mencionados en el reporte de validación.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/views/settings_view.js#10-10), lines 10 to 20
+Read (REFACTORER/zeus/views/settings_view.js#10-10), lines 10 to 20
 
 Searched text for `localhost:4001` (`**/zeus/views/settings_view.js`), 2 results
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/backend/backend.js#1-1), lines 1 to 30
+Read (REFACTORER/zeus/backend/backend.js#1-1), lines 1 to 30
 
 Ran terminal command: wc -l zeus/views/settings_view.js && grep -n "function\|=>" zeus/views/settings_view.js | wc -l
 
@@ -318,15 +318,15 @@ Ran terminal command: cd /c/Users/oracl/Documents/REPOS/REFACTORER && grep -r "i
 
 Ran terminal command: cd /c/Users/oracl/Documents/REPOS/REFACTORER && grep -r "innerHTML" zeus/ --include="*.js" --exclude-dir=node_modules
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/client/assets/js/settings.js#1-1), lines 1 to 50
+Read (REFACTORER/zeus/client/assets/js/settings.js#1-1), lines 1 to 50
 
 Searched text for `` innerHTML.*` `` (`**/zeus/client/assets/js/settings.js`), 1 result
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/client/assets/js/settings.js#460-460), lines 460 to 480
+Read (REFACTORER/zeus/client/assets/js/settings.js#460-460), lines 460 to 480
 
 Ahora voy a crear mi reporte técnico de código como extensión del reporte de validación:
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/S04/code_validation_report.md)
+Created (REFACTORER/zeus/PLANIFICACION/VIBECODING/POLICIES/S04/code_validation_report.md)
 
 ## Decisión Final del Code Validation Agent
 

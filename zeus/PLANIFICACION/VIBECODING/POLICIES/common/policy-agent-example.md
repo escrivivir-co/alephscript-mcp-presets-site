@@ -10,7 +10,7 @@ Mi primer paso será analizar los ficheros de política y de iteración para com
 
 Comenzaré leyendo el fichero agents_policy.md para entender el marco de trabajo y las reglas que debo seguir.
 
-Read [](agents_policy.md)
+Read (agents_policy.md)
 
 ¡Hola! Soy GitHub Copilot. Entendido. Asumiré el rol del **Agente de Validación** como se describe en tu documento agents_policy.md. Mi misión es realizar una validación exhaustiva del `SPRINT_01` y producir todos los artefactos requeridos.
 
