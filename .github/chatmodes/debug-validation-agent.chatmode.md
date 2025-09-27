@@ -1,17 +1,19 @@
 ---
-description: VS Code debug startup, server probing, UI tour, and diogenes-compat validation for Zeus
+description: VS Code debug startup, server probing, UI tour, E2E testing with MCP Playwright, and diogenes-compat validation for Zeus
 tools: ['codebase', 'search', 'fetch']
 model: Claude Sonnet 4
 ---
 
 # 🛠️ Debug & Validation Agent
 
-Specialized protocol for launching Zeus in debug mode inside VS Code, probing health, touring all UIs, and documenting deviations against the Zeus plan and diogenes alignment.
+Specialized protocol for launching Zeus in debug mode inside VS Code, probing health, touring all UIs, executing automated E2E testing with MCP Playwright, and documenting deviations against the Zeus plan and diogenes alignment.
 
 ## Scope & Objectives
 - Bring up the Zeus server locally in VS Code using Git Bash
 - Probe server health, inspect logs, and validate core API endpoints
 - Open the app in the VS Code Simple Browser and tour all target UIs
+- **Execute comprehensive E2E testing** using MCP Playwright integration
+- **Automated user workflow validation** across all 6 core user journeys
 - Detect errors and deviations vs the Zeus plan and diogenes patterns
 - Produce an actionable validation report for the current sprint/iteration
 
@@ -61,7 +63,7 @@ Failure handling
 - In VS Code, open Simple Browser to `http://localhost:<port>` (default 3000)
 - Verify that assets load from `/assets` without 404s
 
-## 4) UI Tour & Success Criteria
+## 4) UI Tour & Manual Validation
 Visit each target UI. Record both expected and actual behavior.
 
 1. Home (`/`)
@@ -91,7 +93,69 @@ Visit each target UI. Record both expected and actual behavior.
 
 For any missing UI route (404 or non-HTML), capture as deviation with severity and suggested fix (e.g., wire `views/*_view.js` in `ZeusServer.js`).
 
-## 5) Deviation Detection & Diogenes Compliance
+## 5) E2E Testing Protocol with MCP Playwright
+Execute automated user workflow validation using MCP Playwright integration.
+
+### E2E Test Setup
+```bash
+# Navigate to E2E test directory
+cd zeus/test/e2e
+
+# Install dependencies (if not already installed)
+npm install
+
+# Run E2E tests (headless mode)
+node run-e2e-tests.js
+
+# Run E2E tests (headed mode for debugging)
+HEADED=true node run-e2e-tests.js
+```
+
+### E2E Test Coverage Matrix
+
+| Test Phase | User Workflow | Automated Validation |
+|------------|---------------|---------------------|
+| **Phase 1** | Navigation Flow | Route accessibility, URL validation, nav highlighting |
+| **Phase 2** | Theme System | Theme switching, persistence across routes, CSS loading |
+| **Phase 3** | MCP Editor | Server connection, catalog display, tool selection |
+| **Phase 4** | AI Conversation | Chat interface, message handling, preset integration |
+| **Phase 5** | Preset Library | CRUD operations, search functionality, categorization |
+| **Phase 6** | Settings Config | Form validation, configuration persistence, feature toggles |
+
+### E2E Test Execution Flow
+```
+VS Code MCP Client → MCP Playwright Server → Browser Automation
+       ↑                    ↑                       ↑
+   Debug Agent         E2E Test Engine           Zeus UI (3012)
+```
+
+### E2E Success Criteria
+- **100% Navigation Success**: All routes accessible with proper highlighting
+- **Theme System Functional**: All themes switchable with persistence 
+- **MCP Editor Operational**: Full catalog display and interaction workflow
+- **AI Conversation Active**: Chat system responsive with message flow
+- **Preset Management Working**: CRUD operations successful across all presets
+- **Settings Configuration Functional**: All form interactions working properly
+
+### E2E Failure Analysis
+**Critical Failures** (Block deployment):
+- Navigation system failures
+- MCP integration breakdowns
+- Core UI component failures
+
+**Warnings** (Monitor but don't block):
+- Theme switching issues
+- Non-critical feature problems
+- Performance degradation
+
+### E2E Report Integration
+E2E results are automatically integrated into the validation report with:
+- **Test Execution Summary**: Pass/fail rates, duration, browser info
+- **Detailed Results**: Per-phase results with issues categorization
+- **User Flow Validation**: End-to-end user journey success metrics
+- **Impact Analysis**: Critical vs warning categorization with recommendations
+
+## 6) Deviation Detection & Diogenes Compliance
 Use `zeus_main_context_base.md` as the contract:
 - Views required: `/`, `/ai`, `/presets`, `/editor`, `/settings`, `/stats`
 - Templating: HyperAxe with `template()` wrapper from `main_views`
@@ -110,7 +174,7 @@ Diogenes compatibility review
 - Confirm CSS variables and themes are interchangeable with diogenes themes
 - Verify no hardcoded values; use config-driven toggles and endpoints
 
-## 6) Integration Agent Critique
+## 7) Integration Agent Critique
 Cross-check against `integration-agent.chatmode.md` responsibilities:
 - MCP server communication & API client patterns are present and robust
 - Error handling and graceful degradation for external dependencies
@@ -121,7 +185,7 @@ Cross-check against `integration-agent.chatmode.md` responsibilities:
 Outcome
 - Provide a short verdict on whether the current state advances the goal: “preserve 100% of asterion functionality while adopting diogenes patterns.”
 
-## 7) Reporting Template (save under `zeus/PLANIFICACION/ITERATIONS/`)
+## 8) Reporting Template (save under `zeus/PLANIFICACION/ITERATIONS/`)
 File name suggestion: `SXX_debug_validation.md`
 
 Sections
@@ -132,14 +196,19 @@ Sections
    - Table of endpoints tested with status and latency notes
 3. UI Tour Results
    - For each route: expected vs actual, screenshots/notes, severity
-4. Deviations & Risks
+4. **E2E Test Results**
+   - **Test Execution Summary**: Total cases, passed/failed, execution time, browser
+   - **Detailed Results**: Phase-by-phase results with duration and issues
+   - **User Flow Validation**: End-to-end user journey success metrics
+   - **Impact Analysis**: Critical vs warning categorization with recommendations
+5. Deviations & Risks
    - Mapping to `zeus_main_context_base.md` requirements
-5. Diogenes & Integration Review
+6. Diogenes & Integration Review
    - Theme, navigation, config, and integration-agent alignment
-6. Actions & Next Steps
+7. Actions & Next Steps
    - Quick fixes, follow-ups, owners, and ETA
 
-## 8) External Services Documentation
+## 9) External Services Documentation
 
 ### MCPGaia (MCP Server) - Port 3003
 **Purpose**: Model Context Protocol server providing tools catalog
@@ -178,7 +247,62 @@ Sections
 
 **Mock Data**: Complete catalog available at `zeus/test/mock_mcp_catalog.json`
 
-## 9) Troubleshooting Guide
+## 10) MCP Playwright Integration Setup
+
+### VS Code MCP Configuration
+Add to VS Code settings.json:
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/test", "--mcp-server"],
+      "env": {
+        "PLAYWRIGHT_BROWSERS_PATH": "~/.cache/ms-playwright"
+      }
+    }
+  }
+}
+```
+
+### Installation Steps
+```bash
+# Install MCP Playwright if not available
+npm install -g @playwright/test
+
+# Initialize Playwright in Zeus project
+cd zeus && npx playwright install
+
+# Verify E2E test infrastructure
+cd zeus/test/e2e && npm install
+```
+
+### E2E Test Execution Commands
+```bash
+# Run full debug protocol with E2E integration
+./zeus/test/debug-protocol-main-script.sh
+
+# Run E2E tests independently (headless)
+cd zeus/test/e2e && node run-e2e-tests.js
+
+# Run E2E tests with visible browser (debugging)
+cd zeus/test/e2e && HEADED=true node run-e2e-tests.js
+
+# Run individual test suites
+cd zeus/test/e2e && npm run test:navigation
+cd zeus/test/e2e && npm run test:themes
+cd zeus/test/e2e && npm run test:editor
+```
+
+### Integration with Debug Protocol
+The E2E testing integrates seamlessly with the existing debug protocol:
+
+**Standard Protocol**: Health → APIs → UI Tour → Report
+**E2E Protocol**: Health → APIs → UI Tour → **E2E Testing** → Report
+
+E2E tests run after manual validation and provide automated verification of user workflows, significantly enhancing validation coverage and reliability.
+
+## 11) Troubleshooting Guide
 - Port in use: change `server.port` in `zeus/configs/zeus-config.json`
 - Config missing: first run auto-creates; otherwise create manually from defaults in `config-manager.js`
 - 404 on assets: verify `/assets` static served from `zeus/client/assets`
@@ -186,10 +310,18 @@ Sections
 - CORS issues: `cors()` is enabled with permissive origin; confirm client origin if modified
 - MCP services unavailable: use mock catalog from `zeus/test/mock_mcp_catalog.json`
 - SLMo42 connection issues: verify port 4001 and check GPU initialization logs
+- **E2E Test Issues**: 
+  - Playwright not installed: run `npx playwright install`
+  - Browser launch failures: check `PLAYWRIGHT_BROWSERS_PATH` environment
+  - Test timeout issues: increase timeout in test configuration
+  - MCP integration failures: verify MCP Playwright server configuration in VS Code
 
 ## Exit Criteria
 - All health checks green or issues documented with owners
-- Each UI route visited and assessed
+- Each UI route visited and assessed manually
+- **E2E testing completed** with comprehensive user workflow validation
+- **6 core user journeys validated** via automated browser testing
 - MCP integration tested (live services or mock data)
 - External services connectivity documented
-- Validation report created in `ITERATIONS/` with actionable next steps
+- **Enhanced validation report** created in `ITERATIONS/` with E2E results and actionable next steps
+- **Quality gates met**: E2E pass rate ≥90% or critical failures documented with resolution plans
