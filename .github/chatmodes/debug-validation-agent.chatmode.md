@@ -111,6 +111,75 @@ node run-e2e-tests.js
 HEADED=true node run-e2e-tests.js
 ```
 
+## 6) Interactive MCP Navigation & Live Testing
+Use VS Code MCP Playwright integration for real-time application navigation and testing.
+
+### MCP Environment Activation
+**Check MCP Readiness**:
+1. Verify Zeus server running: `curl http://localhost:3012/health`
+2. Confirm VS Code MCP Playwright server active in VS Code
+3. Test basic MCP browser automation capability
+4. Validate application accessibility through MCP integration
+
+### Interactive Testing Scenarios
+
+#### Catalog Navigation & Editing
+**Use Case**: "Navigate to catalog view and edit first item name"
+**MCP Steps**:
+1. Navigate to `http://localhost:3012/editor`
+2. Wait for MCP catalog to load completely
+3. Locate first tool item in catalog display  
+4. Click on first tool item to select/highlight
+5. Verify tool details panel or edit interface appears
+6. Test name editing functionality if available
+7. Validate changes persist or show appropriate feedback
+
+#### Conversation Interface Testing  
+**Use Case**: "Verify conversation click behavior and message flow"
+**MCP Steps**:
+1. Navigate to `http://localhost:3012/ai`
+2. Verify conversation interface loads properly
+3. Click "New Conversation" or similar button
+4. Test textarea input activation and typing capability
+5. Send test message and verify processing/response
+6. Validate conversation state and UI updates
+
+#### Theme System Validation
+**Use Case**: "Test theme switching and visual validation"  
+**MCP Steps**:
+1. Navigate to `http://localhost:3012/settings`
+2. Locate theme selector/dropdown
+3. Select different theme (e.g., Dark-MCP, Purple-MCP)
+4. Verify immediate visual changes in UI
+5. Navigate to different route to test persistence
+6. Confirm theme consistency across application views
+
+#### Preset Management Testing
+**Use Case**: "Test preset creation and management workflow"
+**MCP Steps**:
+1. Navigate to `http://localhost:3012/presets`  
+2. Verify preset library display and catalog integration
+3. Test "Create New Preset" or similar functionality
+4. Fill preset creation form with test data
+5. Save preset and verify persistence/display
+6. Test preset editing, deletion, or export features
+
+### MCP Command Patterns
+**Navigation Commands**:
+- `openPage("http://localhost:3012/editor")` - Open specific Zeus route
+- `waitForElement(".catalog-container")` - Wait for content load
+- `clickElement(".item-card:first-child")` - Select first catalog item
+
+**Form Interaction Commands**:  
+- `fillInput("#message-input", "test message")` - Type in conversation input
+- `clickButton("#send-button")` - Submit form or trigger action
+- `selectDropdown("#theme-selector", "Dark-MCP")` - Change theme selection
+
+**State Validation Commands**:
+- `verifyText(".conversation-message", "test message")` - Confirm message appeared
+- `verifyClass("body", "theme-dark-mcp")` - Confirm theme applied
+- `screenshot("theme-change-validation.png")` - Capture visual state
+
 ### E2E Test Coverage Matrix
 
 | Test Phase | User Workflow | Automated Validation |
@@ -127,6 +196,8 @@ HEADED=true node run-e2e-tests.js
 VS Code MCP Client → MCP Playwright Server → Browser Automation
        ↑                    ↑                       ↑
    Debug Agent         E2E Test Engine           Zeus UI (3012)
+       ↓                    ↓                       ↓
+Interactive Testing → Real-time Navigation → Live UI Validation
 ```
 
 ### E2E Success Criteria
@@ -155,7 +226,7 @@ E2E results are automatically integrated into the validation report with:
 - **User Flow Validation**: End-to-end user journey success metrics
 - **Impact Analysis**: Critical vs warning categorization with recommendations
 
-## 6) Deviation Detection & Diogenes Compliance
+## 7) Deviation Detection & Diogenes Compliance
 Use `zeus_main_context_base.md` as the contract:
 - Views required: `/`, `/ai`, `/presets`, `/editor`, `/settings`, `/stats`
 - Templating: HyperAxe with `template()` wrapper from `main_views`
@@ -174,7 +245,7 @@ Diogenes compatibility review
 - Confirm CSS variables and themes are interchangeable with diogenes themes
 - Verify no hardcoded values; use config-driven toggles and endpoints
 
-## 7) Integration Agent Critique
+## 8) Integration Agent Critique
 Cross-check against `integration-agent.chatmode.md` responsibilities:
 - MCP server communication & API client patterns are present and robust
 - Error handling and graceful degradation for external dependencies
@@ -185,7 +256,7 @@ Cross-check against `integration-agent.chatmode.md` responsibilities:
 Outcome
 - Provide a short verdict on whether the current state advances the goal: “preserve 100% of asterion functionality while adopting diogenes patterns.”
 
-## 8) Reporting Template (save under `zeus/PLANIFICACION/ITERATIONS/`)
+## 9) Reporting Template (save under `zeus/PLANIFICACION/ITERATIONS/`)
 File name suggestion: `SXX_debug_validation.md`
 
 Sections
@@ -201,14 +272,19 @@ Sections
    - **Detailed Results**: Phase-by-phase results with duration and issues
    - **User Flow Validation**: End-to-end user journey success metrics
    - **Impact Analysis**: Critical vs warning categorization with recommendations
-5. Deviations & Risks
+5. **Interactive MCP Testing Results**
+   - **Live Navigation Tests**: Specific use cases executed through MCP browser control
+   - **UI Interaction Validation**: Form filling, clicking, navigation success/failure rates  
+   - **Real-time State Verification**: Theme switching, conversation flow, preset management
+   - **MCP Integration Assessment**: Browser automation reliability and VS Code integration quality
+6. Deviations & Risks
    - Mapping to `zeus_main_context_base.md` requirements
-6. Diogenes & Integration Review
+7. Diogenes & Integration Review
    - Theme, navigation, config, and integration-agent alignment
-7. Actions & Next Steps
+8. Actions & Next Steps
    - Quick fixes, follow-ups, owners, and ETA
 
-## 9) External Services Documentation
+## 10) External Services Documentation
 
 ### MCPGaia (MCP Server) - Port 3003
 **Purpose**: Model Context Protocol server providing tools catalog
@@ -247,7 +323,7 @@ Sections
 
 **Mock Data**: Complete catalog available at `zeus/test/mock_mcp_catalog.json`
 
-## 10) MCP Playwright Integration Setup
+## 11) MCP Playwright Integration Setup
 
 ### VS Code MCP Configuration
 Add to VS Code settings.json:
@@ -302,7 +378,7 @@ The E2E testing integrates seamlessly with the existing debug protocol:
 
 E2E tests run after manual validation and provide automated verification of user workflows, significantly enhancing validation coverage and reliability.
 
-## 11) Troubleshooting Guide
+## 12) Troubleshooting Guide
 - Port in use: change `server.port` in `zeus/configs/zeus-config.json`
 - Config missing: first run auto-creates; otherwise create manually from defaults in `config-manager.js`
 - 404 on assets: verify `/assets` static served from `zeus/client/assets`
@@ -315,6 +391,11 @@ E2E tests run after manual validation and provide automated verification of user
   - Browser launch failures: check `PLAYWRIGHT_BROWSERS_PATH` environment
   - Test timeout issues: increase timeout in test configuration
   - MCP integration failures: verify MCP Playwright server configuration in VS Code
+- **Interactive MCP Issues**:
+  - MCP server not responding: restart VS Code MCP Playwright server
+  - Browser automation failures: verify Zeus server accessibility on port 3012
+  - Element interaction issues: use MCP element inspection to verify selectors
+  - Navigation timeout: increase wait times for page load and content rendering
 
 ## Exit Criteria
 - All health checks green or issues documented with owners

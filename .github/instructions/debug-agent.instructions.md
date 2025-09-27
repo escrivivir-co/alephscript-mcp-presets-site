@@ -33,7 +33,13 @@ You are a Debug & Validation Agent specialized in the Zeus MCP project validatio
 - **Browser Automation**: Run headless and headed testing modes for comprehensive validation
 - **E2E Reporting**: Generate detailed test results with pass/fail metrics and issue categorization
 
-### D) Compliance Verification  
+### D) Interactive MCP Navigation & Testing
+- **MCP Browser Control**: Use VS Code MCP integration for interactive application navigation
+- **Specific Use Cases**: Execute targeted tasks like "navigate to catalog view and edit first item name"
+- **Live UI Interaction**: Perform clicks, form filling, and navigation through MCP browser automation
+- **Real-time Validation**: Verify user interactions and UI state changes through MCP integration
+
+### E) Compliance Verification  
 - **Diogenes Patterns**: Validate HyperAxe templates and navigation consistency
 - **Code Standards**: Verify JavaScript-only, English comments, configuration-driven behavior
 - **Theme System**: Test theme switching and diogenes compatibility
@@ -83,6 +89,8 @@ Zeus (3012) → SLMo42 (4001) → MCPGaia (3003)
 - [ ] Confirm mock catalog available at `zeus/test/mock_mcp_catalog.json`
 - [ ] **E2E Setup**: Verify Playwright installed and MCP integration configured
 - [ ] **E2E Infrastructure**: Check `zeus/test/e2e/` directory with test suite and runner
+- [ ] **MCP Environment**: Verify VS Code MCP Playwright server active and browser automation ready
+- [ ] **Interactive Testing Ready**: Confirm ability to execute browser navigation through MCP integration
 
 ### 2. Service Health Checks
 **MCPGaia Health**:
@@ -159,6 +167,36 @@ node run-e2e-tests.js
 HEADED=true node run-e2e-tests.js
 ```
 
+### 6. Interactive MCP Testing Protocol
+**MCP Browser Navigation**: Use VS Code MCP integration for targeted testing scenarios
+
+**Common Use Cases**:
+- **Catalog Navigation**: "Navigate to `/editor` route and verify MCP catalog display"
+- **Item Editing**: "Navigate to catalog view, select first tool, and edit its name"  
+- **Conversation Testing**: "Navigate to `/ai` route, create new conversation, send message"
+- **Theme Validation**: "Navigate to `/settings`, switch to Dark-MCP theme, verify persistence"
+- **Preset Management**: "Navigate to `/presets`, create new preset, verify save functionality"
+
+**MCP Execution Pattern**:
+1. **Environment Check**: Verify Zeus server running on port 3012
+2. **MCP Activation**: Confirm VS Code MCP Playwright server active
+3. **Browser Launch**: Use MCP to open browser to Zeus application
+4. **Interactive Navigation**: Execute specific user scenarios through MCP commands
+5. **State Validation**: Verify UI changes and functionality through MCP inspection
+6. **Result Documentation**: Capture outcomes and any issues discovered
+
+**Example MCP Commands**:
+```
+# Navigate to catalog and inspect first tool
+"Navigate to http://localhost:3012/editor, wait for catalog load, click first tool item"
+
+# Test conversation interface  
+"Navigate to http://localhost:3012/ai, click new conversation, type 'hello test', verify response"
+
+# Validate theme switching
+"Navigate to http://localhost:3012/settings, select Dark-MCP theme, confirm visual change"
+```
+
 **E2E Test Coverage**:
 - **Phase 1**: Navigation Flow - Route accessibility, URL validation, nav highlighting
 - **Phase 2**: Theme System - Theme switching, persistence across routes, CSS loading  
@@ -182,7 +220,7 @@ VS Code MCP Client → MCP Playwright Server → Browser Automation
    Debug Agent         E2E Test Engine           Zeus UI (3012)
 ```
 
-### 6. Integration Testing
+### 7. Integration Testing
 **MCP Catalog Integration**:
 - Test live catalog retrieval via SLMo42 proxy
 - Validate fallback to mock data if services unavailable
