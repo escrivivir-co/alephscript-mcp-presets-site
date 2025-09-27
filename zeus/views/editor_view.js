@@ -654,6 +654,18 @@ const presetCreatorForm = (selectedItems, selectedServer) => {
         option({ value: 'General' }, 'General')
       )
     ),
+
+    // Prompt content (required for backend API)
+    div({ class: 'form-group' },
+      label({ for: 'preset-prompt' }, 'Prompt *'),
+      textarea({
+        id: 'preset-prompt',
+        name: 'prompt',
+        rows: '6',
+        required: true,
+        placeholder: 'Enter the AI prompt template...'
+      })
+    ),
     
     div({ class: 'form-actions' },
       button({

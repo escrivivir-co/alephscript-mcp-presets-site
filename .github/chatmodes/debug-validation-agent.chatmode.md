@@ -164,21 +164,31 @@ Use VS Code MCP Playwright integration for real-time application navigation and 
 5. Save preset and verify persistence/display
 6. Test preset editing, deletion, or export features
 
-### MCP Command Patterns
+### MCP Command Patterns (VERIFIED WORKING)
 **Navigation Commands**:
-- `openPage("http://localhost:3012/editor")` - Open specific Zeus route
-- `waitForElement(".catalog-container")` - Wait for content load
-- `clickElement(".item-card:first-child")` - Select first catalog item
+```javascript
+// ACTUAL working MCP Playwright tools:
+await mcp_playwright_browser_navigate({ url: "http://localhost:3012/presets" })
+await mcp_playwright_browser_snapshot()  // Returns full accessibility tree
+```
 
 **Form Interaction Commands**:  
-- `fillInput("#message-input", "test message")` - Type in conversation input
-- `clickButton("#send-button")` - Submit form or trigger action
-- `selectDropdown("#theme-selector", "Dark-MCP")` - Change theme selection
+```javascript
+await mcp_playwright_browser_type({ ref: "e90", element: "Name input", text: "TEST1" })
+await mcp_playwright_browser_click({ ref: "e45", element: "Radio button" })
+await mcp_playwright_browser_select_option({ ref: "e93", values: ["Development"] })
+```
 
 **State Validation Commands**:
-- `verifyText(".conversation-message", "test message")` - Confirm message appeared
-- `verifyClass("body", "theme-dark-mcp")` - Confirm theme applied
-- `screenshot("theme-change-validation.png")` - Capture visual state
+```javascript
+await mcp_playwright_browser_take_screenshot({ filename: "validation.png" })
+// Accessibility tree provides complete UI state - no need for CSS selectors
+```
+
+**Key Differences from Documentation Examples**:
+- Uses `ref` parameters from accessibility tree (e.g., `ref: "e45"`) 
+- No CSS selectors needed - MCP provides structured element references
+- Real-time AI control vs pre-written test scripts
 
 ### E2E Test Coverage Matrix
 
@@ -323,35 +333,60 @@ Sections
 
 **Mock Data**: Complete catalog available at `zeus/test/mock_mcp_catalog.json`
 
-## 11) MCP Playwright Integration Setup
+## 11) MCP Playwright Integration Setup (Microsoft Official)
 
-### VS Code MCP Configuration
-Add to VS Code settings.json:
+**Official Documentation**: https://github.com/microsoft/playwright-mcp/blob/main/README.md
+
+### VS Code MCP Configuration (CORRECTED)
+Add to `.vscode/mcp.json` (NOT settings.json):
 ```json
 {
-  "mcpServers": {
+  "servers": {
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/test", "--mcp-server"],
-      "env": {
-        "PLAYWRIGHT_BROWSERS_PATH": "~/.cache/ms-playwright"
-      }
+      "args": ["@playwright/mcp@latest"],
+      "cwd": "${workspaceFolder}"
     }
   }
 }
 ```
 
-### Installation Steps
+### Installation Steps (VERIFIED WORKING)
 ```bash
-# Install MCP Playwright if not available
-npm install -g @playwright/test
+# 1. Install Microsoft's official MCP Playwright server
+npm install -g @playwright/mcp@latest
 
-# Initialize Playwright in Zeus project
-cd zeus && npx playwright install
+# 2. Install browsers (CRITICAL: may need Administrator on Windows)
+npx playwright install chrome
 
-# Verify E2E test infrastructure
-cd zeus/test/e2e && npm install
+# 3. Verify VS Code can access MCP tools:
+# Check available: mcp_playwright_browser_navigate, mcp_playwright_browser_click, etc.
 ```
+
+### Windows Administrator Requirements
+- Browser installation may fail with permission errors
+- Solution: Run VS Code as Administrator, then retry browser installation
+- Success indicator: Chrome version displayed after installation
+
+### Verification Steps (POST-INSTALLATION)
+```bash
+# 1. Verify MCP server is available
+npx @playwright/mcp@latest --help
+
+# 2. Check VS Code has MCP tools available:
+# Look for: mcp_playwright_browser_navigate, mcp_playwright_browser_click, etc.
+
+# 3. Test basic navigation:
+# Use mcp_playwright_browser_navigate with your Zeus server URL
+```
+
+### Expected MCP Tools After Setup
+- `mcp_playwright_browser_navigate` - Page navigation
+- `mcp_playwright_browser_snapshot` - Accessibility tree capture  
+- `mcp_playwright_browser_click` - Element interaction
+- `mcp_playwright_browser_type` - Text input
+- `mcp_playwright_browser_select_option` - Dropdown selection
+- `mcp_playwright_browser_take_screenshot` - Visual capture
 
 ### E2E Test Execution Commands
 ```bash

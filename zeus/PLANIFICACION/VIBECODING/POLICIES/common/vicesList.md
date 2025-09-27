@@ -1,6 +1,22 @@
 ## Vices List Updates
 
-### New Vices Added:
+### Ne## S06 Sprint 06 Vices (Integration Agent & Routing Fixes)
+
+### Technical Vices
+- Residual hardcoded localhost placeholders detected in settings view and tests (now fixed)
+- Navigation link mismatch for MCP Editor (/mcp vs /editor) causing route inconsistency (fixed)
+
+### Process Vices
+- Integration validation was introduced late (now institutionalized as Phase 6.5)
+
+## S06.9 Sprint 6.9 Vices (Interactive MCP Testing)
+
+### Technical Vices
+- **Missing required form fields**: Editor preset creator initially lacked required prompt field that backend API expected, causing form validation mismatch
+- **Documentation inconsistency**: Debug agent instructions contained misleading E2E examples instead of accurate Interactive MCP Testing patterns
+
+### Process Vices
+**NONE IDENTIFIED** - Sprint 6.9 demonstrated exceptional execution with immediate issue resolution and comprehensive documentationAdded:
 - S03-2025-09-26: Configuration drift between implementation and config files leads to runtime failures
 - S03-2025-09-26: Documentation updates lagging behind implementation creates false project state
 - S03-2025-09-26: Delayed standardization of CSS variables causes inconsistent theming

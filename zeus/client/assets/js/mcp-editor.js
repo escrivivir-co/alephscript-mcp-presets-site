@@ -502,6 +502,7 @@ class MCPEditor {
       name: formData.get('name'),
       description: formData.get('description'),
       category: formData.get('category'),
+      prompt: formData.get('prompt') || '',
       serverId: this.selectedServer?.id,
       items: Array.from(this.selectedItems),
       serverContent: this.serverContent

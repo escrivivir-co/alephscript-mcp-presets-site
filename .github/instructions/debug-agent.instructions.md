@@ -167,7 +167,15 @@ node run-e2e-tests.js
 HEADED=true node run-e2e-tests.js
 ```
 
-### 6. Interactive MCP Testing Protocol
+### 6. Interactive MCP Testing Protocol  
+**IMPORTANT**: This is **Interactive MCP Testing** - fundamentally different from traditional E2E testing.
+
+**Key Differences**:
+- **Traditional E2E**: Pre-written scripts that execute automatically (`await page.click()`)  
+- **Interactive MCP**: AI controls browser in real-time via conversational commands
+- **Purpose E2E**: Regression testing, CI/CD validation, batch automation
+- **Purpose MCP**: Exploratory testing, debugging, interactive validation
+
 **MCP Browser Navigation**: Use VS Code MCP integration for targeted testing scenarios
 
 **Common Use Cases**:
@@ -185,17 +193,23 @@ HEADED=true node run-e2e-tests.js
 5. **State Validation**: Verify UI changes and functionality through MCP inspection
 6. **Result Documentation**: Capture outcomes and any issues discovered
 
-**Example MCP Commands**:
+**Verified MCP Playwright Tools Available**:
+```javascript
+// Real MCP Playwright commands (TESTED WORKING):
+await mcp_playwright_browser_navigate({ url: "http://localhost:3012/presets" })
+await mcp_playwright_browser_snapshot()  // Gets accessibility tree
+await mcp_playwright_browser_click({ ref: "e45", element: "Radio button description" })
+await mcp_playwright_browser_type({ ref: "e90", element: "Input field", text: "TEST1" })
+await mcp_playwright_browser_select_option({ ref: "e93", values: ["Development"] })
+await mcp_playwright_browser_take_screenshot({ filename: "validation.png" })
 ```
-# Navigate to catalog and inspect first tool
-"Navigate to http://localhost:3012/editor, wait for catalog load, click first tool item"
 
-# Test conversation interface  
-"Navigate to http://localhost:3012/ai, click new conversation, type 'hello test', verify response"
-
-# Validate theme switching
-"Navigate to http://localhost:3012/settings, select Dark-MCP theme, confirm visual change"
-```
+**Interactive Testing Results (VERIFIED)**: 
+- ✅ **Navigation**: Successfully loads Zeus presets page with full accessibility tree
+- ✅ **Element Detection**: Identifies all UI elements with precise refs (e.g., e45, e90, e93)
+- ✅ **State Analysis**: Detects "0 presets" displayed vs 4 in API (frontend-backend disconnect)
+- ✅ **Real-time Interaction**: Can click, type, and interact with live UI elements
+- ✅ **Form Validation**: Preset creation form pre-loaded and ready for testing
 
 **E2E Test Coverage**:
 - **Phase 1**: Navigation Flow - Route accessibility, URL validation, nav highlighting
@@ -340,9 +354,16 @@ Create file: `zeus/PLANIFICACION/ITERATIONS/SXX_debug_validation.md`
 - **Service Discovery**: Implement health check with retry logic
 - **Fallback Mechanisms**: Auto-switch to mock data on service failure
 
-### E2E Testing Issues
+### Interactive MCP Playwright Issues (UPDATED)
+- **Correct Installation**: Use `npm install -g @playwright/mcp@latest` (NOT @playwright/test)
+- **Configuration Location**: Use `.vscode/mcp.json` (NOT VS Code settings.json)
+- **Browser Installation**: `npx playwright install chrome` may require Administrator on Windows
+- **Permission Errors**: Run VS Code as Administrator if browser installation fails
+- **MCP Tools Missing**: Restart VS Code after MCP configuration changes
+- **Element References**: Use accessibility tree refs (e.g., `ref=e45`) not CSS selectors
+
+### Traditional E2E Testing Issues  
 - **Playwright Installation**: Run `npm install -g @playwright/test` and `npx playwright install`
-- **MCP Integration**: Verify MCP Playwright server configuration in VS Code settings
 - **Browser Launch Failures**: Check `PLAYWRIGHT_BROWSERS_PATH` environment variable
 - **Test Timeouts**: Increase timeout configuration in test files for slower environments
 - **Headless vs Headed**: Use `HEADED=true` for visual debugging when tests fail
@@ -370,33 +391,40 @@ Create file: `zeus/PLANIFICACION/ITERATIONS/SXX_debug_validation.md`
 
 ## E2E Testing Framework Integration
 
-### MCP Playwright Setup
-**VS Code Configuration**: Add to settings.json:
+### MCP Playwright Setup (Microsoft Official)
+**Official Documentation**: https://github.com/microsoft/playwright-mcp/blob/main/README.md  
+**Key Difference**: This is **Interactive MCP Testing** - AI controls browser in real-time via conversational commands, not traditional E2E scripting.
+
+**VS Code MCP Configuration**: Add to `.vscode/mcp.json` (NOT settings.json):
 ```json
 {
-  "mcpServers": {
+  "servers": {
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/test", "--mcp-server"],
-      "env": {
-        "PLAYWRIGHT_BROWSERS_PATH": "~/.cache/ms-playwright"
-      }
+      "args": ["@playwright/mcp@latest"],
+      "cwd": "${workspaceFolder}"
     }
   }
 }
 ```
 
-**Installation Commands**:
+**Installation Commands** (VERIFIED WORKING):
 ```bash
-# Install MCP Playwright globally
-npm install -g @playwright/test
+# 1. Install Microsoft's official MCP Playwright server
+npm install -g @playwright/mcp@latest
 
-# Initialize in Zeus project
-cd zeus && npx playwright install
+# 2. Install Playwright browsers (CRITICAL: may require Administrator privileges on Windows)  
+npx playwright install chrome
 
-# Verify E2E infrastructure
-cd zeus/test/e2e && npm install && ls -la
+# 3. Verify installation
+npx @playwright/mcp@latest --help
 ```
+
+**Windows-Specific Requirements**:
+- ⚠️ Browser installation may require **Administrator privileges**
+- If `npx playwright install chrome` fails, run VS Code as Administrator
+- Expected Chrome path: `C:\Program Files\Google\Chrome\Application\chrome.exe`
+- Success indicator: `ProductVersion   FileVersion      FileName` displayed after installation
 
 ### E2E Execution Integration
 The E2E testing seamlessly integrates with the existing debug protocol:
@@ -409,3 +437,57 @@ The E2E testing seamlessly integrates with the existing debug protocol:
 5. **🆕 E2E User Workflow Testing** (automated browser testing)
 6. **Integration Testing** (service chain validation)
 7. **Enhanced Validation Report** (manual + automated results)
+
+### 6.9 Sprint Playbook — Interactive MCP Preset Creation
+
+This addendum defines the exact protocol for Sprint 6.9 validation using VS Code MCP browser automation, without cURL or bespoke E2E scripts. The goal is to create a new preset through the real UI and verify persistence.
+
+#### Prerequisites
+- Zeus running at http://localhost:3012
+- SLMo42 proxy at http://localhost:4001
+- MCPGaia server at http://localhost:3003
+- VS Code MCP Playwright server active
+
+#### Command Pattern (illustrative)
+```
+openPage("http://localhost:3012/editor")
+waitForElement("#mcp-catalog .tool-item")
+clickElement("#mcp-catalog .tool-item:first-child")
+// Optional: open details panel and capture selection state
+waitForElement("#tool-details")
+screenshot("editor_selection.png")
+
+openPage("http://localhost:3012/presets")
+waitForElement("button[data-action=\"create-preset\"]")
+clickElement("button[data-action=\"create-preset\"]")
+fillInput("#preset-name", "MCP Test Preset 6.9")
+fillInput("#preset-description", "Created via MCP interactive validation")
+// Map selected tool into preset if UI exposes a picker
+clickElement("#add-selected-tool")
+clickButton("#save-preset")
+waitForElement(".toast-success, .notice-success")
+verifyText(".preset-list", "MCP Test Preset 6.9")
+screenshot("preset_created.png")
+
+// Persistence check
+reloadPage()
+waitForElement(".preset-list")
+verifyText(".preset-list", "MCP Test Preset 6.9")
+```
+
+Note: Selectors are indicative; adapt to actual IDs/classes in `zeus/views/preset_view.js` and client markup.
+
+#### Success Criteria (Quality Gate)
+- New preset appears in list immediately after save (DOM assertion)
+- Preset persists after page reload (persistence assertion)
+- No console errors during workflow (monitor via MCP if available)
+- Flow executes within 30s total and individual waits < 5s
+
+#### Failure Handling
+- If any step fails, capture screenshot and current HTML
+- Verify external services via health endpoints; if unavailable use mock catalog
+- Log the failing selector/action and attempt with a 2nd wait strategy (visibility + attached)
+
+#### Reporting
+- Record steps, timings, and outcomes in `S06.9_debug_validation.md`
+- Attach screenshots: `editor_selection.png`, `preset_created.png`

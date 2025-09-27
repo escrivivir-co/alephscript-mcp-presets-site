@@ -57,7 +57,9 @@ SPRINT_NUMBER: 05
 
 CONTEXT_FILE: #file:prompt8_handson.md
 ```
+## Método 5: Playwright
 
+El debug-agent sabe tanto e2e (que lanza las suites) como "Interactive MCP" que entonces puedes pedirle que navegue y revise cosas.
 
 Proyecto Zeus: La Gran Refactorización de Asterion
 ==================================================
