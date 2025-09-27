@@ -30,9 +30,9 @@ GitHub Copilot: Como **Debug Agent** en VS Code, necesito aclarar mis capacidade
 
 Según el protocolo de debug que veo en el contexto, **SÍ necesitamos MCP Playwright** para la validación completa:
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/.github/instructions/debug-agent.instructions.md#102-102), lines 102 to 130
+Read (mcp-presets-site/.github/instructions/debug-agent.instructions.md#102-102), lines 102 to 130
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/.github/instructions/debug-agent.instructions.md#150-150), lines 150 to 200
+Read (mcp-presets-site/.github/instructions/debug-agent.instructions.md#150-150), lines 150 to 200
 
 Perfecto, el protocolo es claro. Según las instrucciones del Debug Agent:
 
@@ -84,7 +84,7 @@ HEADED=true node run-e2e-tests.js
 
 ## 📋 **Setup MCP Playwright (Siguiendo tu enlace)**
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/.github/instructions/debug-agent.instructions.md#30-30), lines 30 to 50
+Read (mcp-presets-site/.github/instructions/debug-agent.instructions.md#30-30), lines 30 to 50
 
 Basándome en el enlace que compartiste y las instrucciones, aquí está la configuración necesaria:
 
@@ -182,9 +182,9 @@ GitHub Copilot: # 🕸️ **Activación: Integration Agent "Indra" - Sprint 6.8*
 
 Como **Debug Agent**, procedo a **transferir autoridad** al **Integration Agent Indra** para coordinar el Sprint 6.8 con enfoque en calidad y documentación previa.
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/.github/chatmodes/integration-agent-indra.chatmode.md#1-1), lines 1 to 50
+Read (mcp-presets-site/.github/chatmodes/integration-agent-indra.chatmode.md#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/.github/chatmodes)
+Read (mcp-presets-site/.github/chatmodes)
 
 Created 4 todos
 
@@ -214,9 +214,9 @@ Greetings. I am **Indra**, the Integration Agent, named after the Net of Indra t
 
 ## 📋 **Sprint 6.8 Mission Analysis**
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/prompt_handsoff.md#1-1), lines 1 to 50
+Read (mcp-presets-site/prompt_handsoff.md#1-1), lines 1 to 50
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/prompt_handsoff.md#150-150), lines 150 to 350
+Read (mcp-presets-site/prompt_handsoff.md#150-150), lines 150 to 350
 
 ## 🔍 **Sprint 6.6 Legacy Assessment**
 
@@ -240,7 +240,7 @@ The handoff document shows **residual issues** despite Sprint 6.6 completion:
 
 ## 📝 **SPRINT 6.8 DOCUMENTATION INITIALIZATION**
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/SPRINT_6.8_INTEGRATION_PLANNING.md)
+Created (mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/SPRINT_6.8_INTEGRATION_PLANNING.md)
 
 Starting (2/4) *Coordinate Agent Handoffs for MCP Playwright Setup*
 
@@ -248,7 +248,7 @@ Starting (2/4) *Coordinate Agent Handoffs for MCP Playwright Setup*
 
 Searched codebase for "MCP Playwright integration setup configuration VS Code browser automation testing", 22 results
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/SPRINT_6.8_MCP_PLAYWRIGHT_TECHNICAL_ANALYSIS.md)
+Created (mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/SPRINT_6.8_MCP_PLAYWRIGHT_TECHNICAL_ANALYSIS.md)
 
 ## 🛠️ **VS Code MCP Configuration Verification**
 
@@ -446,11 +446,11 @@ Starting (4/4) *Validate Integration Completion*
 
 ## 📄 **E2E Test Report Analysis**
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/zeus/test/e2e)
+Read (mcp-presets-site/zeus/test/e2e)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/zeus/test/e2e/reports)
+Read (mcp-presets-site/zeus/test/e2e/reports)
 
-Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/zeus/test/e2e/reports/e2e_test_report_2025-09-27_21_52_07.md#1-1), lines 1 to 100
+Read (mcp-presets-site/zeus/test/e2e/reports/e2e_test_report_2025-09-27_21_52_07.md#1-1), lines 1 to 100
 
 # 🎯 **SPRINT 6.8 - MISSION ACCOMPLISHED**
 
@@ -572,7 +572,7 @@ Read [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/zeus/test/e2e/
 
 ## 🎯 **Sprint 6.8 COMPLETION CERTIFICATION**
 
-Created [](file:///c%3A/Users/oracl/Documents/REPOS/mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/SPRINT_6.8_COMPLETION_REPORT.md)
+Created (mcp-presets-site/zeus/PLANIFICACION/VIBECODING/ITERATIONS/SPRINT_6.8_COMPLETION_REPORT.md)
 
 Completed (4/4) *Validate Integration Completion*
 
