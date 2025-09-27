@@ -1,0 +1,34 @@
+{
+  "name": "zeus-e2e-tests", 
+  "version": "1.0.0",
+  "description": "End-to-End testing suite for Zeus MCP Interface using Playwright",
+  "main": "run-e2e-tests.js",
+  "scripts": {
+    "test": "node run-e2e-tests.js",
+    "test:e2e": "node run-e2e-tests.js", 
+    "test:headed": "HEADED=true node run-e2e-tests.js",
+    "test:e2e:headed": "HEADED=true node run-e2e-tests.js",
+    "test:debug": "HEADED=true DEBUG=true node run-e2e-tests.js",
+    "install:playwright": "npx playwright install",
+    "setup": "npm install && npm run install:playwright",
+    "validate": "node run-e2e-tests.js",
+    "debug-protocol": "echo '🔍 Running Enhanced Debug Protocol with E2E...' && node run-e2e-tests.js"
+  },
+  "dependencies": {
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0"
+  },
+  "keywords": ["e2e", "testing", "playwright", "mcp", "zeus", "debug-agent", "validation"],
+  "author": "Debug & Validation Agent",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git", 
+    "url": "https://github.com/user/mcp-presets-site"
+  }
+}

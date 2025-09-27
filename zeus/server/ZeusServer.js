@@ -147,7 +147,38 @@ app.get("/presets", async (req, res) => {
 app.get("/editor", async (req, res) => {
   try {
     const editorView = require("../views/editor_view");
-    const htmlResponse = editorView.editorView();
+    const MCPHandler = require("../backend/mcpHandler");
+    const mcpHandler = new MCPHandler();
+    
+    // Fetch MCP servers and their data
+    const servers = await mcpHandler.getAllServers();
+    const selectedServer = servers.length > 0 ? servers[0] : null;
+    let serverContent = {};
+    
+    if (selectedServer) {
+      // Get the full catalog data for the first server
+      const catalog = await mcpHandler.discoverServers();
+      const serverData = catalog.find(s => s.serverName === selectedServer.id);
+      
+      if (serverData) {
+        serverContent = {
+          tools: serverData.tools || [],
+          resources: serverData.resources || [],
+          prompts: serverData.prompts || []
+        };
+      }
+    }
+    
+    const editorData = {
+      servers,
+      selectedServer,
+      serverContent,
+      selectedItems: [],
+      isLoading: false,
+      error: null
+    };
+    
+    const htmlResponse = editorView.editorView(editorData);
     
     res.setHeader('Content-Type', 'text/html');
     res.send(htmlResponse.outerHTML);

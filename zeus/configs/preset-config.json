@@ -1,6 +1,22 @@
 {
-  "presets": [],
-  "categories": ["General", "Development", "Analysis", "Creative"],
+  "presets": [
+    {
+      "id": "1759002868805",
+      "name": "Test Preset",
+      "description": "Updated description for test preset",
+      "category": "Development",
+      "prompt": "This is a test prompt for development tasks",
+      "parameters": {},
+      "createdAt": "2025-09-27T19:54:28.805Z",
+      "updatedAt": "2025-09-27T19:54:28.811Z"
+    }
+  ],
+  "categories": [
+    "General",
+    "Development",
+    "Analysis",
+    "Creative"
+  ],
   "defaultPreset": null,
-  "lastUpdated": null
+  "lastUpdated": "2025-09-27T19:54:28.811Z"
 }
