@@ -40,62 +40,81 @@ class AIHandler {
 
   async sendMessage(message, conversationId = null) {
     try {
-      // Placeholder for AI API integration
-      // In a real implementation, this would call the AI service
-      
-      const response = {
-        id: Date.now().toString(),
-        message: "AI response placeholder - not implemented yet",
-        timestamp: new Date().toISOString(),
-        model: "placeholder",
-        tokens: 0
-      };
-
-      // Create or update conversation
-      let conversation = this.conversations.find(c => c.id === conversationId);
-      
-      if (!conversation) {
-        conversation = {
-          id: Date.now().toString(),
-          title: message.substring(0, 50) + '...',
-          messages: [],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-        this.conversations.push(conversation);
-      }
-
-      // Add user message
-      conversation.messages.push({
-        id: Date.now().toString() + '_user',
-        role: 'user',
-        content: message,
-        timestamp: new Date().toISOString()
-      });
-
-      // Add AI response
-      conversation.messages.push({
-        id: response.id,
-        role: 'assistant',
-        content: response.message,
-        timestamp: response.timestamp,
-        metadata: {
-          model: response.model,
-          tokens: response.tokens
-        }
-      });
-
-      conversation.updatedAt = new Date().toISOString();
-      this.saveConversations();
-
-      return {
-        conversation: conversation,
-        response: response
-      };
-
+      // Legacy method - now calls the new SLMo42 integration
+      const options = { conversationId };
+      return await this.sendMessageToSLMo42(message, options);
     } catch (error) {
       console.error('Error sending message:', error);
       throw error;
+    }
+  }
+
+  async sendMessageToSLMo42(message, options = {}) {
+    try {
+      const { conversationId, presetName, usePresetTools } = options;
+      
+      // Build MCP payload for SLMo42
+      const payload = {
+        input: message
+      };
+      
+      // Add MCP configuration if preset is specified
+      if (presetName) {
+        payload.node_llama_cpp_MCP_functions = true;
+        payload.presetName = presetName;
+        payload.mcpServerUrl = this.config.mcp?.servers?.[0]?.["devops-mcp-server"]?.url || "http://localhost:3003";
+        
+        if (usePresetTools) {
+          payload.usePresetTools = true;
+        }
+      }
+      
+      console.log('Sending request to SLMo42:', {
+        endpoint: this.config.ai.endpoint + '/ai',
+        payload: payload
+      });
+      
+      // Send request to SLMo42 with timeout
+      const response = await axios.post(this.config.ai.endpoint + '/ai', payload, {
+        timeout: this.config.mcp?.timeout || 30000,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.data && response.data.answer) {
+        console.log('SLMo42 response received:', {
+          model: response.data.model || 'SLMo42',
+          hadFunctionCalls: response.data.hadFunctionCalls || false,
+          answerLength: response.data.answer.length
+        });
+        
+        return {
+          answer: response.data.answer,
+          model: response.data.model || 'SLMo42',
+          hadFunctionCalls: response.data.hadFunctionCalls || false,
+          timestamp: new Date().toISOString(),
+          presetUsed: presetName || null
+        };
+      } else {
+        throw new Error('Invalid response format from SLMo42');
+      }
+      
+    } catch (error) {
+      // Enhanced error handling for different failure types
+      if (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND') {
+        console.error('SLMo42 service unavailable:', error.message);
+        throw new Error('SLMo42 AI service is currently unavailable. Please ensure the service is running on ' + this.config.ai.endpoint);
+      } else if (error.code === 'ECONNABORTED') {
+        console.error('SLMo42 request timeout:', error.message);
+        throw new Error('AI processing timed out. Please try again with a shorter message.');
+      } else if (error.response) {
+        console.error('SLMo42 API error:', error.response.status, error.response.data);
+        throw new Error(`AI service error: ${error.response.status} - ${error.response.data?.error || 'Unknown error'}`);
+      } else {
+        console.error('Unexpected error calling SLMo42:', error.message);
+        throw new Error('Unexpected error during AI processing: ' + error.message);
+      }
     }
   }
 

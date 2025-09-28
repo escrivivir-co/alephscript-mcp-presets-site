@@ -286,12 +286,41 @@ const typingIndicator = () => {
 };
 
 /**
- * Chat input area with message form
+ * Chat input area with message form and MCP preset selector
  */
 const chatInput = (activeConversation) => {
   const isDisabled = false; // Always enable input - let JS handle conversation creation
   
   return div({ class: 'chat-input-area' },
+    // MCP Preset Selector Section
+    div({ class: 'mcp-preset-section' },
+      div({ class: 'preset-selector-container' },
+        select({
+          id: 'mcp-preset-selector',
+          class: 'preset-selector',
+          'data-placeholder': 'Select MCP Preset (Optional)'
+        },
+          option({ value: '', selected: true }, 'No MCP Preset'),
+          option({ value: 'loading', disabled: true }, 'Loading presets...')
+        ),
+        
+        div({ class: 'preset-info' },
+          span({ class: 'preset-status', id: 'preset-status' }, 'Ready'),
+          button({
+            type: 'button',
+            class: 'btn-icon preset-help',
+            id: 'preset-help-btn',
+            title: 'Learn about MCP presets'
+          }, '❓')
+        )
+      ),
+      
+      div({ class: 'mcp-tools-indicator', id: 'mcp-tools-indicator', style: 'display: none;' },
+        span({ class: 'mcp-icon' }, '🔧'),
+        span({ class: 'mcp-text' }, 'MCP Tools Active')
+      )
+    ),
+    
     form({ 
       class: 'chat-form',
       id: 'chat-form'
@@ -311,22 +340,30 @@ const chatInput = (activeConversation) => {
           button({
             type: 'submit',
             class: `btn btn-primary send-button ${isDisabled ? 'disabled' : ''}`,
-            disabled: isDisabled
-          }, 'Send'),
+            disabled: isDisabled,
+            id: 'send-button'
+          }, 
+            span({ class: 'send-text' }, 'Send'),
+            span({ class: 'send-loading', style: 'display: none;' }, 'Processing...')
+          ),
           
           button({
             type: 'button',
-            class: 'btn btn-secondary attach-button',
+            class: 'btn btn-secondary preset-quick-select',
             disabled: isDisabled,
-            title: 'Attach preset context'
-          }, '📎')
+            title: 'Quick select from recent presets',
+            id: 'preset-quick-btn'
+          }, '�')
         )
       )
     ),
     
     div({ class: 'input-helpers' },
       span({ class: 'shortcut-hint' }, 'Press Ctrl+Enter to send'),
-      div({ class: 'character-count' }, '0/4000')
+      div({ class: 'input-status' },
+        span({ class: 'character-count' }, '0/4000'),
+        span({ class: 'ai-status', id: 'ai-status', style: 'display: none;' }, 'AI Processing...')
+      )
     )
   );
 };

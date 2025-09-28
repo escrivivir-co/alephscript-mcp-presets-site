@@ -20,6 +20,7 @@ class AIChat {
   async init() {
     try {
       await this.loadInitialData();
+      await this.loadMCPPresets();
       this.setupWebSocket();
       this.bindEvents();
       this.updateUI();
@@ -290,7 +291,7 @@ class AIChat {
     }
   }
 
-  // Send message
+  // Send message with MCP preset support
   async sendMessage() {
     const messageInput = document.getElementById('message-input');
     if (!messageInput) return;
@@ -308,31 +309,62 @@ class AIChat {
         }
       }
 
-      // Clear input and disable form
+      // Get MCP preset selection
+      const presetSelector = document.getElementById('mcp-preset-selector');
+      const selectedPreset = presetSelector?.value || null;
+      const usePresetTools = selectedPreset && selectedPreset !== '';
+
+      // Clear input and show processing state
       messageInput.value = '';
       this.updateCharacterCount();
       this.setFormLoading(true);
+      this.showAIProcessing(usePresetTools);
+
+      // Build request payload with MCP support
+      const payload = {
+        message: message,
+        role: 'user'
+      };
+
+      // Add MCP preset parameters if selected
+      if (selectedPreset && selectedPreset !== '') {
+        payload.presetName = selectedPreset;
+        payload.usePresetTools = true;
+      }
 
       // Send via WebSocket if connected, otherwise via HTTP
       if (this.socket && this.isConnected) {
         this.socket.emit('send_message', {
           conversationId: this.currentConversation.id,
-          message: message,
-          role: 'user'
+          ...payload
         });
       } else {
-        // Fallback to HTTP API
+        // HTTP API with MCP support
         const response = await fetch(`/api/ai/conversations/${this.currentConversation.id}/messages`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ message, role: 'user' })
+          body: JSON.stringify(payload)
         });
 
         const data = await response.json();
+        
         if (data.success) {
-          this.addMessageToUI(data.message);
+          // Handle both user message and AI response
+          if (data.userMessage) {
+            this.addMessageToUI(data.userMessage);
+          }
+          
+          if (data.aiResponse) {
+            // Add AI response with metadata
+            this.addMessageToUI(data.aiResponse);
+            this.showAIProcessingComplete(data.aiResponse.metadata);
+          } else if (!data.aiProcessed) {
+            // Show warning if AI processing failed
+            this.showAIError(data.error || 'AI service temporarily unavailable');
+          }
+          
           this.updateConversationInList();
         } else {
           this.showError(data.error || 'Failed to send message');
@@ -344,6 +376,7 @@ class AIChat {
       messageInput.value = message; // Restore message on error
     } finally {
       this.setFormLoading(false);
+      this.hideAIProcessing();
     }
   }
 
@@ -646,7 +679,15 @@ class AIChat {
   }
 
   usePreset(presetId) {
-    // Implement preset usage
+    // Implement preset usage - set in selector
+    const selector = document.getElementById('mcp-preset-selector');
+    if (selector) {
+      const option = selector.querySelector(`option[data-preset-id="${presetId}"]`);
+      if (option) {
+        selector.value = option.value;
+        this.handlePresetSelection(option.value);
+      }
+    }
     console.log('Use preset:', presetId);
   }
 
@@ -663,6 +704,132 @@ class AIChat {
   editConversationTitle(conversationId) {
     // Implement title editing
     console.log('Edit conversation title:', conversationId);
+  }
+
+  // MCP Preset Management
+  async loadMCPPresets() {
+    try {
+      const response = await fetch('/api/presets?limit=50');
+      const data = await response.json();
+      
+      if (data.success && data.presets) {
+        this.populatePresetSelector(data.presets);
+      } else {
+        console.warn('Failed to load MCP presets:', data.error);
+      }
+    } catch (error) {
+      console.error('Error loading MCP presets:', error);
+    }
+  }
+
+  populatePresetSelector(presets) {
+    const selector = document.getElementById('mcp-preset-selector');
+    if (!selector) return;
+
+    // Clear existing options (except default)
+    selector.innerHTML = '<option value="">No MCP Preset</option>';
+
+    // Add preset options
+    presets.forEach(preset => {
+      const option = document.createElement('option');
+      option.value = preset.name;
+      option.textContent = `${preset.name} - ${preset.description.substring(0, 50)}${preset.description.length > 50 ? '...' : ''}`;
+      option.dataset.presetId = preset.id;
+      selector.appendChild(option);
+    });
+
+    // Setup preset change handler
+    selector.addEventListener('change', (e) => {
+      this.handlePresetSelection(e.target.value);
+    });
+  }
+
+  handlePresetSelection(presetName) {
+    const indicator = document.getElementById('mcp-tools-indicator');
+    const status = document.getElementById('preset-status');
+    
+    if (presetName && presetName !== '') {
+      // Show MCP tools indicator
+      if (indicator) indicator.style.display = 'flex';
+      if (status) status.textContent = `MCP: ${presetName}`;
+    } else {
+      // Hide MCP tools indicator
+      if (indicator) indicator.style.display = 'none';
+      if (status) status.textContent = 'Ready';
+    }
+  }
+
+  // AI Processing States
+  showAIProcessing(withMCP = false) {
+    const status = document.getElementById('ai-status');
+    const button = document.getElementById('send-button');
+    const sendText = button?.querySelector('.send-text');
+    const sendLoading = button?.querySelector('.send-loading');
+    
+    if (status) {
+      status.textContent = withMCP ? 'AI Processing with MCP Tools...' : 'AI Processing...';
+      status.style.display = 'inline';
+    }
+    
+    if (sendText) sendText.style.display = 'none';
+    if (sendLoading) sendLoading.style.display = 'inline';
+  }
+
+  hideAIProcessing() {
+    const status = document.getElementById('ai-status');
+    const button = document.getElementById('send-button');
+    const sendText = button?.querySelector('.send-text');
+    const sendLoading = button?.querySelector('.send-loading');
+    
+    if (status) status.style.display = 'none';
+    if (sendText) sendText.style.display = 'inline';
+    if (sendLoading) sendLoading.style.display = 'none';
+  }
+
+  showAIProcessingComplete(metadata = {}) {
+    if (metadata.hadFunctionCalls) {
+      this.showNotification('AI response generated using MCP tools', 'success');
+    }
+    
+    if (metadata.presetUsed) {
+      console.log(`AI response used preset: ${metadata.presetUsed}`);
+    }
+  }
+
+  showAIError(errorMessage) {
+    this.showNotification(errorMessage, 'warning');
+    
+    // Update status to show fallback mode
+    const status = document.getElementById('preset-status');
+    if (status) {
+      status.textContent = 'AI Service Unavailable';
+      status.className = 'preset-status error';
+      
+      // Reset after 5 seconds
+      setTimeout(() => {
+        status.textContent = 'Ready';
+        status.className = 'preset-status';
+      }, 5000);
+    }
+  }
+
+  showNotification(message, type = 'info') {
+    // Create notification element if it doesn't exist
+    let notification = document.getElementById('chat-notification');
+    if (!notification) {
+      notification = document.createElement('div');
+      notification.id = 'chat-notification';
+      notification.className = 'chat-notification';
+      document.querySelector('.chat-interface')?.appendChild(notification);
+    }
+
+    notification.textContent = message;
+    notification.className = `chat-notification ${type} show`;
+
+    // Auto-hide after 4 seconds
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 4000);
   }
 }
 

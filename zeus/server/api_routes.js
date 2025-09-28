@@ -151,12 +151,12 @@ router.get('/ai/conversations/:id', async (req, res) => {
 });
 
 /**
- * POST /api/ai/conversations/:id/messages - Add message to conversation
+ * POST /api/ai/conversations/:id/messages - Add message to conversation and process with SLMo42
  */
 router.post('/ai/conversations/:id/messages', async (req, res) => {
   try {
     const { id } = req.params;
-    const { message, role = 'user' } = req.body;
+    const { message, role = 'user', presetName, usePresetTools } = req.body;
     
     // Validation
     if (!message || message.trim().length === 0) {
@@ -181,31 +181,86 @@ router.post('/ai/conversations/:id/messages', async (req, res) => {
       });
     }
     
-    // Add message to conversation
-    const newMessage = {
+    // Add user message to conversation first
+    const userMessage = {
       id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
-      role: role,
+      role: 'user',
       content: message.trim(),
       timestamp: new Date().toISOString()
     };
     
-    conversation.messages.push(newMessage);
+    conversation.messages.push(userMessage);
     conversation.updatedAt = new Date().toISOString();
     
-    const success = aiHandler.saveConversations();
+    // Save user message immediately
+    aiHandler.saveConversations();
     
-    if (success) {
+    // For user messages, also process with SLMo42 AI
+    if (role === 'user') {
+      try {
+        const aiResponse = await aiHandler.sendMessageToSLMo42(message.trim(), {
+          conversationId: id,
+          presetName: presetName,
+          usePresetTools: usePresetTools
+        });
+        
+        if (aiResponse && aiResponse.answer) {
+          // Add AI response to conversation
+          const assistantMessage = {
+            id: Date.now().toString() + '_ai_' + Math.random().toString(36).substr(2, 9),
+            role: 'assistant',
+            content: aiResponse.answer,
+            timestamp: new Date().toISOString(),
+            metadata: {
+              model: aiResponse.model || 'SLMo42',
+              hadFunctionCalls: aiResponse.hadFunctionCalls || false,
+              presetUsed: presetName || null
+            }
+          };
+          
+          conversation.messages.push(assistantMessage);
+          conversation.updatedAt = new Date().toISOString();
+          aiHandler.saveConversations();
+          
+          // Return both user message and AI response
+          res.status(201).json({
+            success: true,
+            userMessage: userMessage,
+            aiResponse: assistantMessage,
+            conversationId: id,
+            aiProcessed: true
+          });
+        } else {
+          // AI processing failed, but user message was saved
+          res.status(201).json({
+            success: true,
+            message: userMessage,
+            conversationId: id,
+            aiProcessed: false,
+            warning: 'Message saved but AI processing failed'
+          });
+        }
+      } catch (aiError) {
+        console.error('SLMo42 AI processing error:', aiError);
+        // Return success for user message, but indicate AI processing failed
+        res.status(201).json({
+          success: true,
+          message: userMessage,
+          conversationId: id,
+          aiProcessed: false,
+          error: 'AI service temporarily unavailable'
+        });
+      }
+    } else {
+      // For assistant messages, just save locally
       res.status(201).json({
         success: true,
-        message: newMessage,
-        conversationId: id
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to save message'
+        message: userMessage,
+        conversationId: id,
+        aiProcessed: false
       });
     }
+    
   } catch (error) {
     console.error('Error adding message:', error);
     res.status(500).json({

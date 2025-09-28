@@ -646,3 +646,226 @@
 .btn-secondary:hover {
   background-color: var(--background-hover);
 }
+
+/* MCP Preset Selector Styles */
+.mcp-preset-section {
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.preset-selector-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.preset-selector {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: calc(var(--border-radius) / 2);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-size: var(--font-size-normal);
+  transition: border-color 0.2s ease;
+}
+
+.preset-selector:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.preset-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.preset-status {
+  font-size: var(--font-size-small);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.5rem;
+  background: var(--background-tertiary);
+  border-radius: calc(var(--border-radius) / 2);
+  transition: all 0.2s ease;
+}
+
+.preset-status.error {
+  color: var(--error-color);
+  background: rgba(var(--error-color-rgb), 0.1);
+}
+
+.preset-help {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background: var(--background-tertiary);
+  color: var(--text-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.preset-help:hover {
+  background: var(--primary-color);
+  color: var(--primary-text);
+}
+
+.mcp-tools-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(var(--primary-color-rgb), 0.1);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+  border-radius: calc(var(--border-radius) / 2);
+  font-size: var(--font-size-small);
+  color: var(--primary-color);
+  animation: mcp-pulse 2s infinite;
+}
+
+.mcp-icon {
+  font-size: 1rem;
+}
+
+.mcp-text {
+  font-weight: 500;
+}
+
+@keyframes mcp-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Enhanced Chat Input with MCP Support */
+.chat-input-area .chat-form {
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.send-button {
+  position: relative;
+  min-width: 80px;
+}
+
+.send-loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.input-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ai-status {
+  color: var(--primary-color);
+  font-size: var(--font-size-small);
+  font-weight: 500;
+  animation: ai-processing 1.5s ease-in-out infinite;
+}
+
+@keyframes ai-processing {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.preset-quick-select {
+  padding: 0.5rem;
+  min-width: 2.5rem;
+}
+
+/* Chat Notifications */
+.chat-notification {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-small);
+  font-weight: 500;
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-medium);
+  max-width: 300px;
+}
+
+.chat-notification.show {
+  transform: translateX(0);
+}
+
+.chat-notification.success {
+  background: var(--success-color);
+  color: white;
+}
+
+.chat-notification.warning {
+  background: var(--warning-color);
+  color: white;
+}
+
+.chat-notification.info {
+  background: var(--info-color);
+  color: white;
+}
+
+/* Enhanced Message Display for MCP Responses */
+.ai-message .message-content {
+  position: relative;
+}
+
+.ai-message[data-mcp-response="true"] {
+  border-left: 3px solid var(--primary-color);
+  background: rgba(var(--primary-color-rgb), 0.05);
+}
+
+.ai-message[data-mcp-response="true"]::before {
+  content: "🔧 MCP Tools Used";
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  font-size: var(--font-size-tiny);
+  color: var(--primary-color);
+  background: var(--background-primary);
+  padding: 0.125rem 0.375rem;
+  border-radius: calc(var(--border-radius) / 2);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+}
+
+/* Responsive Design for MCP Features */
+@media (max-width: 768px) {
+  .mcp-preset-section {
+    padding: 0.5rem;
+  }
+  
+  .preset-selector-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .preset-info {
+    justify-content: space-between;
+  }
+  
+  .chat-notification {
+    right: 0.5rem;
+    left: 0.5rem;
+    max-width: none;
+  }
+}
