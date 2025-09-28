@@ -6,3 +6,5 @@ diogenes
 **/package-lock.json
 zeus/test/e2e/reports
 **/ai-history.json
+.playwright-mcp/**
+.playwright-mcp/mcp-editor-status.png

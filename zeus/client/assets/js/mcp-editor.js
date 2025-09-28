@@ -33,6 +33,9 @@ class MCPEditor {
     // Server selection and management
     document.addEventListener('click', this.handleClick.bind(this));
     
+    // Form submission delegation (for dynamically created forms)
+    document.addEventListener('submit', this.handleFormSubmit.bind(this));
+    
     // Search and filtering
     const searchInput = document.getElementById('content-search');
     if (searchInput) {
@@ -42,12 +45,6 @@ class MCPEditor {
     const categoryFilter = document.getElementById('content-category-filter');
     if (categoryFilter) {
       categoryFilter.addEventListener('change', this.handleCategoryFilter.bind(this));
-    }
-    
-    // Form submission
-    const presetForm = document.getElementById('preset-creator-form');
-    if (presetForm) {
-      presetForm.addEventListener('submit', this.handlePresetCreation.bind(this));
     }
     
     // Keyboard shortcuts
@@ -129,6 +126,15 @@ class MCPEditor {
       case 'retry-servers':
         this.loadServers();
         break;
+    }
+  }
+
+  /**
+   * Handle form submission delegation
+   */
+  handleFormSubmit(event) {
+    if (event.target.id === 'preset-creator-form') {
+      this.handlePresetCreation(event);
     }
   }
 
@@ -611,12 +617,111 @@ class MCPEditor {
     const creator = document.querySelector('.preset-creator');
     if (creator) {
       creator.classList.toggle('has-selection', count > 0);
+      this.updatePresetCreatorContent();
     }
     
     // Show/hide selection actions
     document.querySelectorAll('.selection-actions').forEach(el => {
       el.style.display = count > 0 ? 'flex' : 'none';
     });
+  }
+
+  /**
+   * Update preset creator content dynamically
+   */
+  updatePresetCreatorContent() {
+    const creator = document.querySelector('.preset-creator');
+    if (!creator) return;
+
+    const count = this.selectedItems.size;
+    const selectedItemsArray = Array.from(this.selectedItems);
+
+    // Find the content area (everything after the header)
+    const header = creator.querySelector('.creator-header');
+    const existingContent = creator.querySelector('.creator-empty, .creator-form');
+    
+    if (existingContent) {
+      existingContent.remove();
+    }
+
+    let contentHTML;
+    
+    if (count > 0) {
+      // Create form HTML
+      contentHTML = `
+        <form id="preset-creator-form" class="creator-form">
+          <div class="selected-items-preview">
+            <h4>Selected Items:</h4>
+            <ul class="selected-items-list">
+              ${selectedItemsArray.slice(0, 5).map(itemId => `
+                <li class="selected-item">
+                  <span>${itemId}</span>
+                  <button class="btn-icon remove-item" 
+                          data-item-id="${itemId}" 
+                          data-action="remove-from-selection" 
+                          title="Remove from selection">✕</button>
+                </li>
+              `).join('')}
+              ${selectedItemsArray.length > 5 ? `
+                <li class="items-overflow">+${selectedItemsArray.length - 5} more items</li>
+              ` : ''}
+            </ul>
+          </div>
+          
+          <div class="form-group">
+            <label for="preset-name">Preset Name *</label>
+            <input type="text" id="preset-name" name="name" required 
+                   placeholder="Enter preset name">
+          </div>
+          
+          <div class="form-group">
+            <label for="preset-description">Description</label>
+            <textarea id="preset-description" name="description" 
+                      placeholder="Describe your preset (optional)"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="preset-category">Category</label>
+            <select id="preset-category" name="category">
+              <option value="productivity">Productivity</option>
+              <option value="development">Development</option>
+              <option value="analysis">Analysis</option>
+              <option value="automation">Automation</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" data-action="clear-selection">
+              Clear Selection
+            </button>
+            <button type="submit" class="btn-primary">
+              Create Preset
+            </button>
+          </div>
+        </form>
+      `;
+    } else {
+      // Create empty state HTML
+      contentHTML = `
+        <div class="creator-empty">
+          <div class="empty-icon">📝</div>
+          <p>Select tools, resources, or prompts to create a preset</p>
+          
+          <div class="creator-tips">
+            <h4>Tips:</h4>
+            <ul>
+              <li>Select multiple items to combine them</li>
+              <li>Mix tools, resources, and prompts</li>
+              <li>Create reusable workflows</li>
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    // Insert the new content after the header
+    header.insertAdjacentHTML('afterend', contentHTML);
   }
 
   /**

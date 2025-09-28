@@ -1,6 +1,6 @@
 ---
 description: VS Code debug startup, server probing, UI tour, E2E testing with MCP Playwright, and diogenes-compat validation for Zeus
-tools: ['codebase', 'search', 'fetch']
+tools: ['search', 'fetch', 'devops-mcp-server', 'playwright']
 model: Claude Sonnet 4
 ---
 
