@@ -10,6 +10,7 @@ const MCPHandler = require('../backend/mcpHandler');
 const aiHandler = new AIHandler();
 const presetHandler = new PresetHandler();
 const mcpHandler = new MCPHandler();
+const apiExtensions = require('./api_extensions');
 
 /**
  * API Routes for Zeus Advanced Views (Phase 5)
@@ -314,10 +315,11 @@ router.get('/presets', async (req, res) => {
     
     // Apply search filter
     if (search) {
+      const needle = String(search).toLowerCase();
       presets = presets.filter(preset => 
-        preset.name.toLowerCase().includes(search.toLowerCase()) ||
-        preset.description.toLowerCase().includes(search.toLowerCase()) ||
-        preset.tags.some(tag => tag.toLowerCase().includes(search.toLowerCase()))
+        (preset.name && String(preset.name).toLowerCase().includes(needle)) ||
+        (preset.description && String(preset.description).toLowerCase().includes(needle)) ||
+        (Array.isArray(preset.tags) && preset.tags.some(tag => String(tag).toLowerCase().includes(needle)))
       );
     }
     
@@ -387,12 +389,21 @@ router.post('/presets', async (req, res) => {
     }
     
     const preset = presetHandler.createPreset(presetData);
-    
+
+    // Attempt SLMo42 sync when MCP selection info is provided
+    const sync = await apiExtensions.syncPresetToSlmo42({
+      presetName: preset?.name,
+      serverId: presetData.serverId,
+      items: Array.isArray(presetData.items) ? presetData.items : [],
+      serverContent: req.body.serverContent
+    });
+
     if (preset) {
       res.status(201).json({
         success: true,
         preset: preset,
-        message: 'Preset created successfully'
+        message: 'Preset created successfully',
+        slmo42Sync: sync
       });
     } else {
       res.status(500).json({
@@ -448,12 +459,21 @@ router.put('/presets/:id', async (req, res) => {
     const updateData = req.body;
     
     const updatedPreset = presetHandler.updatePreset(id, updateData);
-    
+
+    // Attempt SLMo42 sync when MCP selection info is provided
+    const sync = await apiExtensions.syncPresetToSlmo42({
+      presetName: updatedPreset?.name,
+      serverId: updateData.serverId,
+      items: Array.isArray(updateData.items) ? updateData.items : [],
+      serverContent: req.body.serverContent
+    });
+
     if (updatedPreset) {
       res.json({
         success: true,
         preset: updatedPreset,
-        message: 'Preset updated successfully'
+        message: 'Preset updated successfully',
+        slmo42Sync: sync
       });
     } else {
       res.status(404).json({
@@ -592,6 +612,9 @@ router.get('/mcp/servers', async (req, res) => {
     });
   }
 });
+
+// Register aggregated content route via extensions
+apiExtensions.registerMcpContentRoute(router, mcpHandler);
 
 /**
  * GET /api/mcp/servers/:id/tools - List server tools

@@ -1,0 +1,26 @@
+{
+  "presets": [
+    {
+      "id": "1759160978617",
+      "name": "TEMP_PRESET",
+      "description": "",
+      "category": "General",
+      "prompt": "demo",
+      "parameters": {},
+      "serverId": "localhost",
+      "items": [
+        "list_prompts"
+      ],
+      "createdAt": "2025-09-29T15:49:38.617Z",
+      "updatedAt": "2025-09-29T15:49:38.617Z"
+    }
+  ],
+  "categories": [
+    "General",
+    "Development",
+    "Analysis",
+    "Creative"
+  ],
+  "defaultPreset": null,
+  "lastUpdated": "2025-09-29T15:49:38.617Z"
+}

@@ -53,6 +53,9 @@ class PresetHandler {
       category: presetData.category || 'General',
       prompt: presetData.prompt || '',
       parameters: presetData.parameters || {},
+      // MCP selection context (persist minimal, no heavy serverContent)
+      serverId: presetData.serverId || null,
+      items: Array.isArray(presetData.items) ? presetData.items : [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -71,6 +74,13 @@ class PresetHandler {
     this.presets[presetIndex] = {
       ...this.presets[presetIndex],
       ...updateData,
+      // Ensure MCP fields maintain expected types
+      serverId: updateData.hasOwnProperty('serverId')
+        ? (updateData.serverId || null)
+        : (this.presets[presetIndex].serverId || null),
+      items: updateData.hasOwnProperty('items')
+        ? (Array.isArray(updateData.items) ? updateData.items : [])
+        : (Array.isArray(this.presets[presetIndex].items) ? this.presets[presetIndex].items : []),
       updatedAt: new Date().toISOString()
     };
 
