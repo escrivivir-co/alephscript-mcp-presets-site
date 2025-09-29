@@ -162,6 +162,7 @@ Create a new sprint iteration file following this exact template structure for t
 
 ## Usage Instructions
 
+0. **Update** with your checklist index `PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md`
 1. **Copy this template** to `PLANIFICACION/VIBECODING/ITERATIONS/`
 2. **Name the file** following pattern: `sprint_[XX]_[description].md`
 3. **Fill out all sections** as work progresses

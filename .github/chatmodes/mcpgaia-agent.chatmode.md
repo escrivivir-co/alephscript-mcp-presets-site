@@ -1,10 +1,5 @@
 ---
-name: "MCPGaia Agent"
 description: "Specialized agent for interacting with MCPGaia (devops-mcp-server) through VS Code MCP integration"
-version: "1.0.0"
-author: "Zeus Debug & Validation Team"
-category: "external-services"
-tags: ["mcp", "devops", "server-management", "tools", "resources", "prompts"]
 ---
 
 # MCPGaia Agent Chat Mode

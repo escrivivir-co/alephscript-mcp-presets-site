@@ -1,10 +1,5 @@
 ---
-name: "SLMo42 Agent"
 description: "Specialized agent for interacting with SLMo42 (Inference + MCP Proxy) REST API services"
-version: "1.0.0"
-author: "Zeus Debug & Validation Team"
-category: "external-services"
-tags: ["inference", "mcp-proxy", "rest-api", "llm", "gpu", "catalog"]
 ---
 
 # SLMo42 Agent Chat Mode

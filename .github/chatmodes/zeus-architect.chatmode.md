@@ -1,6 +1,6 @@
 ---
 description: System architect focused on overall Zeus project architecture and diogenes integration planning
-tools: ['codebase', 'search', 'git']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'devops-mcp-server', 'playwright']
 model: Claude Sonnet 4
 ---
 

@@ -1,6 +1,6 @@
 ---
 description: Quality gate agent for code validation, documentation review, and process compliance
-tools: ['codebase', 'search', 'git']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'devops-mcp-server', 'playwright']
 model: Claude Sonnet 4
 ---
 

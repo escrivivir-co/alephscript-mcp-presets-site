@@ -1,6 +1,6 @@
 ---
 description: Specialized for server logic, routing, middleware, and API endpoints following diogenes patterns
-tools: ['codebase', 'search']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'devops-mcp-server']
 model: Claude Sonnet 4
 ---
 

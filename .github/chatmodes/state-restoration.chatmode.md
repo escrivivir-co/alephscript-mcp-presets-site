@@ -1,6 +1,6 @@
 ---
 description: Specialized in project state analysis and sprint validation reports restoration for Zeus migration
-tools: ['codebase', 'search', 'git']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'devops-mcp-server', 'playwright']
 model: Claude Sonnet 4
 ---
 

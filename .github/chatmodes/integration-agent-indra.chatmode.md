@@ -1,6 +1,6 @@
 ---
 description: Integration Agent for comprehensive E2E testing and component validation in Zeus MCP project
-tools: ['codebase', 'search', 'git', 'terminal', 'browser']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'devops-mcp-server', 'playwright']
 model: Claude Sonnet 4
 ---
 

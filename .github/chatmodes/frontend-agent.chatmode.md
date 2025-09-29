@@ -1,6 +1,6 @@
 ---
 description: Specialized for views, components, themes, and client-side assets using HyperAxe templates
-tools: ['codebase', 'search']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'devops-mcp-server', 'playwright']
 model: Claude Sonnet 4
 ---
 
