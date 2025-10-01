@@ -2,5 +2,7 @@
   "github.copilot.enable": { "*": true },
   "github.copilot.chat.useWorkspaceContext": true,
   "chat.promptFiles": true,
-  "chat.useAgentsMdFile": true
+  "chat.useAgentsMdFile": true,
+  "mcpSocketManager.configPath": "c:\\Users\\oracl\\Documents\\REPOS\\mcp-presets-site\\ArrakisTheater_OperaConfig.json",
+  "alephscript.configurationFile": "c:\\Users\\oracl\\Documents\\REPOS\\mcp-presets-site\\ArrakisTheater_OperaConfig.json"
 }

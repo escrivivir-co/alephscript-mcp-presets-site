@@ -13,6 +13,51 @@
       ],
       "createdAt": "2025-09-29T15:49:38.617Z",
       "updatedAt": "2025-09-29T15:49:38.617Z"
+    },
+    {
+      "id": "1759357790553",
+      "name": "S09-Debug-Test-Preset",
+      "description": "Interactive MCP testing validation preset",
+      "category": "Development",
+      "prompt": "System status check and validation protocol",
+      "parameters": {},
+      "serverId": "localhost",
+      "items": [
+        "list_prompts",
+        "get_system_info",
+        "server_status"
+      ],
+      "createdAt": "2025-10-01T22:29:50.553Z",
+      "updatedAt": "2025-10-01T22:29:50.553Z"
+    },
+    {
+      "id": "1759358579784",
+      "name": "Test Preset Con Prompt",
+      "description": "Este preset prueba que el campo prompt funciona correctamente",
+      "category": "development",
+      "prompt": "Lista todos los prompts disponibles en el servidor y muestra un resumen de sus funcionalidades.",
+      "parameters": {},
+      "serverId": null,
+      "items": [
+        "list_prompts"
+      ],
+      "createdAt": "2025-10-01T22:42:59.784Z",
+      "updatedAt": "2025-10-01T22:42:59.784Z"
+    },
+    {
+      "id": "1759359152317",
+      "name": "DevOps Status Preset",
+      "description": "Comprehensive server monitoring preset with tools to check server info and status for DevOps operations",
+      "category": "development",
+      "prompt": "Get info from my server",
+      "parameters": {},
+      "serverId": null,
+      "items": [
+        "get_server_info",
+        "get_server_status"
+      ],
+      "createdAt": "2025-10-01T22:52:32.317Z",
+      "updatedAt": "2025-10-01T22:52:32.317Z"
     }
   ],
   "categories": [
@@ -22,5 +67,5 @@
     "Creative"
   ],
   "defaultPreset": null,
-  "lastUpdated": "2025-09-29T15:49:38.617Z"
+  "lastUpdated": "2025-10-01T22:52:32.317Z"
 }
