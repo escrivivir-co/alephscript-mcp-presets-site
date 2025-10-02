@@ -1008,4 +1008,33 @@ router.get('/stats/performance', async (req, res) => {
   }
 });
 
+// ===========================================
+// CONFIG APIs - Engine Configuration
+// ===========================================
+
+/**
+ * GET /api/config/engines - Return available engines configuration
+ */
+router.get('/config/engines', (req, res) => {
+  try {
+    const { getConfig } = require('../configs/config-manager');
+    const config = getConfig();
+    const engineConfig = config.ai?.engines || {};
+    const autoSelection = config.ai?.autoSelection || {};
+    
+    res.json({
+      success: true,
+      engines: engineConfig,
+      autoSelection: autoSelection,
+      defaultEngine: config.ai?.defaultEngine || 'auto'
+    });
+  } catch (error) {
+    console.error('Error fetching engine config:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to load engine configuration'
+    });
+  }
+});
+
 module.exports = router;

@@ -14,6 +14,11 @@ class AIChat {
     this.messageQueue = [];
     this.typingTimeout = null;
     
+    // Engine selection properties
+    this.engines = null;
+    this.selectedEngine = 'auto';
+    this.autoSelection = null;
+    
     this.init();
   }
 
@@ -21,6 +26,7 @@ class AIChat {
     try {
       await this.loadInitialData();
       await this.loadMCPPresets();
+      await this.loadEngineConfig();
       this.setupWebSocket();
       this.bindEvents();
       this.updateUI();
@@ -346,6 +352,14 @@ class AIChat {
       if (selectedPreset && selectedPreset !== '') {
         payload.presetName = selectedPreset;
         payload.usePresetTools = true;
+      }
+
+      // Add engine selection (only if not auto)
+      if (this.selectedEngine && this.selectedEngine !== 'auto') {
+        payload.engineType = this.selectedEngine;
+        console.log(`🎯 User selected engine: ${this.selectedEngine}`);
+      } else {
+        console.log('🎯 Using auto engine selection');
       }
 
       // Send via WebSocket if connected, otherwise via HTTP
@@ -1011,6 +1025,93 @@ class AIChat {
 
     // Restore previously selected preset from localStorage
     this.restorePresetSelection();
+  }
+
+  // Engine Configuration Management
+  async loadEngineConfig() {
+    try {
+      const response = await fetch('/api/config/engines');
+      const data = await response.json();
+      if (data.success) {
+        this.engines = data.engines;
+        this.autoSelection = data.autoSelection;
+        this.setupEngineSelector();
+        console.log('Engine configuration loaded:', Object.keys(this.engines));
+      }
+    } catch (error) {
+      console.warn('Could not load engine config, using defaults:', error);
+      // Fallback static configuration
+      this.engines = {
+        "node_llama_cpp_functions": {
+          "name": "Production",
+          "emoji": "⚡",
+          "description": "High performance, optimized"
+        },
+        "llama_functions": {
+          "name": "Development",
+          "emoji": "🔍", 
+          "description": "Enhanced debugging"
+        },
+        "node_llama_cpp_MCP_functions": {
+          "name": "MCP Native",
+          "emoji": "📡",
+          "description": "Native MCP + presets"
+        },
+        "llama_MCP_functions": {
+          "name": "MCP Hybrid",
+          "emoji": "🔀",
+          "description": "Manual MCP implementation"
+        }
+      };
+      this.autoSelection = {
+        "withPreset": "node_llama_cpp_MCP_functions",
+        "withoutPreset": "node_llama_cpp_functions"
+      };
+      this.setupEngineSelector();
+    }
+  }
+
+  setupEngineSelector() {
+    const selector = document.getElementById('engine-selector');
+    if (!selector || !this.engines) return;
+
+    // Clear and populate options
+    selector.innerHTML = '<option value="auto">🎯 Auto (Smart Selection)</option>';
+    
+    Object.entries(this.engines).forEach(([id, engine]) => {
+      const option = document.createElement('option');
+      option.value = id;
+      option.textContent = `${engine.emoji} ${engine.name}`;
+      option.title = engine.description;
+      selector.appendChild(option);
+    });
+
+    // Bind events
+    selector.addEventListener('change', (e) => {
+      this.handleEngineSelection(e.target.value);
+    });
+
+    // Set initial selection
+    this.handleEngineSelection('auto');
+  }
+
+  handleEngineSelection(engineType) {
+    this.selectedEngine = engineType;
+    const infoDiv = document.getElementById('engine-info');
+    if (!infoDiv) return;
+
+    let infoText = '';
+    if (engineType === 'auto') {
+      infoText = 'Automatically selects optimal engine based on context (presets, debug mode)';
+    } else {
+      const engine = this.engines[engineType];
+      if (engine) {
+        infoText = `${engine.description} - Cost: ${engine.cost || 'Unknown'}, Speed: ${engine.speed || 'Unknown'}`;
+      }
+    }
+    
+    infoDiv.innerHTML = `<span class="text-muted">${infoText}</span>`;
+    console.log(`🎯 Engine selected: ${engineType}`);
   }
 
   restorePresetSelection() {

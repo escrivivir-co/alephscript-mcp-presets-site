@@ -326,6 +326,26 @@ const chatInput = (activeConversation) => {
         span({ class: 'mcp-text' }, 'MCP Tools Active')
       )
     ),
+
+    // Function Engine Selector Section
+    div({ class: 'engine-selector-section' },
+      div({ class: 'engine-selector-container' },
+        div({ class: 'form-group' },
+          select({
+            id: 'engine-selector',
+            class: 'engine-selector',
+            'data-placeholder': 'Select Function Engine'
+          },
+            option({ value: 'auto', selected: true }, '🎯 Auto (Smart Selection)'),
+            option({ value: 'loading', disabled: true }, 'Loading engines...')
+          ),
+          
+          div({ class: 'engine-info', id: 'engine-info' },
+            span({ class: 'text-muted' }, 'Automatically selects optimal engine based on context')
+          )
+        )
+      )
+    ),
     
     form({ 
       class: 'chat-form',

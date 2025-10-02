@@ -58,9 +58,18 @@ class AIHandler {
         input: message
       };
       
-      // Add MCP configuration if preset is specified
-      if (presetName) {
-        payload.node_llama_cpp_MCP_functions = true;
+      // Smart engine selection based on context
+      const engineType = this.selectOptimalEngine({
+        hasPreset: !!presetName,
+        isDebugMode: this.config.debug || false,
+        userPreference: this.config.ai?.enginePreference || 'auto'
+      });
+      
+      // Apply engine configuration
+      await this.applyEngineConfiguration(payload, engineType, presetName);
+      
+      // Add MCP configuration if preset is specified (for MCP engines)
+      if (presetName && (engineType.includes('MCP') || engineType === 'auto')) {
         payload.presetName = presetName;
         payload.mcpServerUrl = this.config.mcp?.servers?.[0]?.["devops-mcp-server"]?.url || "http://localhost:3003";
         
@@ -174,6 +183,69 @@ class AIHandler {
     } catch (error) {
       console.error('Error creating conversation:', error);
       return null;
+    }
+  }
+
+  /**
+   * Smart engine selection based on context
+   * @param {Object} context - Context for engine selection
+   * @returns {string} - Selected engine type
+   */
+  selectOptimalEngine(context) {
+    const { hasPreset, isDebugMode, userPreference } = context;
+    
+    // User override takes precedence
+    if (userPreference && userPreference !== 'auto') {
+      console.log(`🎯 Engine selection: User preference '${userPreference}'`);
+      return userPreference;
+    }
+    
+    // Smart selection based on context
+    if (isDebugMode) {
+      console.log('🐛 Engine selection: Debug mode - using enhanced debugging engine');
+      return 'llama_functions';
+    }
+    
+    if (hasPreset) {
+      console.log('📋 Engine selection: Preset detected - using native MCP engine');
+      return 'node_llama_cpp_MCP_functions';
+    }
+    
+    console.log('⚡ Engine selection: Basic query - using production engine');
+    return 'node_llama_cpp_functions';
+  }
+
+  /**
+   * Apply engine-specific configuration to payload
+   * @param {Object} payload - Request payload to modify
+   * @param {string} engineType - Selected engine type
+   * @param {string} presetName - Optional preset name
+   */
+  async applyEngineConfiguration(payload, engineType, presetName) {
+    switch(engineType) {
+      case 'llama_functions':
+        payload.llama_functions = true;
+        payload.functionSets = ["fruits", "system"];
+        console.log('🔧 Applied llama_functions configuration with enhanced debugging');
+        break;
+        
+      case 'node_llama_cpp_MCP_functions':
+        payload.node_llama_cpp_MCP_functions = true;
+        console.log('📡 Applied node_llama_cpp_MCP_functions configuration for native MCP support');
+        break;
+        
+      case 'llama_MCP_functions':
+        payload.llama_MCP_functions = true;
+        payload.mcpServerUrl = this.config.mcp?.servers?.[0]?.["devops-mcp-server"]?.url || "http://localhost:3003";
+        console.log('🔀 Applied llama_MCP_functions configuration for hybrid MCP implementation');
+        break;
+        
+      case 'node_llama_cpp_functions':
+      default:
+        payload.node_llama_cpp_functions = true;
+        payload.functionSets = ["fruits", "system"];
+        console.log('🚀 Applied node_llama_cpp_functions configuration for production optimization');
+        break;
     }
   }
 

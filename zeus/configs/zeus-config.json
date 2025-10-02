@@ -15,7 +15,48 @@
   "ai": {
     "endpoint": "http://localhost:4001",
     "maxTokens": 2000,
-    "temperature": 0.7
+    "temperature": 0.7,
+    "enginePreference": "auto",
+    "engines": {
+      "node_llama_cpp_functions": {
+        "name": "Production",
+        "emoji": "⚡",
+        "description": "High performance, optimized for production",
+        "cost": "Low",
+        "speed": "High",
+        "type": "standard"
+      },
+      "llama_functions": {
+        "name": "Development", 
+        "emoji": "🔍",
+        "description": "Enhanced debugging with detailed logging",
+        "cost": "Medium",
+        "speed": "Medium", 
+        "type": "development"
+      },
+      "node_llama_cpp_MCP_functions": {
+        "name": "MCP Native",
+        "emoji": "📡",
+        "description": "Native MCP support with preset integration",
+        "cost": "Medium",
+        "speed": "High",
+        "type": "mcp"
+      },
+      "llama_MCP_functions": {
+        "name": "MCP Hybrid",
+        "emoji": "🔀", 
+        "description": "Manual MCP implementation with custom logic",
+        "cost": "High",
+        "speed": "Medium",
+        "type": "mcp_advanced"
+      }
+    },
+    "defaultEngine": "auto",
+    "autoSelection": {
+      "withPreset": "node_llama_cpp_MCP_functions",
+      "withoutPreset": "node_llama_cpp_functions",
+      "debugMode": "llama_functions"
+    }
   },
   "mcp": {
     "servers": [

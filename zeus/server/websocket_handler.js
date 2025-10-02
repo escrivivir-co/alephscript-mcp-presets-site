@@ -36,7 +36,7 @@ class WebSocketHandler {
       // Handle new chat message
       socket.on('send_message', async (data) => {
         try {
-          const { conversationId, message, role = 'user', presetName, usePresetTools } = data;
+          const { conversationId, message, role = 'user', presetName, usePresetTools, engineType } = data;
           
           // Validate input
           if (!conversationId || !message || message.trim().length === 0) {
@@ -80,7 +80,7 @@ class WebSocketHandler {
             // If user message, generate AI response with preset support (async)
             if (role === 'user') {
               // Don't await - let it run asynchronously to not block the WebSocket
-              this.generateAIResponse(conversationId, message, presetName, usePresetTools)
+              this.generateAIResponse(conversationId, message, presetName, usePresetTools, engineType)
                 .catch(error => {
                   console.error('Error in generateAIResponse:', error);
                   socket.emit('error', { 
@@ -124,7 +124,7 @@ class WebSocketHandler {
     });
   }
 
-  async generateAIResponse(conversationId, userMessage, presetName = null, usePresetTools = false) {
+  async generateAIResponse(conversationId, userMessage, presetName = null, usePresetTools = false, engineType = null) {
     try {
       // Get conversation
       const conversation = this.aiHandler.getConversationById(conversationId);
@@ -140,7 +140,8 @@ class WebSocketHandler {
       const aiResponse = await this.aiHandler.sendMessageToSLMo42(userMessage.trim(), {
         conversationId: conversationId,
         presetName: presetName || conversation.preset,
-        usePresetTools: usePresetTools || !!conversation.preset
+        usePresetTools: usePresetTools || !!conversation.preset,
+        engineType: engineType
       });
 
       // Stop typing indicator
