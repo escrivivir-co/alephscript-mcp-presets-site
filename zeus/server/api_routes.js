@@ -373,7 +373,9 @@ router.get('/presets', async (req, res) => {
     
     // Apply category filter
     if (category) {
-      presets = presets.filter(preset => preset.category === category);
+      presets = presets.filter(preset => 
+        preset.category && preset.category.toLowerCase() === category.toLowerCase()
+      );
     }
     
     // Apply sorting
@@ -609,7 +611,9 @@ router.get('/presets/export', async (req, res) => {
     
     // Filter by category if specified
     if (category) {
-      presets = presets.filter(preset => preset.category === category);
+      presets = presets.filter(preset => 
+        preset.category && preset.category.toLowerCase() === category.toLowerCase()
+      );
     }
     
     if (format === 'json') {
@@ -691,7 +695,9 @@ router.get('/mcp/servers/:id/tools', async (req, res) => {
     }
     
     if (category) {
-      filteredTools = filteredTools.filter(tool => tool.category === category);
+      filteredTools = filteredTools.filter(tool => 
+        tool.category && tool.category.toLowerCase() === category.toLowerCase()
+      );
     }
     
     res.json({
@@ -783,7 +789,9 @@ router.get('/mcp/servers/:id/prompts', async (req, res) => {
     }
     
     if (category) {
-      filteredPrompts = filteredPrompts.filter(prompt => prompt.category === category);
+      filteredPrompts = filteredPrompts.filter(prompt => 
+        prompt.category && prompt.category.toLowerCase() === category.toLowerCase()
+      );
     }
     
     res.json({

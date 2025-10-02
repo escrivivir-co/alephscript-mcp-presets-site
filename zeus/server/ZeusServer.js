@@ -102,7 +102,9 @@ app.get("/ai", async (req, res) => {
   try {
     const aiView = require("../views/ai_view");
     const aiHandler = require("../backend/aiHandler");
+    const presetHandler = require("../backend/presetHandler");
     const handler = new aiHandler();
+    const presetManager = new presetHandler();
     
     // Load conversations and active conversation
     const conversations = handler.getConversations();
@@ -111,8 +113,8 @@ app.get("/ai", async (req, res) => {
       ? handler.getConversationById(conversationId)
       : null;
       
-    // Load available presets (placeholder - to be implemented)
-    const presets = []; // TODO: Load from preset manager
+    // Load available presets
+    const presets = presetManager.getAllPresets().slice(0, 20);
     
     const htmlResponse = aiView.aiView({
       conversations,

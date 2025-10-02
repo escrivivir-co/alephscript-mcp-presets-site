@@ -16,7 +16,10 @@ const { template, pageContainer, contentSection } = require('./main_views');
 // Import shared components selectively and strategically
 const { 
   mcpServerBrowser,
-  searchFilterBar 
+  searchFilterBar,
+  presetCard,
+  emptyPresetState,
+  formatTimeAgo
 } = require('./shared_components');
 
 /**
@@ -282,81 +285,6 @@ const presetGrid = ({ presets, pagination, isLoading, error }) => {
 };
 
 /**
- * Improved preset card with better information hierarchy
- */
-const presetCard = (preset) => {
-  const hasServer = preset.mcpServerUrl && preset.mcpServerUrl !== '';
-  const serverStatus = hasServer ? '🟢' : '⚪';
-  const serverName = hasServer ? 
-    (preset.mcpServerName || 'Connected Server') : 
-    'No Server';
-
-  return article({ 
-    class: 'preset-card',
-    'data-preset-id': preset.id 
-  },
-    div({ class: 'card-header' },
-      div({ class: 'card-title' },
-        h3(preset.name),
-        span({ class: 'card-category' }, preset.category)
-      ),
-      div({ class: 'card-server' },
-        span({ class: 'server-status' }, serverStatus),
-        span({ class: 'server-name' }, serverName)
-      )
-    ),
-
-    div({ class: 'card-content' },
-      p({ class: 'card-description' }, 
-        preset.description || 'No description provided'
-      ),
-      
-      hasServer && div({ class: 'card-mcp-info' },
-        span({ class: 'mcp-stats' }, 
-          `${preset.toolCount || 0} tools available`
-        )
-      ),
-
-      preset.tags && preset.tags.length > 0 && div({ class: 'card-tags' },
-        ...preset.tags.map(tag => 
-          span({ class: 'tag' }, tag)
-        )
-      )
-    ),
-
-    div({ class: 'card-actions' },
-      button({ 
-        class: 'btn btn-primary',
-        'data-action': 'use-preset',
-        'data-preset-id': preset.id
-      }, 'Use Preset'),
-      
-      button({ 
-        class: 'btn btn-secondary',
-        'data-action': 'edit-preset',
-        'data-preset-id': preset.id
-      }, 'Edit'),
-      
-      button({ 
-        class: 'btn btn-secondary btn-icon',
-        'data-action': 'delete-preset',
-        'data-preset-id': preset.id,
-        title: 'Delete preset'
-      }, '🗑️')
-    ),
-
-    div({ class: 'card-footer' },
-      span({ class: 'last-updated' }, 
-        formatTimeAgo(preset.updatedAt || preset.createdAt)
-      ),
-      preset.usageCount && span({ class: 'usage-count' }, 
-        `Used ${preset.usageCount} times`
-      )
-    )
-  );
-};
-
-/**
  * Smart preset editor panel - only shown when needed
  */
 const presetEditorPanel = ({ selectedPreset, categories, mcpServers }) => {
@@ -534,18 +462,6 @@ const presetPagination = ({ page, totalPages, total }) => {
 /**
  * Utility functions
  */
-const formatTimeAgo = (timestamp) => {
-  const date = new Date(timestamp);
-  const now = new Date();
-  const diffInSeconds = Math.floor((now - date) / 1000);
-  
-  if (diffInSeconds < 60) return 'Just now';
-  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-  if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-  return date.toLocaleDateString();
-};
-
 const generatePageNumbers = (currentPage, totalPages) => {
   const pages = [];
   const maxVisible = 5;

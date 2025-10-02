@@ -1,25 +1,11 @@
 {
   "presets": [
     {
-      "id": "1759160978617",
-      "name": "TEMP_PRESET",
-      "description": "",
-      "category": "General",
-      "prompt": "demo",
-      "parameters": {},
-      "serverId": "localhost",
-      "items": [
-        "list_prompts"
-      ],
-      "createdAt": "2025-09-29T15:49:38.617Z",
-      "updatedAt": "2025-09-29T15:49:38.617Z"
-    },
-    {
       "id": "1759359152317",
       "name": "DevOps Status Preset",
       "description": "Comprehensive server monitoring preset with tools to check server info and status for DevOps operations",
       "category": "development",
-      "prompt": "Get info from my server",
+      "prompt": "Get comprehensive server status and detailed monitoring information",
       "parameters": {},
       "serverId": null,
       "items": [
@@ -27,7 +13,8 @@
         "get_server_status"
       ],
       "createdAt": "2025-10-01T22:52:32.317Z",
-      "updatedAt": "2025-10-01T22:52:32.317Z"
+      "updatedAt": "2025-10-02T01:29:30.867Z",
+      "serverContent": {}
     }
   ],
   "categories": [
@@ -37,5 +24,5 @@
     "Creative"
   ],
   "defaultPreset": null,
-  "lastUpdated": "2025-10-02T00:53:40.166Z"
+  "lastUpdated": "2025-10-02T01:29:30.867Z"
 }

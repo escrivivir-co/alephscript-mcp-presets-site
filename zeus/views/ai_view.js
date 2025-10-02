@@ -4,6 +4,14 @@ const {
 } = require('hyperaxe');
 const { template, contentSection, pageContainer } = require('./main_views');
 
+// Import shared components
+const { 
+  presetListItem,
+  presetItems,
+  emptyPresetState,
+  formatTimeAgo 
+} = require('./shared_components');
+
 /**
  * AI Conversation View - Advanced chat interface with real-time messaging
  * Follows diogenes patterns with enhanced functionality for Zeus
@@ -160,9 +168,7 @@ const chatInterface = ({ activeConversation, isLoading, error }) => {
  */
 const chatHeader = (conversation) => {
   if (!conversation) {
-    return header({ class: 'chat-header empty' },
-      h1('Select a conversation to start chatting')
-    );
+    return header({ class: 'chat-header empty' });
   }
 
   return header({ class: 'chat-header' },
@@ -394,58 +400,10 @@ const presetPanel = ({ presets, activeConversation }) => {
       
       div({ class: 'preset-list' },
         presets.length > 0 
-          ? presetItems(presets)
-          : emptyPresetState()
+          ? presetItems(presets, { limit: 10, itemType: 'list' })
+          : emptyPresetState({ showBrowseLink: true })
       )
     )
-  );
-};
-
-/**
- * Preset list items
- */
-const presetItems = (presets) => {
-  return ul({ class: 'preset-items' },
-    presets.slice(0, 10).map(preset => presetItem(preset))
-  );
-};
-
-/**
- * Individual preset item
- */
-const presetItem = (preset) => {
-  return li({ 
-    class: 'preset-item',
-    'data-preset-id': preset.id,
-    'data-action': 'use-preset'
-  },
-    div({ class: 'preset-info' },
-      h4({ class: 'preset-name' }, preset.name),
-      p({ class: 'preset-description' }, 
-        preset.description.length > 60 
-          ? preset.description.substring(0, 60) + '...'
-          : preset.description
-      )
-    ),
-    
-    div({ class: 'preset-meta' },
-      span({ class: 'preset-category' }, preset.category),
-      button({
-        class: 'btn btn-primary btn-small use-preset-btn',
-        'data-preset-id': preset.id,
-        'data-action': 'use-preset'
-      }, 'Use')
-    )
-  );
-};
-
-/**
- * Empty preset state
- */
-const emptyPresetState = () => {
-  return div({ class: 'empty-state small' },
-    p('No presets available'),
-    a({ href: '/presets' }, 'Browse Preset Library')
   );
 };
 
@@ -458,17 +416,6 @@ const formatTime = (timestamp) => {
     hour: '2-digit', 
     minute: '2-digit' 
   });
-};
-
-const formatTimeAgo = (timestamp) => {
-  const date = new Date(timestamp);
-  const now = new Date();
-  const diffInSeconds = Math.floor((now - date) / 1000);
-  
-  if (diffInSeconds < 60) return 'Just now';
-  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-  return date.toLocaleDateString();
 };
 
 module.exports = {

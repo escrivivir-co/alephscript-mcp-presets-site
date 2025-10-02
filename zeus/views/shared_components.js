@@ -6,7 +6,7 @@
 
 const { 
   div, section, header, h1, h2, h3, h4, button, input, select, option, form, 
-  ul, li, p, span, strong, nav, a, label, details, summary, textarea
+  ul, li, p, span, strong, nav, a, label, details, summary, textarea, article
 } = require('hyperaxe');
 
 /**
@@ -481,8 +481,174 @@ const searchFilterBar = ({
 };
 
 /**
- * Export all shared components
+ * Reusable Preset Card Component
+ * Full-featured preset card for main library view
  */
+const presetCard = (preset, options = {}) => {
+  const { showActions = true, compact = false } = options;
+  const hasServer = preset.mcpServerUrl && preset.mcpServerUrl !== '';
+  const serverStatus = hasServer ? '🟢' : '⚪';
+  const serverName = hasServer ? 
+    (preset.mcpServerName || 'Connected Server') : 
+    'No Server';
+
+  const cardClass = compact ? 'preset-card compact' : 'preset-card';
+
+  return article({ 
+    class: cardClass,
+    'data-preset-id': preset.id 
+  },
+    div({ class: 'card-header' },
+      div({ class: 'card-title' },
+        h3(preset.name),
+        span({ class: 'card-category' }, preset.category)
+      ),
+      !compact && div({ class: 'card-server' },
+        span({ class: 'server-status' }, serverStatus),
+        span({ class: 'server-name' }, serverName)
+      )
+    ),
+
+    div({ class: 'card-content' },
+      p({ class: 'card-description' }, 
+        compact && preset.description.length > 80 
+          ? preset.description.substring(0, 80) + '...'
+          : preset.description || 'No description provided'
+      ),
+      
+      !compact && hasServer && div({ class: 'card-mcp-info' },
+        span({ class: 'mcp-stats' }, 
+          `${preset.toolCount || 0} tools available`
+        )
+      ),
+
+      !compact && preset.tags && preset.tags.length > 0 && div({ class: 'card-tags' },
+        ...preset.tags.map(tag => 
+          span({ class: 'tag' }, tag)
+        )
+      )
+    ),
+
+    showActions && div({ class: 'card-actions' },
+      button({ 
+        class: 'btn btn-primary',
+        'data-action': 'use-preset',
+        'data-preset-id': preset.id
+      }, 'Use Preset'),
+      
+      !compact && button({ 
+        class: 'btn btn-secondary',
+        'data-action': 'edit-preset',
+        'data-preset-id': preset.id
+      }, 'Edit'),
+      
+      !compact && button({ 
+        class: 'btn btn-secondary btn-icon',
+        'data-action': 'delete-preset',
+        'data-preset-id': preset.id,
+        title: 'Delete preset'
+      }, '🗑️')
+    ),
+
+    !compact && div({ class: 'card-footer' },
+      span({ class: 'last-updated' }, 
+        formatTimeAgo(preset.updatedAt || preset.createdAt)
+      )
+    )
+  );
+};
+
+/**
+ * Compact Preset List Item
+ * Simplified preset item for quick selection panels
+ */
+const presetListItem = (preset, options = {}) => {
+  const { showCategory = true, maxDescriptionLength = 60 } = options;
+  
+  return li({ 
+    class: 'preset-item',
+    'data-preset-id': preset.id,
+    'data-action': 'use-preset'
+  },
+    div({ class: 'preset-info' },
+      h4({ class: 'preset-name' }, preset.name),
+      p({ class: 'preset-description' }, 
+        preset.description.length > maxDescriptionLength 
+          ? preset.description.substring(0, maxDescriptionLength) + '...'
+          : preset.description
+      )
+    ),
+    
+    div({ class: 'preset-meta' },
+      showCategory && span({ class: 'preset-category' }, preset.category),
+      div({ class: 'preset-actions' },
+        button({
+          class: 'btn btn-primary btn-small use-preset-btn',
+          'data-preset-id': preset.id,
+          'data-action': 'use-preset'
+        }, 'Use'),
+        button({
+          class: 'btn btn-secondary btn-small edit-preset-btn',
+          'data-preset-id': preset.id,
+          'data-action': 'edit-preset'
+        }, 'Edit')
+      )
+    )
+  );
+};
+
+/**
+ * Preset Items Container
+ * List of presets with optional limit
+ */
+const presetItems = (presets, options = {}) => {
+  const { limit = 10, itemType = 'list' } = options;
+  const limitedPresets = presets.slice(0, limit);
+  
+  if (itemType === 'cards') {
+    return div({ class: 'preset-grid' },
+      limitedPresets.map(preset => presetCard(preset, { compact: true }))
+    );
+  }
+  
+  return ul({ class: 'preset-items' },
+    limitedPresets.map(preset => presetListItem(preset))
+  );
+};
+
+/**
+ * Empty Preset State
+ * Shown when no presets are available
+ */
+const emptyPresetState = (options = {}) => {
+  const { showBrowseLink = true, message = 'No presets available' } = options;
+  
+  return div({ class: 'empty-state small' },
+    div({ class: 'empty-icon' }, '📋'),
+    p(message),
+    showBrowseLink && a({ href: '/presets' }, 'Browse Preset Library')
+  );
+};
+
+/**
+ * Format time ago utility
+ */
+const formatTimeAgo = (timestamp) => {
+  if (!timestamp) return 'Unknown';
+  
+  const now = new Date();
+  const time = new Date(timestamp);
+  const diffInSeconds = Math.floor((now - time) / 1000);
+  
+  if (diffInSeconds < 60) return 'Just now';
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+  if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  
+  return time.toLocaleDateString();
+};
+
+// Export all components and utilities
 module.exports = {
   // MCP Server Components
   mcpServerBrowser,
@@ -492,7 +658,7 @@ module.exports = {
   mcpServerItem,
   mcpEmptyServerState,
   
-  // Preset Form Components
+  // Advanced Preset Form Components
   advancedPresetForm,
   selectedItemsPreview,
   presetMetadataFields,
@@ -504,9 +670,16 @@ module.exports = {
   itemSelectionCard,
   itemSelectionEmpty,
   
+  // Preset Display Components
+  presetCard,
+  presetListItem,
+  presetItems,
+  emptyPresetState,
+  
   // Utility Components
   searchFilterBar,
   
   // Helper functions
-  filterItems
+  filterItems,
+  formatTimeAgo
 };

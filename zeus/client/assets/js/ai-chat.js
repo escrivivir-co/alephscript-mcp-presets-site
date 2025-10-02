@@ -51,10 +51,17 @@ class AIChat {
       // Set active conversation from URL or first conversation
       const urlParams = new URLSearchParams(window.location.search);
       const conversationId = urlParams.get('conversation');
+      const presetId = urlParams.get('preset');
+      
       if (conversationId) {
         this.selectConversation(conversationId);
       } else if (this.conversations.length > 0) {
         this.selectConversation(this.conversations[0].id);
+      }
+      
+      // If preset parameter is provided, save it for later use after MCP presets are loaded
+      if (presetId) {
+        this.pendingPresetId = presetId;
       }
     } catch (error) {
       console.error('Error loading initial data:', error);
@@ -188,6 +195,15 @@ class AIChat {
         e.preventDefault();
         const presetId = e.target.dataset.presetId;
         this.usePreset(presetId);
+      }
+    });
+
+    // Edit preset
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('[data-action="edit-preset"]')) {
+        e.preventDefault();
+        const presetId = e.target.dataset.presetId;
+        this.editPreset(presetId);
       }
     });
 
@@ -843,9 +859,50 @@ class AIChat {
   }
 
   // Additional placeholder methods for full functionality
-  deleteConversation(conversationId) {
+  async deleteConversation(conversationId) {
     // Implement conversation deletion
     console.log('Delete conversation:', conversationId);
+    
+    try {
+      // Confirm deletion with user
+      if (!confirm('Are you sure you want to delete this conversation? This action cannot be undone.')) {
+        return;
+      }
+      
+      // Call API to delete conversation
+      const response = await fetch(`/api/ai/conversations/${conversationId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Remove conversation from UI
+        const conversationElement = document.querySelector(`[data-conversation-id="${conversationId}"]`).closest('li');
+        if (conversationElement) {
+          conversationElement.remove();
+        }
+        
+        // If this was the currently selected conversation, redirect to main AI page
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentConversationId = urlParams.get('conversation');
+        
+        if (currentConversationId === conversationId) {
+          // Clear conversation selection and show empty state
+          window.location.href = '/ai';
+        }
+        
+        console.log('✅ Conversation deleted successfully');
+      } else {
+        throw new Error(data.error || 'Failed to delete conversation');
+      }
+    } catch (error) {
+      console.error('❌ Error deleting conversation:', error);
+      alert(`Failed to delete conversation: ${error.message}`);
+    }
   }
 
   searchConversations(query) {
@@ -854,21 +911,49 @@ class AIChat {
   }
 
   searchPresets(query) {
-    // Implement preset search
-    console.log('Search presets:', query);
+    const presetItems = document.querySelectorAll('.preset-item');
+    const searchTerm = query.toLowerCase().trim();
+    
+    presetItems.forEach(item => {
+      const name = item.querySelector('.preset-name')?.textContent?.toLowerCase() || '';
+      const description = item.querySelector('.preset-description')?.textContent?.toLowerCase() || '';
+      const category = item.querySelector('.preset-category')?.textContent?.toLowerCase() || '';
+      
+      const matches = name.includes(searchTerm) || 
+                     description.includes(searchTerm) || 
+                     category.includes(searchTerm);
+      
+      item.style.display = matches ? 'block' : 'none';
+    });
+    
+    console.log('Search presets:', query, `${document.querySelectorAll('.preset-item:not([style*="display: none"])').length} results`);
   }
 
   usePreset(presetId) {
-    // Implement preset usage - set in selector
+    // Find preset by ID and set in selector
     const selector = document.getElementById('mcp-preset-selector');
     if (selector) {
       const option = selector.querySelector(`option[data-preset-id="${presetId}"]`);
       if (option) {
         selector.value = option.value;
         this.handlePresetSelection(option.value);
+        // Save to localStorage for persistence
+        localStorage.setItem('selectedPreset', JSON.stringify({
+          id: presetId,
+          name: option.value
+        }));
+        console.log('Preset selected and saved:', presetId, option.value);
+      } else {
+        console.warn('Preset not found in selector:', presetId);
       }
     }
-    console.log('Use preset:', presetId);
+  }
+
+  editPreset(presetId) {
+    // Navigate to MCP Editor with preset ID parameter
+    const editorUrl = `/editor?presetId=${presetId}`;
+    console.log('Navigating to MCP Editor to edit preset:', presetId);
+    window.location.href = editorUrl;
   }
 
   copyMessage(messageId) {
@@ -913,8 +998,9 @@ class AIChat {
     presets.forEach(preset => {
       const option = document.createElement('option');
       option.value = preset.name;
-      option.textContent = `${preset.name} - ${preset.description.substring(0, 50)}${preset.description.length > 50 ? '...' : ''}`;
+      option.textContent = preset.name;
       option.dataset.presetId = preset.id;
+      option.title = preset.description; // Show description as tooltip
       selector.appendChild(option);
     });
 
@@ -922,6 +1008,62 @@ class AIChat {
     selector.addEventListener('change', (e) => {
       this.handlePresetSelection(e.target.value);
     });
+
+    // Restore previously selected preset from localStorage
+    this.restorePresetSelection();
+  }
+
+  restorePresetSelection() {
+    try {
+      // First check if there's a pending preset ID from URL parameter
+      if (this.pendingPresetId) {
+        const selector = document.getElementById('mcp-preset-selector');
+        if (selector) {
+          const option = selector.querySelector(`option[data-preset-id="${this.pendingPresetId}"]`);
+          if (option) {
+            selector.value = option.value;
+            this.handlePresetSelection(option.value);
+            console.log('Selected preset from URL parameter:', option.value);
+            // Clear the pending preset and remove URL parameter
+            this.pendingPresetId = null;
+            this.clearURLParameter('preset');
+            return;
+          } else {
+            console.warn('Preset from URL parameter not found:', this.pendingPresetId);
+          }
+        }
+        this.pendingPresetId = null;
+      }
+      
+      // Fall back to localStorage if no URL parameter
+      const savedPreset = localStorage.getItem('selectedPreset');
+      if (savedPreset) {
+        const preset = JSON.parse(savedPreset);
+        const selector = document.getElementById('mcp-preset-selector');
+        if (selector) {
+          // Check if the preset still exists in the options
+          const option = selector.querySelector(`option[data-preset-id="${preset.id}"]`);
+          if (option) {
+            selector.value = preset.name;
+            this.handlePresetSelection(preset.name);
+            console.log('Restored preset selection from localStorage:', preset.name);
+          } else {
+            // Preset no longer exists, clear localStorage
+            localStorage.removeItem('selectedPreset');
+            console.log('Saved preset no longer exists, cleared from localStorage');
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error restoring preset selection:', error);
+      localStorage.removeItem('selectedPreset');
+    }
+  }
+
+  clearURLParameter(param) {
+    const url = new URL(window.location);
+    url.searchParams.delete(param);
+    window.history.replaceState({}, '', url);
   }
 
   handlePresetSelection(presetName) {
@@ -932,10 +1074,25 @@ class AIChat {
       // Show MCP tools indicator
       if (indicator) indicator.style.display = 'flex';
       if (status) status.textContent = `MCP: ${presetName}`;
+      
+      // Save preset selection to localStorage
+      const selector = document.getElementById('mcp-preset-selector');
+      if (selector) {
+        const selectedOption = selector.querySelector(`option[value="${presetName}"]`);
+        if (selectedOption) {
+          localStorage.setItem('selectedPreset', JSON.stringify({
+            id: selectedOption.dataset.presetId,
+            name: presetName
+          }));
+        }
+      }
     } else {
       // Hide MCP tools indicator
       if (indicator) indicator.style.display = 'none';
       if (status) status.textContent = 'Ready';
+      
+      // Clear localStorage when no preset selected
+      localStorage.removeItem('selectedPreset');
     }
   }
 

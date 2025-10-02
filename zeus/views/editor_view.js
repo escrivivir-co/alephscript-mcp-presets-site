@@ -4,6 +4,12 @@ const {
 } = require('hyperaxe');
 const { template, contentSection, pageContainer } = require('./main_views');
 
+// Import shared components
+const { 
+  mcpServerBrowser,
+  advancedPresetForm 
+} = require('./shared_components');
+
 /**
  * MCP Editor View - Interactive MCP server exploration and tool management
  * Follows diogenes patterns with enhanced server browsing capabilities
@@ -28,7 +34,7 @@ const editorView = (data = {}) => {
       section({ class: 'mcp-editor-container' },
         editorHeader(),
         div({ class: 'mcp-editor-main' },
-          serverBrowser({ servers, selectedServer, isLoading, error }),
+          mcpServerBrowser({ servers, selectedServer, isLoading, error }),
           contentExplorer({ selectedServer, serverContent, selectedItems }),
           presetCreator({ selectedItems, selectedServer })
         )
@@ -74,128 +80,6 @@ const editorHeader = () => {
         }, '📝 Create Preset')
       )
     )
-  );
-};
-
-/**
- * Server browser sidebar
- */
-const serverBrowser = ({ servers, selectedServer, isLoading, error }) => {
-  return div({ class: 'server-browser' },
-    div({ class: 'browser-header' },
-      h2('MCP Servers'),
-      span({ class: 'server-count' }, `${servers.length} servers`)
-    ),
-    
-    error && serverError(error),
-    
-    isLoading 
-      ? serverLoading()
-      : (servers.length > 0 
-          ? serverList(servers, selectedServer)
-          : emptyServerState())
-  );
-};
-
-/**
- * Server error display
- */
-const serverError = (error) => {
-  return div({ class: 'server-error' },
-    strong('Error: '), error,
-    button({ 
-      class: 'btn btn-secondary btn-small retry-btn',
-      'data-action': 'retry-servers'
-    }, 'Retry')
-  );
-};
-
-/**
- * Server loading state
- */
-const serverLoading = () => {
-  return div({ class: 'server-loading' },
-    div({ class: 'loading-spinner' }),
-    p('Loading MCP servers...')
-  );
-};
-
-/**
- * Server list component
- */
-const serverList = (servers, selectedServer) => {
-  return ul({ class: 'server-list' },
-    servers.map(server => serverItem(server, selectedServer?.id === server.id))
-  );
-};
-
-/**
- * Individual server item
- */
-const serverItem = (server, isSelected) => {
-  const statusClass = server.status === 'connected' ? 'connected' : 'disconnected';
-  
-  return li({ 
-    class: `server-item ${isSelected ? 'selected' : ''} ${statusClass}`,
-    'data-server-id': server.id,
-    'data-action': 'select-server'
-  },
-    div({ class: 'server-info' },
-      div({ class: 'server-header' },
-        h3({ class: 'server-name' }, server.name),
-        span({ class: `server-status ${statusClass}` }, 
-          server.status === 'connected' ? '🟢' : '🔴'
-        )
-      ),
-      
-      p({ class: 'server-description' }, server.description),
-      
-      div({ class: 'server-meta' },
-        span({ class: 'server-type' }, server.type),
-        span({ class: 'server-stats' },
-          `${server.toolsCount || 0} tools, ${server.resourcesCount || 0} resources, ${server.promptsCount || 0} prompts`
-        )
-      )
-    ),
-    
-    div({ class: 'server-actions' },
-      server.status === 'connected' 
-        ? button({
-            class: 'btn-icon disconnect-server',
-            'data-server-id': server.id,
-            'data-action': 'disconnect-server',
-            title: 'Disconnect server'
-          }, '⏸️')
-        : button({
-            class: 'btn-icon connect-server',
-            'data-server-id': server.id,
-            'data-action': 'connect-server',
-            title: 'Connect to server'
-          }, '▶️'),
-          
-      button({
-        class: 'btn-icon server-settings',
-        'data-server-id': server.id,
-        'data-action': 'server-settings',
-        title: 'Server settings'
-      }, '⚙️')
-    )
-  );
-};
-
-/**
- * Empty server state
- */
-const emptyServerState = () => {
-  return div({ class: 'empty-state' },
-    div({ class: 'empty-icon' }, '🔧'),
-    h3('No MCP servers configured'),
-    p('Add MCP servers to explore their tools, resources, and prompts.'),
-    
-    button({
-      class: 'btn btn-primary',
-      'data-action': 'add-server'
-    }, 'Add MCP Server')
   );
 };
 

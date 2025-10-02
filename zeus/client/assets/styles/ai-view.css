@@ -530,6 +530,12 @@
   align-items: center;
 }
 
+.preset-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .preset-category {
   font-size: 0.75rem;
   color: var(--text-secondary);

@@ -13,6 +13,8 @@ class MCPEditor {
     this.categoryFilter = '';
     this.serverContent = {};
     this.isLoading = false;
+    this.editingPresetId = null; // ID del preset siendo editado
+    this.isEditMode = false; // Flag para modo edición
     
     this.init();
   }
@@ -499,7 +501,7 @@ class MCPEditor {
   }
 
   /**
-   * Handle preset creation form submission
+   * Handle preset creation/update form submission
    */
   async handlePresetCreation(event) {
     event.preventDefault();
@@ -516,31 +518,52 @@ class MCPEditor {
     };
     
     try {
-      const response = await fetch('/api/presets', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(presetData)
-      });
+      let response;
+      let successMessage;
+      
+      if (this.isEditMode && this.editingPresetId) {
+        // UPDATE existing preset
+        response = await fetch(`/api/presets/${this.editingPresetId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(presetData)
+        });
+        successMessage = 'Preset updated successfully!';
+      } else {
+        // CREATE new preset
+        response = await fetch('/api/presets', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(presetData)
+        });
+        successMessage = 'Preset created successfully!';
+      }
       
       const data = await response.json();
       
       if (data.success) {
-        this.showNotification('Preset created successfully!', 'success');
+        this.showNotification(successMessage, 'success');
         this.clearSelection();
         event.target.reset();
+        
+        // Reset edit mode
+        this.isEditMode = false;
+        this.editingPresetId = null;
         
         // Optionally redirect to presets view
         setTimeout(() => {
           window.location.href = '/presets';
         }, 1500);
       } else {
-        throw new Error(data.error || 'Failed to create preset');
+        throw new Error(data.error || `Failed to ${this.isEditMode ? 'update' : 'create'} preset`);
       }
     } catch (error) {
-      console.error('Error creating preset:', error);
-      this.showNotification(`Failed to create preset: ${error.message}`, 'error');
+      console.error(`Error ${this.isEditMode ? 'updating' : 'creating'} preset:`, error);
+      this.showNotification(`Failed to ${this.isEditMode ? 'update' : 'create'} preset: ${error.message}`, 'error');
     }
   }
 
@@ -703,7 +726,7 @@ class MCPEditor {
               Clear Selection
             </button>
             <button type="submit" class="btn-primary">
-              Create Preset
+              ${this.isEditMode ? 'Update Preset' : 'Create Preset'}
             </button>
           </div>
         </form>
@@ -854,11 +877,17 @@ class MCPEditor {
     const mode = urlParams.get('mode');
     const editId = urlParams.get('edit');
     const expanded = urlParams.get('expanded');
+    const presetId = urlParams.get('preset');
     
     console.log('🔍 URL Parameters detected:', Object.fromEntries(urlParams));
     
+    // Handle preset edit mode (from preset library)
+    if (presetId) {
+      this.handlePresetEditMode(presetId);
+    }
+    
     // Handle edit mode
-    if (mode === 'edit' || editId) {
+    else if (mode === 'edit' || editId) {
       this.handleEditMode(urlParams);
     }
     
@@ -925,6 +954,121 @@ class MCPEditor {
   }
 
   /**
+   * Handle preset edit mode - load existing preset for editing
+   */
+  async handlePresetEditMode(presetId) {
+    console.log('📝 Entering preset edit mode for:', presetId);
+    
+    // Set edit mode flags
+    this.isEditMode = true;
+    this.editingPresetId = presetId;
+    
+    try {
+      // Fetch preset data from backend
+      const response = await fetch(`/api/presets/${presetId}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch preset: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      if (!data.success || !data.preset) {
+        throw new Error('Preset not found');
+      }
+      
+      const preset = data.preset;
+      console.log('✅ Preset loaded:', preset);
+      
+      // Preload preset metadata in form
+      this.preloadPresetMetadata({
+        name: preset.name,
+        description: preset.description || '',
+        category: preset.category || 'General',
+        prompt: preset.prompt || ''
+      });
+      
+      // Wait for servers to load and select the appropriate server
+      await this.ensureServersLoaded();
+      
+      // If preset has a server association, select it
+      if (preset.serverName) {
+        await this.selectServerByName(preset.serverName);
+      }
+      
+      // Preselect items from the preset
+      await this.preselectPresetItems(preset);
+      
+      // Expand preset creator
+      this.expandPresetCreator();
+      
+      // Update preset creator to show correct button text
+      this.updatePresetCreatorContent();
+      
+      // Show notification
+      this.showNotification(`Editing preset: ${preset.name}`, 'info');
+      
+    } catch (error) {
+      console.error('❌ Error loading preset for editing:', error);
+      this.showNotification('Error loading preset for editing', 'error');
+    }
+  }
+
+  /**
+   * Preselect items from a preset
+   */
+  async preselectPresetItems(preset) {
+    console.log('🎯 Preselecting preset items:', preset.items);
+    console.log('🔍 Preset item structure:', JSON.stringify(preset.items, null, 2));
+    
+    // Clear existing selections
+    this.selectedItems.clear();
+    
+    // Wait for server content to load
+    if (this.selectedServer) {
+      await this.ensureServerContentLoaded(this.selectedServer.id);
+    }
+    
+    // Add preset items to selection
+    if (preset.items && Array.isArray(preset.items)) {
+      preset.items.forEach(item => {
+        // Handle both string format and object format
+        let itemId = null;
+        if (typeof item === 'string') {
+          // Simple string format (tool name)
+          itemId = item;
+        } else if (item && item.id) {
+          // Object format with id
+          itemId = item.id;
+        } else if (item && item.name) {
+          // Object format with name
+          itemId = item.name;
+        }
+        
+        if (itemId) {
+          this.selectedItems.add(itemId);
+          console.log('✅ Preselected item:', itemId, typeof item === 'object' ? item.type : 'unknown');
+        } else {
+          console.warn('⚠️ Unable to extract ID from item:', item);
+        }
+      });
+    }
+    
+    // Update UI to reflect selections
+    this.updateSelectionUI();
+    
+    console.log(`📋 Preselected ${this.selectedItems.size} items from preset`);
+  }
+
+  /**
+   * Ensure server content is loaded
+   */
+  async ensureServerContentLoaded(serverId) {
+    if (!this.serverContent[serverId]) {
+      console.log('⏳ Loading server content for preselection...');
+      await this.loadServerContent(serverId);
+    }
+  }
+
+  /**
    * Select server by name
    */
   async selectServerByName(serverName) {
@@ -984,6 +1128,11 @@ class MCPEditor {
       if (metadata.category) {
         const categorySelect = document.getElementById('preset-category');
         if (categorySelect) categorySelect.value = metadata.category;
+      }
+      
+      if (metadata.prompt) {
+        const promptInput = document.getElementById('preset-prompt');
+        if (promptInput) promptInput.value = metadata.prompt;
       }
       
       console.log('📝 Metadata preloaded:', metadata);

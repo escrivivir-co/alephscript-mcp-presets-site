@@ -542,6 +542,7 @@ class PresetLibrary {
       grid.innerHTML = '<div class="loading-spinner">Loading presets...</div>';
     } else {
       grid.classList.remove('loading');
+      // Clear loading content - renderPresets will populate with actual content
     }
   }
 
@@ -576,9 +577,72 @@ class PresetLibrary {
   }
 
   renderPresets(presets, pagination) {
-    // This would typically be handled by server-side rendering
-    // But we can update dynamic elements
     console.log(`📋 Rendered ${presets.length} presets (page ${pagination.page} of ${pagination.totalPages})`);
+    
+    const grid = document.querySelector('.preset-grid');
+    if (!grid) return;
+    
+    // Clear existing content
+    grid.innerHTML = '';
+    
+    if (presets.length === 0) {
+      grid.innerHTML = '<div class="no-presets">No presets found matching your criteria.</div>';
+      return;
+    }
+    
+    // Generate HTML for each preset
+    presets.forEach(preset => {
+      const presetCard = this.createPresetCard(preset);
+      grid.appendChild(presetCard);
+    });
+  }
+  
+  createPresetCard(preset) {
+    const article = document.createElement('article');
+    article.className = 'preset-card';
+    article.setAttribute('data-preset-id', preset.id);
+    
+    const serverStatus = preset.serverStatus === 'connected' ? '🟢' : '⚪';
+    const serverName = preset.serverName || 'No Server';
+    const formatTimeAgo = (dateStr) => {
+      const date = new Date(dateStr);
+      const now = new Date();
+      const diff = now - date;
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      if (hours < 1) return 'Just now';
+      if (hours < 24) return `${hours}h ago`;
+      const days = Math.floor(hours / 24);
+      return `${days}d ago`;
+    };
+    
+    article.innerHTML = `
+      <div class="card-header">
+        <div class="card-title">
+          <h3>${preset.name}</h3>
+          <span class="card-category">${preset.category}</span>
+        </div>
+        <div class="card-server">
+          <span class="server-status">${serverStatus}</span>
+          <span class="server-name">${serverName}</span>
+        </div>
+      </div>
+      
+      <div class="card-content">
+        <p class="card-description">${preset.description || 'No description provided'}</p>
+      </div>
+      
+      <div class="card-actions">
+        <button class="btn btn-primary" data-action="use-preset" data-preset-id="${preset.id}">Use Preset</button>
+        <button class="btn btn-secondary" data-action="edit-preset" data-preset-id="${preset.id}">Edit</button>
+        <button class="btn btn-secondary btn-icon" data-action="delete-preset" data-preset-id="${preset.id}" title="Delete preset">🗑️</button>
+      </div>
+      
+      <div class="card-footer">
+        <span class="last-updated">${formatTimeAgo(preset.updatedAt || preset.createdAt)}</span>
+      </div>
+    `;
+    
+    return article;
   }
 
   // ===== REALTIME UPDATES =====
