@@ -1,6 +1,6 @@
 ---
 description: Integration Agent for comprehensive E2E testing and component validation in Zeus MCP project
-tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'devops-mcp-server', 'playwright']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'runTests', 'playwright', 'devops-mcp-server']
 model: Claude Sonnet 4
 ---
 
@@ -182,6 +182,193 @@ When external services unavailable:
 - Validate mock data integration works (`zeus/test/mock_mcp_catalog.json`)
 - Test fallback mechanisms function properly
 - Ensure graceful degradation of functionality
+
+## 🔧 Engine Testing Protocol: "Probar Engines"
+
+### Overview
+Comprehensive validation of the 4-engine system implementation using real-time payload monitoring and interactive browser automation.
+
+### Engine Testing Setup
+
+#### Step 1: SLMo42 Service with Monitoring
+```bash
+# Navigate to SLMo42 directory
+cd /c/Users/oracl/Documents/REPOS/mcp-model-sdk
+
+# Start SLMo42 with output redirection for real-time monitoring
+npm start > slmo42_output.log 2>&1 &
+
+# Start monitoring in separate terminal session
+tail -f slmo42_output.log
+```
+
+#### Step 2: Interactive Browser Automation Setup
+```bash
+# Ensure Zeus is running on port 3012
+cd /c/Users/oracl/Documents/REPOS/mcp-presets-site/zeus && npm start
+
+# Use VS Code MCP Playwright for browser automation
+# Navigate to: http://localhost:3012/ai
+```
+
+### 4-Engine Validation Matrix
+
+Test each engine mode systematically with standardized messages:
+
+#### Engine 1: Production (⚡)
+- **UI Selection**: `⚡ Production`
+- **Expected Parameter**: `{"node_llama_cpp_functions": true}`
+- **Test Message**: `"PRODUCTION ENGINE TEST: What is the current time? Please provide a simple response."`
+- **Validation**: Check console log shows `node_llama_cpp_functions`
+
+#### Engine 2: Development (🔍)  
+- **UI Selection**: `🔍 Development`
+- **Expected Parameter**: `{"llama_functions": true}`
+- **Test Message**: `"DEVELOPMENT ENGINE TEST: What is the capital of France? Brief response please."`
+- **Validation**: Check console log shows `llama_functions`
+
+#### Engine 3: MCP Native (📡)
+- **UI Selection**: `📡 MCP Native`
+- **Expected Parameter**: `{"node_llama_cpp_MCP_functions": true}`
+- **Test Message**: `"MCP NATIVE ENGINE TEST: What is 2+2? Simple answer please."`
+- **Validation**: Check console log shows `node_llama_cpp_MCP_functions`
+
+#### Engine 4: MCP Hybrid (🔀)
+- **UI Selection**: `🔀 MCP Hybrid`
+- **Expected Parameter**: `{"llama_MCP_functions": true}`
+- **Test Message**: `"MCP HYBRID ENGINE TEST: What color is the sky? Quick response."`
+- **Validation**: Check console log shows `llama_MCP_functions`
+
+### Interactive Testing Protocol
+
+#### Prerequisites Validation
+```bash
+# Verify all services operational
+curl -s http://localhost:3003/health  # MCPGaia
+curl -s http://localhost:4001/health  # SLMo42  
+curl -s http://localhost:3012/health  # Zeus
+```
+
+#### Browser Automation Steps
+1. **Navigate to Conversation Interface**
+   ```javascript
+   // MCP Playwright browser automation
+   await page.goto('http://localhost:3012/ai');
+   ```
+
+2. **Create Clean Conversation State**
+   - Use existing conversation or create new one
+   - Ensure "No MCP Preset" is selected
+   - Clear any previous conversation state
+
+3. **Engine Selection and Testing Loop**
+   ```javascript
+   // For each engine:
+   // 1. Select engine from dropdown
+   await page.selectOption('#engine-selector', engineValue);
+   
+   // 2. Verify console log registration
+   // Look for: "🎯 Engine selected: [engine_name]"
+   
+   // 3. Send standardized test message
+   await page.fill('#message-input', testMessage);
+   await page.click('#send-button');
+   
+   // 4. Monitor SLMo42 logs for payload
+   ```
+
+#### Real-time Payload Analysis
+Monitor the `slmo42_output.log` file for incoming requests:
+
+```bash
+# Watch for payload patterns like:
+Call /ai {
+  input: 'ENGINE TEST MESSAGE...',
+  [engine_parameter]: true,
+  presetName: '[preset_name]',
+  mcpServerUrl: 'http://localhost:3003',
+  usePresetTools: [boolean]
+}
+```
+
+### Validation Criteria
+
+#### Frontend Validation (Console Logs)
+- ✅ Engine selection triggers correct console log
+- ✅ UI updates with appropriate engine description
+- ✅ Browser automation successfully completes all steps
+
+#### Backend Validation (SLMo42 Logs)
+- ✅ Each test message reaches SLMo42 with appropriate timing
+- ✅ Payload contains expected engine parameter
+- ✅ Preset selection honored ("No MCP Preset" = no preset in payload)
+- ✅ Correct handler initialization (matches engine selection)
+
+#### Response Validation
+- ✅ All engines respond appropriately to test messages
+- ✅ Response time reasonable (< 10 seconds)
+- ✅ No error messages in server logs
+
+### Test Documentation Template
+
+Create structured validation report with this format:
+
+```markdown
+# Engine Validation Test Report
+**Date**: [Current Date]
+**Testing Method**: Interactive MCP Playwright + SLMo42 Monitoring
+
+## Test Matrix Results
+
+| Engine | UI Selection | Console Log | SLMo42 Payload | Handler Used | Status |
+|--------|-------------|-------------|-----------------|--------------|--------|
+| Production | ⚡ Production | [result] | [payload] | [handler] | [✅/❌] |
+| Development | 🔍 Development | [result] | [payload] | [handler] | [✅/❌] |
+| MCP Native | 📡 MCP Native | [result] | [payload] | [handler] | [✅/❌] |
+| MCP Hybrid | 🔀 MCP Hybrid | [result] | [payload] | [handler] | [✅/❌] |
+
+## Detailed Findings
+[Document any discrepancies or unexpected behavior]
+
+## Recommendations
+[Suggest improvements or fixes if needed]
+```
+
+### Troubleshooting Common Issues
+
+#### Service Connectivity Problems
+```bash
+# Check service status
+ps aux | grep -E "(node|npm)"
+netstat -tulpn | grep -E "(3003|3012|4001)"
+
+# Restart services if needed
+cd zeus && npm start
+cd ../mcp-model-sdk && npm start
+```
+
+#### Browser Automation Issues
+- Ensure VS Code MCP Playwright extension active
+- Verify Zeus server accessibility via manual browser test
+- Check for JavaScript console errors in browser developer tools
+
+#### Log Monitoring Problems
+```bash
+# Verify log file creation
+ls -la slmo42_output.log
+
+# If log empty, check service startup
+tail -f slmo42_output.log  # Should show service initialization
+```
+
+### Integration Testing Success Criteria
+
+- ✅ All 4 engines selectable via UI
+- ✅ Console logs confirm frontend engine registration
+- ✅ SLMo42 logs show expected payload parameters
+- ✅ Engine-to-handler mapping functions correctly
+- ✅ Preset selection honored throughout conversation flow
+- ✅ No critical errors in browser or server logs
 
 ## Integration Issue Resolution
 
