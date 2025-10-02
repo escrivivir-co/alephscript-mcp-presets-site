@@ -313,14 +313,62 @@ router.get('/presets', async (req, res) => {
     const { search = '', category = '', page = 1, limit = 20, sortBy = 'updatedAt', sortOrder = 'desc' } = req.query;
     let presets = presetHandler.getAllPresets();
     
+    // Enrich presets with MCP server information
+    const servers = await mcpHandler.getAllServers();
+    const enrichedPresets = presets.map(preset => {
+      const enrichedPreset = { ...preset };
+      
+      // Find the MCP server for this preset
+      if (preset.serverId) {
+        const server = servers.find(s => s.id === preset.serverId);
+        if (server) {
+          enrichedPreset.serverName = server.name;
+          enrichedPreset.serverStatus = server.status;
+          enrichedPreset.serverType = server.type;
+          enrichedPreset.toolsCount = server.toolsCount;
+          enrichedPreset.resourcesCount = server.resourcesCount;
+          enrichedPreset.promptsCount = server.promptsCount;
+          
+          // Calculate selected tools count from preset items
+          const selectedToolsCount = Array.isArray(preset.items) 
+            ? preset.items.filter(item => item.type === 'tool').length 
+            : 0;
+          enrichedPreset.selectedToolsCount = selectedToolsCount;
+        } else {
+          // Server not found or disconnected
+          enrichedPreset.serverName = `Server ${preset.serverId} (Not Found)`;
+          enrichedPreset.serverStatus = 'disconnected';
+          enrichedPreset.serverType = 'unknown';
+          enrichedPreset.toolsCount = 0;
+          enrichedPreset.resourcesCount = 0;
+          enrichedPreset.promptsCount = 0;
+          enrichedPreset.selectedToolsCount = 0;
+        }
+      } else {
+        // No server associated
+        enrichedPreset.serverName = 'No Server';
+        enrichedPreset.serverStatus = 'none';
+        enrichedPreset.serverType = 'none';
+        enrichedPreset.toolsCount = 0;
+        enrichedPreset.resourcesCount = 0;
+        enrichedPreset.promptsCount = 0;
+        enrichedPreset.selectedToolsCount = 0;
+      }
+      
+      return enrichedPreset;
+    });
+    
     // Apply search filter
     if (search) {
       const needle = String(search).toLowerCase();
-      presets = presets.filter(preset => 
+      presets = enrichedPresets.filter(preset => 
         (preset.name && String(preset.name).toLowerCase().includes(needle)) ||
         (preset.description && String(preset.description).toLowerCase().includes(needle)) ||
+        (preset.serverName && String(preset.serverName).toLowerCase().includes(needle)) ||
         (Array.isArray(preset.tags) && preset.tags.some(tag => String(tag).toLowerCase().includes(needle)))
       );
+    } else {
+      presets = enrichedPresets;
     }
     
     // Apply category filter

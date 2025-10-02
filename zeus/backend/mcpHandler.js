@@ -15,7 +15,7 @@ class MCPHandler {
     try {
       console.log('Discovering MCP servers via SLMo42 proxy...');
       const response = await axios.get(`${this.slmo42Endpoint}/ai/ui/mcp/list`, {
-        timeout: this.config.mcp?.timeout || 30000
+        timeout: this.config.mcp?.timeout || 600000 // 10 minutes for SLM inference
       });
       
       if (response.data && response.data.success) {

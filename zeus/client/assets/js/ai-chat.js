@@ -434,7 +434,7 @@ class AIChat {
 
     const messageText = document.createElement('div');
     messageText.className = 'message-text';
-    messageText.textContent = message.content;
+    messageText.textContent = message.content.trim();
 
     const messageTime = document.createElement('time');
     messageTime.className = 'message-time';
@@ -506,9 +506,74 @@ class AIChat {
     this.updateConversationList();
     this.updatePresetList();
     this.updateActiveConversation();
+    this.updateChatInterface(); // Nueva función para manejar la interfaz dinámicamente
     this.updateMessages();
     // Always enable chat input after UI updates
     this.enableChatInput();
+  }
+
+  // Nueva función para manejar la interfaz de chat dinámicamente
+  updateChatInterface() {
+    const chatInterface = document.querySelector('.chat-interface');
+    if (!chatInterface) return;
+
+    // Si hay conversación activa, mostrar interfaz de chat
+    if (this.currentConversation) {
+      this.showChatInterface();
+    } else {
+      this.showWelcomeInterface();
+    }
+  }
+
+  showChatInterface() {
+    const chatInterface = document.querySelector('.chat-interface');
+    if (!chatInterface) return;
+
+    // Ocultar vista de bienvenida
+    const welcomeSection = chatInterface.querySelector('.chat-welcome');
+    if (welcomeSection) {
+      welcomeSection.style.display = 'none';
+    }
+
+    // Crear o mostrar contenedor de mensajes
+    let messagesSection = chatInterface.querySelector('.chat-messages');
+    if (!messagesSection) {
+      messagesSection = document.createElement('div');
+      messagesSection.className = 'chat-messages';
+      
+      const messagesContainer = document.createElement('div');
+      messagesContainer.className = 'messages-container';
+      messagesContainer.id = 'messages-container';
+      
+      messagesSection.appendChild(messagesContainer);
+      
+      // Insertar antes del chat input
+      const chatInput = chatInterface.querySelector('.chat-input');
+      if (chatInput) {
+        chatInterface.insertBefore(messagesSection, chatInput);
+      } else {
+        chatInterface.appendChild(messagesSection);
+      }
+    } else {
+      messagesSection.style.display = 'block';
+    }
+  }
+
+  showWelcomeInterface() {
+    const chatInterface = document.querySelector('.chat-interface');
+    if (!chatInterface) return;
+
+    // Mostrar vista de bienvenida
+    const welcomeSection = chatInterface.querySelector('.chat-welcome');
+    if (welcomeSection) {
+      welcomeSection.style.display = 'block';
+    }
+
+    // Ocultar contenedor de mensajes
+    const messagesSection = chatInterface.querySelector('.chat-messages');
+    if (messagesSection) {
+      messagesSection.style.display = 'none';
+    }
   }
 
   updateConversationList() {
@@ -529,6 +594,60 @@ class AIChat {
       const isActive = item.dataset.conversationId === this.currentConversation?.id;
       item.classList.toggle('active', isActive);
     });
+  }
+
+  updatePresetList() {
+    // Update preset dropdown with available presets
+    const presetSelect = document.querySelector('#preset-select');
+    if (!presetSelect) return;
+
+    // Load presets from the API if not already loaded
+    if (!this.presets || this.presets.length === 0) {
+      this.loadPresets();
+      return;
+    }
+
+    // Clear existing options except the first one ("No MCP Preset")
+    const firstOption = presetSelect.querySelector('option[value=""]');
+    presetSelect.innerHTML = '';
+    if (firstOption) {
+      presetSelect.appendChild(firstOption);
+    } else {
+      const noPresetOption = document.createElement('option');
+      noPresetOption.value = '';
+      noPresetOption.textContent = 'No MCP Preset';
+      presetSelect.appendChild(noPresetOption);
+    }
+
+    // Add preset options
+    this.presets.forEach(preset => {
+      const option = document.createElement('option');
+      option.value = preset.id;
+      option.textContent = `${preset.name}${preset.description ? ' - ' + preset.description.substring(0, 50) + '...' : ''}`;
+      presetSelect.appendChild(option);
+    });
+
+    // Set selected preset from URL parameters if provided
+    const urlParams = new URLSearchParams(window.location.search);
+    const presetParam = urlParams.get('preset');
+    if (presetParam) {
+      presetSelect.value = presetParam;
+    }
+  }
+
+  async loadPresets() {
+    try {
+      const response = await fetch('/api/presets');
+      if (response.ok) {
+        const data = await response.json();
+        this.presets = data.presets || data || [];
+        this.updatePresetList();
+      } else {
+        console.warn('Failed to load presets:', response.statusText);
+      }
+    } catch (error) {
+      console.warn('Error loading presets:', error);
+    }
   }
 
   updateMessages() {
@@ -568,6 +687,67 @@ class AIChat {
       characterCount.textContent = `${count}/4000`;
       characterCount.classList.toggle('warning', count > 3500);
     }
+  }
+
+  // Handle typing indicator
+  handleTypingIndicator() {
+    const messageInput = document.getElementById('message-input');
+    if (!messageInput || !this.socket) return;
+
+    // Clear existing typing timeout
+    if (this.typingTimeout) {
+      clearTimeout(this.typingTimeout);
+    }
+
+    // Send typing start event
+    this.socket.emit('typing-start', {
+      conversationId: this.currentConversation?.id,
+      userId: 'user'
+    });
+
+    // Set timeout to send typing stop
+    this.typingTimeout = setTimeout(() => {
+      this.socket.emit('typing-stop', {
+        conversationId: this.currentConversation?.id,
+        userId: 'user'
+      });
+    }, 2000);
+  }
+
+  // Update conversation in list
+  updateConversationInList(conversationId = null) {
+    if (!conversationId && this.currentConversation) {
+      conversationId = this.currentConversation.id;
+    }
+    
+    if (!conversationId) return;
+
+    // Find conversation in list and update last message preview
+    const conversationElements = document.querySelectorAll('.conversation-item');
+    conversationElements.forEach(element => {
+      const elementId = element.dataset.conversationId;
+      if (elementId === conversationId.toString()) {
+        const lastMessageElement = element.querySelector('.conversation-preview');
+        if (lastMessageElement && this.currentConversation) {
+          const messages = this.currentConversation.messages;
+          if (messages && messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            const preview = lastMessage.content.trim().substring(0, 50) + 
+                          (lastMessage.content.trim().length > 50 ? '...' : '');
+            lastMessageElement.textContent = preview;
+          }
+        }
+        
+        // Update timestamp
+        const timestampElement = element.querySelector('.conversation-timestamp');
+        if (timestampElement) {
+          timestampElement.textContent = new Date().toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+        }
+      }
+    });
   }
 
   setFormLoading(loading) {
@@ -830,6 +1010,54 @@ class AIChat {
     setTimeout(() => {
       notification.classList.remove('show');
     }, 4000);
+  }
+
+  // Create conversation item DOM element for sidebar
+  createConversationItem(conversation) {
+    const item = document.createElement('li');
+    item.className = 'conversation-item';
+    item.dataset.conversationId = conversation.id;
+    item.dataset.action = 'select-conversation';
+
+    const lastMessage = conversation.messages[conversation.messages.length - 1];
+    const previewText = lastMessage 
+      ? (lastMessage.content.trim().length > 50 
+          ? lastMessage.content.trim().substring(0, 50) + '...' 
+          : lastMessage.content.trim())
+      : 'No messages yet';
+
+    item.innerHTML = `
+      <div class="conversation-header">
+        <h3 class="conversation-title">${conversation.title}</h3>
+        <time class="conversation-time">${this.formatTimeAgo(conversation.updatedAt)}</time>
+      </div>
+      <p class="conversation-preview">${previewText}</p>
+      <div class="conversation-meta">
+        <span class="message-count">${conversation.messages.length} messages</span>
+        ${conversation.preset ? `<span class="preset-badge">${conversation.preset}</span>` : ''}
+      </div>
+      <div class="conversation-actions">
+        <button class="btn-icon delete-conversation" data-conversation-id="${conversation.id}" data-action="delete-conversation" title="Archive conversation">🗑️</button>
+      </div>
+    `;
+
+    return item;
+  }
+
+  // Format time ago helper
+  formatTimeAgo(timestamp) {
+    const now = new Date();
+    const time = new Date(timestamp);
+    const diffMs = now - time;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return time.toLocaleDateString();
   }
 }
 

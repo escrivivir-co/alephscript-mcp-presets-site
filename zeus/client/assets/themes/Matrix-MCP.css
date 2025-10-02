@@ -3,21 +3,21 @@
 
 :root {
   /* Primary Colors - Asterion Matrix MCP Variables */
-  --primary-color: #00FF41;
+  --primary-color: #00CC33;  /* Less bright green for better contrast */
   --primary-hover: #00E639;
   --primary-text: #000000;
-  --primary-color-alpha: rgba(0, 255, 65, 0.2);
+  --primary-color-alpha: rgba(0, 204, 51, 0.2);
 
   /* Background Colors */
   --background-primary: #000000;
-  --background-secondary: #001100;
-  --background-tertiary: #002200;
-  --background-hover: #003300;
+  --background-secondary: #001a00;  /* Slightly lighter for better form contrast */
+  --background-tertiary: #002a00;
+  --background-hover: #003a00;
 
   /* Text Colors */
   --text-primary: #00FF41;
   --text-secondary: #00CC33;
-  --heading-color: #00FF41;
+  --heading-color: #00FF50;
 
   /* Border and Input */
   --border-color: #004400;
@@ -64,9 +64,26 @@ body {
 }
 
 .main-navigation {
-  background: rgba(0, 17, 0, 0.95);
+  background: linear-gradient(135deg, #001100 0%, #003300 100%);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 255, 65, 0.3);
+}
+
+.main-navigation .nav-list a {
+  color: var(--primary-color) !important;
+  font-weight: 500;
+}
+
+.main-navigation .nav-list a:hover {
+  background-color: rgba(0, 255, 65, 0.1) !important;
+  color: #00FF80 !important;
+}
+
+.main-navigation .nav-list a.current {
+  background-color: rgba(0, 255, 65, 0.2) !important;
+  color: #00FF80 !important;
+  font-weight: 600;
 }
 
 .section-content {
@@ -112,6 +129,141 @@ input:focus, select:focus, textarea:focus {
   background: var(--background-secondary);
   border-color: var(--border-color);
   box-shadow: var(--shadow-small);
+}
+
+/* Settings and Form improvements */
+.settings-section {
+  background: var(--background-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.settings-label {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+}
+
+.settings-description {
+  color: var(--text-secondary) !important;
+}
+
+select, .form-control {
+  background: var(--input-background) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+select option {
+  background: var(--background-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.form-group label {
+  color: var(--text-primary) !important;
+  font-weight: 500;
+}
+
+.form-group small {
+  color: var(--text-secondary) !important;
+}
+
+/* Override white backgrounds in settings */
+.form-group, .setting-group, .settings-card {
+  background: var(--background-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.settings-container .form-group {
+  background: transparent !important;
+}
+
+/* Fix light backgrounds */
+fieldset, .fieldset {
+  background: var(--background-secondary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+fieldset legend {
+  color: var(--heading-color) !important;
+}
+
+/* Form inputs and controls */
+.form-control, .form-input, input[type="text"], input[type="url"], input[type="number"] {
+  background: var(--input-background) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Toggle switches */
+.switch {
+  background: var(--background-hover) !important;
+}
+
+.switch.active {
+  background: var(--primary-color) !important;
+}
+
+/* Additional white background fixes */
+.toggle-setting {
+  background: var(--background-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.toggle-switch {
+  background: var(--background-hover) !important;
+}
+
+.toggle-switch::after {
+  background: var(--text-primary) !important;
+}
+
+.setting-toggle:checked + .toggle-switch {
+  background: var(--primary-color) !important;
+}
+
+/* Section headers fixes */
+fieldset > legend, .section-header, .settings-section-header {
+  background: var(--background-secondary) !important;
+  color: var(--heading-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Feature toggles specific fixes */
+.feature-toggle, .feature-setting {
+  background: var(--background-secondary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Group headers */
+.settings-group > h2, .settings-group > h3 {
+  background: transparent !important;
+  color: var(--heading-color) !important;
+}
+
+/* Final white background eliminators */
+fieldset, .fieldset, legend {
+  background: var(--background-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Section corners fix */
+fieldset legend, legend {
+  background: var(--background-secondary) !important;
+  color: var(--heading-color) !important;
+  border: none !important;
+  padding: 0.5rem 1rem !important;
+}
+
+/* Any remaining white backgrounds */
+.settings-container *, .settings-section *, .form-section * {
+  border-color: var(--border-color) !important;
+}
+
+/* Override any hardcoded white */
+[style*="background: white"], [style*="background: #fff"], [style*="background-color: white"], [style*="background-color: #fff"] {
+  background: var(--background-secondary) !important;
 }
 
 .feature-card:hover {

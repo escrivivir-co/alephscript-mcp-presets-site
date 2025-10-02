@@ -74,9 +74,9 @@ class AIHandler {
         payload: payload
       });
       
-      // Send request to SLMo42 with timeout
+      // Send request to SLMo42 with extended timeout (10 minutes for LLM inference)
       const response = await axios.post(this.config.ai.endpoint + '/ai', payload, {
-        timeout: this.config.mcp?.timeout || 30000,
+        timeout: this.config.mcp?.timeout || 600000, // 10 minutes for SLM inference
         headers: {
           'Content-Type': 'application/json'
         }
@@ -86,11 +86,24 @@ class AIHandler {
         console.log('SLMo42 response received:', {
           model: response.data.model || 'SLMo42',
           hadFunctionCalls: response.data.hadFunctionCalls || false,
-          answerLength: response.data.answer.length
+          answerType: typeof response.data.answer,
+          answerLength: typeof response.data.answer === 'string' ? response.data.answer.length : 'object'
         });
         
+        // Handle both string and object responses from SLMo42
+        let processedAnswer;
+        if (typeof response.data.answer === 'string') {
+          processedAnswer = response.data.answer;
+        } else if (typeof response.data.answer === 'object') {
+          // Convert object response to formatted string
+          processedAnswer = JSON.stringify(response.data.answer, null, 2);
+          console.log('SLMo42 returned object answer, converted to JSON string');
+        } else {
+          processedAnswer = String(response.data.answer);
+        }
+        
         return {
-          answer: response.data.answer,
+          answer: processedAnswer,
           model: response.data.model || 'SLMo42',
           hadFunctionCalls: response.data.hadFunctionCalls || false,
           timestamp: new Date().toISOString(),

@@ -6,7 +6,7 @@
   "main": "server/ZeusServer.js",
   "scripts": {
     "start": "node server/ZeusServer.js",
-    "dev": "nodemon server/ZeusServer.js",
+    "dev": "nodemon --config nodemon.json server/ZeusServer.js",
     "test:e2e": "cd test/e2e && npm install && node run-e2e-tests.js",
     "test:e2e:headed": "cd test/e2e && npm install && HEADED=true node run-e2e-tests.js", 
     "test:e2e:wheaded": "cd test/e2e && npm install && set HEADED=true && node run-e2e-tests.js", 

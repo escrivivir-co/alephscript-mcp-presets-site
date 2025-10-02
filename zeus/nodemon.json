@@ -1,0 +1,31 @@
+{
+  "watch": [
+    "server/",
+    "backend/",
+    "views/",
+    "client/assets/js/",
+    "configs/config-manager.js",
+    "configs/zeus-config.json"
+  ],
+  "ignore": [
+    "node_modules/",
+    "test/",
+    "PLANIFICACION/",
+    "configs/ai-history.json",
+    "configs/preset-history.json",
+    "configs/mcp-history.json", 
+    "configs/*.json",
+    "!configs/zeus-config.json",
+    "!configs/config-manager.js",
+    "*.log",
+    "*.tmp",
+    "test/e2e/test-results/",
+    "client/assets/uploads/",
+    ".git/"
+  ],
+  "ext": "js,json,mjs",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "verbose": true
+}

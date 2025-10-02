@@ -101,7 +101,24 @@ app.get("/", async (req, res) => {
 app.get("/ai", async (req, res) => {
   try {
     const aiView = require("../views/ai_view");
-    const htmlResponse = aiView.aiView();
+    const aiHandler = require("../backend/aiHandler");
+    const handler = new aiHandler();
+    
+    // Load conversations and active conversation
+    const conversations = handler.getConversations();
+    const conversationId = req.query.conversation;
+    const activeConversation = conversationId 
+      ? handler.getConversationById(conversationId)
+      : null;
+      
+    // Load available presets (placeholder - to be implemented)
+    const presets = []; // TODO: Load from preset manager
+    
+    const htmlResponse = aiView.aiView({
+      conversations,
+      activeConversation,
+      presets
+    });
     
     res.setHeader('Content-Type', 'text/html');
     res.send(htmlResponse.outerHTML);
@@ -124,7 +141,79 @@ app.get("/ai", async (req, res) => {
 app.get("/presets", async (req, res) => {
   try {
     const presetView = require("../views/preset_view");
-    const htmlResponse = presetView.presetView();
+    
+    // Load preset data to pass to the view
+    const PresetHandler = require('../backend/presetHandler');
+    const MCPHandler = require('../backend/mcpHandler');
+    const presetHandler = new PresetHandler();
+    const mcpHandler = new MCPHandler();
+    
+    // Get presets and enrich with MCP server information (like in API)
+    let presets = presetHandler.getAllPresets();
+    const servers = await mcpHandler.getAllServers();
+    
+    // Enrich presets with MCP server information
+    const enrichedPresets = presets.map(preset => {
+      const enrichedPreset = { ...preset };
+      
+      // Find the MCP server for this preset
+      if (preset.serverId) {
+        const server = servers.find(s => s.id === preset.serverId);
+        if (server) {
+          enrichedPreset.serverName = server.name;
+          enrichedPreset.serverStatus = server.status;
+          enrichedPreset.serverType = server.type;
+          enrichedPreset.toolsCount = server.toolsCount;
+          enrichedPreset.resourcesCount = server.resourcesCount;
+          enrichedPreset.promptsCount = server.promptsCount;
+          
+          // Calculate selected tools count from preset items
+          const selectedToolsCount = Array.isArray(preset.items) 
+            ? preset.items.filter(item => item.type === 'tool').length 
+            : 0;
+          enrichedPreset.selectedToolsCount = selectedToolsCount;
+        } else {
+          // Server not found or disconnected
+          enrichedPreset.serverName = `Server ${preset.serverId} (Not Found)`;
+          enrichedPreset.serverStatus = 'disconnected';
+          enrichedPreset.serverType = 'unknown';
+          enrichedPreset.toolsCount = 0;
+          enrichedPreset.resourcesCount = 0;
+          enrichedPreset.promptsCount = 0;
+          enrichedPreset.selectedToolsCount = 0;
+        }
+      } else {
+        // No server associated
+        enrichedPreset.serverName = 'No Server';
+        enrichedPreset.serverStatus = 'none';
+        enrichedPreset.serverType = 'none';
+        enrichedPreset.toolsCount = 0;
+        enrichedPreset.resourcesCount = 0;
+        enrichedPreset.promptsCount = 0;
+        enrichedPreset.selectedToolsCount = 0;
+      }
+      
+      return enrichedPreset;
+    });
+    
+    // Prepare data for the view
+    const viewData = {
+      presets: enrichedPresets,
+      categories: ["General", "Development", "Analysis", "Creative"],
+      pagination: {
+        total: enrichedPresets.length,
+        page: 1,
+        limit: 20,
+        totalPages: 1
+      },
+      filters: {},
+      selectedPreset: null,
+      isLoading: false,
+      error: null,
+      mcpServers: servers // Add MCP servers data
+    };
+    
+    const htmlResponse = presetView.presetView(viewData);
     
     res.setHeader('Content-Type', 'text/html');
     res.send(htmlResponse.outerHTML);

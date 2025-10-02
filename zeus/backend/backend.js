@@ -348,7 +348,7 @@ router.get('/mcp/servers/config', (req, res) => {
     const config = getConfig();
     const mcpConfig = {
       servers: config.mcp.servers || [],
-      timeout: config.mcp.timeout || 30000,
+      timeout: config.mcp.timeout || 600000, // 10 minutes for SLM inference
       settings: {
         autoConnect: config.mcp.autoConnect || false,
         retryAttempts: config.mcp.retryAttempts || 3,

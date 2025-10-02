@@ -7,7 +7,10 @@ class WebSocketHandler {
       cors: {
         origin: true,
         credentials: true
-      }
+      },
+      // Extended timeouts for LLM inference (15 minutes)
+      pingTimeout: 900000, // 15 minutes
+      pingInterval: 25000   // 25 seconds between pings
     });
     
     this.aiHandler = new AIHandler();
@@ -33,7 +36,7 @@ class WebSocketHandler {
       // Handle new chat message
       socket.on('send_message', async (data) => {
         try {
-          const { conversationId, message, role = 'user' } = data;
+          const { conversationId, message, role = 'user', presetName, usePresetTools } = data;
           
           // Validate input
           if (!conversationId || !message || message.trim().length === 0) {
@@ -59,6 +62,11 @@ class WebSocketHandler {
           conversation.messages.push(newMessage);
           conversation.updatedAt = new Date().toISOString();
           
+          // Update conversation preset if provided
+          if (presetName) {
+            conversation.preset = presetName;
+          }
+          
           // Save conversation
           const saved = this.aiHandler.saveConversations();
           
@@ -69,9 +77,16 @@ class WebSocketHandler {
               message: newMessage
             });
 
-            // If user message, generate AI response (placeholder)
+            // If user message, generate AI response with preset support (async)
             if (role === 'user') {
-              this.generateAIResponse(conversationId, message);
+              // Don't await - let it run asynchronously to not block the WebSocket
+              this.generateAIResponse(conversationId, message, presetName, usePresetTools)
+                .catch(error => {
+                  console.error('Error in generateAIResponse:', error);
+                  socket.emit('error', { 
+                    message: 'Failed to generate AI response: ' + error.message 
+                  });
+                });
             }
           } else {
             socket.emit('error', { message: 'Failed to save message' });
@@ -109,55 +124,76 @@ class WebSocketHandler {
     });
   }
 
-  async generateAIResponse(conversationId, userMessage) {
+  async generateAIResponse(conversationId, userMessage, presetName = null, usePresetTools = false) {
     try {
-      // Simulate AI thinking delay
-      setTimeout(async () => {
-        const conversation = this.aiHandler.getConversationById(conversationId);
-        if (!conversation) return;
+      // Get conversation
+      const conversation = this.aiHandler.getConversationById(conversationId);
+      if (!conversation) return;
 
-        // Emit typing indicator
-        this.io.to(conversationId).emit('ai_typing', {
-          conversationId: conversationId,
-          typing: true
-        });
+      // Emit typing indicator
+      this.io.to(conversationId).emit('ai_typing', {
+        conversationId: conversationId,
+        typing: true
+      });
 
-        // Simulate AI processing time
-        setTimeout(async () => {
-          // Generate placeholder AI response
-          const aiResponse = {
-            id: Date.now().toString() + '_ai',
-            role: 'assistant',
-            content: `This is a placeholder AI response to: "${userMessage}". In a full implementation, this would call the actual AI service configured in the system.`,
-            timestamp: new Date().toISOString()
-          };
+      // Call SLMo42 for real AI response
+      const aiResponse = await this.aiHandler.sendMessageToSLMo42(userMessage.trim(), {
+        conversationId: conversationId,
+        presetName: presetName || conversation.preset,
+        usePresetTools: usePresetTools || !!conversation.preset
+      });
 
-          // Add AI response to conversation
-          conversation.messages.push(aiResponse);
-          conversation.updatedAt = new Date().toISOString();
-          
-          // Save conversation
-          const saved = this.aiHandler.saveConversations();
-          
-          if (saved) {
-            // Stop typing indicator
-            this.io.to(conversationId).emit('ai_typing', {
-              conversationId: conversationId,
-              typing: false
-            });
+      // Stop typing indicator
+      this.io.to(conversationId).emit('ai_typing', {
+        conversationId: conversationId,
+        typing: false
+      });
 
-            // Send AI response
-            this.io.to(conversationId).emit('new_message', {
-              conversationId: conversationId,
-              message: aiResponse
-            });
+      if (aiResponse && aiResponse.answer) {
+        // Add AI response to conversation
+        const assistantMessage = {
+          id: Date.now().toString() + '_ai_' + Math.random().toString(36).substr(2, 9),
+          role: 'assistant',
+          content: aiResponse.answer,
+          timestamp: new Date().toISOString(),
+          metadata: {
+            model: aiResponse.model || 'SLMo42',
+            hadFunctionCalls: aiResponse.hadFunctionCalls || false,
+            presetUsed: presetName || conversation.preset || null
           }
-        }, 2000); // 2 second AI "thinking" time
-      }, 500); // 0.5 second delay before AI starts "thinking"
+        };
+
+        conversation.messages.push(assistantMessage);
+        conversation.updatedAt = new Date().toISOString();
+        
+        // Save conversation
+        const saved = this.aiHandler.saveConversations();
+        
+        if (saved) {
+          // Send AI response via WebSocket
+          this.io.to(conversationId).emit('new_message', {
+            conversationId: conversationId,
+            message: assistantMessage
+          });
+        }
+      } else {
+        // Handle error case
+        this.io.to(conversationId).emit('error', {
+          message: 'AI service temporarily unavailable'
+        });
+      }
     } catch (error) {
       console.error('Error generating AI response:', error);
+      
+      // Stop typing indicator
+      this.io.to(conversationId).emit('ai_typing', {
+        conversationId: conversationId,
+        typing: false
+      });
+      
+      // Send error message
       this.io.to(conversationId).emit('error', { 
-        message: 'Failed to generate AI response' 
+        message: 'Failed to generate AI response: ' + error.message
       });
     }
   }

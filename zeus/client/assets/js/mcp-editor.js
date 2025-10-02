@@ -24,6 +24,7 @@ class MCPEditor {
     this.bindEvents();
     this.loadServers();
     this.setupRealTimeUpdates();
+    this.handleURLParameters();
   }
 
   /**
@@ -681,6 +682,12 @@ class MCPEditor {
           </div>
           
           <div class="form-group">
+            <label for="preset-prompt">Prompt Template *</label>
+            <textarea id="preset-prompt" name="prompt" required
+                      placeholder="Enter the AI prompt template for this preset..."></textarea>
+          </div>
+          
+          <div class="form-group">
             <label for="preset-category">Category</label>
             <select id="preset-category" name="category">
               <option value="productivity">Productivity</option>
@@ -835,6 +842,206 @@ class MCPEditor {
    */
   openServerManager() {
     console.log('Opening server manager');
+  }
+
+  /**
+   * Handle URL parameters for preset editing/creation from Preset Library
+   */
+  handleURLParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Check if we're in edit or create mode
+    const mode = urlParams.get('mode');
+    const editId = urlParams.get('edit');
+    const expanded = urlParams.get('expanded');
+    
+    console.log('🔍 URL Parameters detected:', Object.fromEntries(urlParams));
+    
+    // Handle edit mode
+    if (mode === 'edit' || editId) {
+      this.handleEditMode(urlParams);
+    }
+    
+    // Handle create mode
+    else if (mode === 'create') {
+      this.handleCreateMode(urlParams);
+    }
+    
+    // Handle expanded preset creator
+    if (expanded === 'true') {
+      this.expandPresetCreator();
+    }
+  }
+
+  /**
+   * Handle edit mode - preload preset data
+   */
+  async handleEditMode(urlParams) {
+    const editId = urlParams.get('edit');
+    const serverName = urlParams.get('server');
+    const presetName = urlParams.get('presetName');
+    const presetDesc = urlParams.get('presetDesc');
+    const presetCategory = urlParams.get('presetCategory');
+    
+    console.log('⚙️ Entering edit mode for preset:', editId);
+    
+    // Select server if specified
+    if (serverName) {
+      await this.selectServerByName(serverName);
+    }
+    
+    // Preload selected items
+    await this.preloadSelectedItems(urlParams);
+    
+    // Preload metadata in preset creator form
+    this.preloadPresetMetadata({
+      name: presetName,
+      description: presetDesc ? decodeURIComponent(presetDesc) : '',
+      category: presetCategory
+    });
+    
+    // Expand preset creator
+    this.expandPresetCreator();
+    
+    // Show notification
+    this.showNotification(`Editing preset: ${presetName || editId}`, 'info');
+  }
+
+  /**
+   * Handle create mode - setup for new preset creation
+   */
+  async handleCreateMode(urlParams) {
+    console.log('🆕 Entering create mode for new preset');
+    
+    // Clear any existing selections
+    this.selectedItems.clear();
+    this.updateSelectionUI();
+    
+    // Expand preset creator
+    this.expandPresetCreator();
+    
+    // Show notification
+    this.showNotification('Create new preset: Select tools, resources, and prompts', 'info');
+  }
+
+  /**
+   * Select server by name
+   */
+  async selectServerByName(serverName) {
+    // Wait for servers to load if not already loaded
+    await this.ensureServersLoaded();
+    
+    const serverElement = document.querySelector(`[data-server-id="${serverName}"]`);
+    if (serverElement) {
+      await this.handleServerSelect(serverName);
+      console.log('📡 Server auto-selected:', serverName);
+    }
+  }
+
+  /**
+   * Preload selected items from URL parameters
+   */
+  async preloadSelectedItems(urlParams) {
+    const toolIds = urlParams.get('tools')?.split(',').filter(Boolean) || [];
+    const resourceIds = urlParams.get('resources')?.split(',').filter(Boolean) || [];
+    const promptIds = urlParams.get('prompts')?.split(',').filter(Boolean) || [];
+    
+    // Clear existing selections
+    this.selectedItems.clear();
+    
+    // Add items to selection
+    [...toolIds, ...resourceIds, ...promptIds].forEach(itemId => {
+      this.selectedItems.add(itemId);
+    });
+    
+    console.log('📋 Items preloaded:', {
+      tools: toolIds.length,
+      resources: resourceIds.length,
+      prompts: promptIds.length,
+      total: this.selectedItems.size
+    });
+    
+    // Update display
+    this.updateSelectionUI();
+  }
+
+  /**
+   * Preload metadata in preset creator form
+   */
+  preloadPresetMetadata(metadata) {
+    // Wait for form to be available
+    setTimeout(() => {
+      if (metadata.name) {
+        const nameInput = document.getElementById('preset-name');
+        if (nameInput) nameInput.value = metadata.name;
+      }
+      
+      if (metadata.description) {
+        const descInput = document.getElementById('preset-description');
+        if (descInput) descInput.value = metadata.description;
+      }
+      
+      if (metadata.category) {
+        const categorySelect = document.getElementById('preset-category');
+        if (categorySelect) categorySelect.value = metadata.category;
+      }
+      
+      console.log('📝 Metadata preloaded:', metadata);
+    }, 500); // Give time for DOM to update
+  }
+
+  /**
+   * Expand preset creator panel
+   */
+  expandPresetCreator() {
+    setTimeout(() => {
+      const creatorPanel = document.querySelector('.preset-creator');
+      if (creatorPanel) {
+        creatorPanel.classList.add('expanded');
+        creatorPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 1000); // Give time for content to load
+  }
+
+  /**
+   * Ensure servers are loaded before proceeding
+   */
+  async ensureServersLoaded() {
+    if (!this.selectedServer && this.isLoading) {
+      // Wait for servers to load
+      return new Promise((resolve) => {
+        const checkLoaded = () => {
+          if (!this.isLoading) {
+            resolve();
+          } else {
+            setTimeout(checkLoaded, 100);
+          }
+        };
+        checkLoaded();
+      });
+    }
+  }
+
+  /**
+   * Show notification message
+   */
+  showNotification(message, type = 'info') {
+    // Create notification if not exists
+    let notification = document.querySelector('.mcp-editor-notification');
+    if (!notification) {
+      notification = document.createElement('div');
+      notification.className = 'mcp-editor-notification';
+      document.querySelector('.mcp-editor-container').prepend(notification);
+    }
+    
+    notification.textContent = message;
+    notification.className = `mcp-editor-notification ${type}`;
+    notification.style.display = 'block';
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+      notification.style.display = 'none';
+    }, 5000);
   }
 }
 
