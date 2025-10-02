@@ -192,15 +192,18 @@ Comprehensive validation of the 4-engine system implementation using real-time p
 
 #### Step 1: SLMo42 Service with Monitoring
 ```bash
-# Navigate to SLMo42 directory
-cd /c/Users/oracl/Documents/REPOS/mcp-model-sdk
+# Navigate to SLMo42 directory &&Start SLMo42 with output redirection for real-time monitoring
 
-# Start SLMo42 with output redirection for real-time monitoring
-npm start > slmo42_output.log 2>&1 &
+cd /c/Users/oracl/Documents/REPOS/mcp-model-sdk && npm start > slmo42_output.log 2>&1 &
 
 # Start monitoring in separate terminal session
 tail -f slmo42_output.log
+
+# To kill
+cmd kill.bat
 ```
+
+
 
 #### Step 2: Interactive Browser Automation Setup
 ```bash

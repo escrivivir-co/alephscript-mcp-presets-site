@@ -51,7 +51,7 @@ class AIHandler {
 
   async sendMessageToSLMo42(message, options = {}) {
     try {
-      const { conversationId, presetName, usePresetTools } = options;
+      const { conversationId, presetName, usePresetTools, engineType } = options;
       
       // Build MCP payload for SLMo42
       const payload = {
@@ -59,17 +59,26 @@ class AIHandler {
       };
       
       // Smart engine selection based on context
-      const engineType = this.selectOptimalEngine({
+      const selectedEngineType = this.selectOptimalEngine({
         hasPreset: !!presetName,
         isDebugMode: this.config.debug || false,
-        userPreference: this.config.ai?.enginePreference || 'auto'
+        userPreference: engineType || this.config.ai?.enginePreference || 'auto'
       });
       
+      // Log engine selection for debugging
+      if (engineType && engineType !== selectedEngineType) {
+        console.log(`🔄 Engine override: User selected '${engineType}' -> Using '${selectedEngineType}' (smart selection)`);
+      } else if (engineType) {
+        console.log(`✅ Engine selection: Using user preference '${selectedEngineType}'`);
+      } else {
+        console.log(`🎯 Engine selection: Auto-selected '${selectedEngineType}'`);
+      }
+      
       // Apply engine configuration
-      await this.applyEngineConfiguration(payload, engineType, presetName);
+      await this.applyEngineConfiguration(payload, selectedEngineType, presetName);
       
       // Add MCP configuration if preset is specified (for MCP engines)
-      if (presetName && (engineType.includes('MCP') || engineType === 'auto')) {
+      if (presetName && (selectedEngineType.includes('MCP') || selectedEngineType === 'auto')) {
         payload.presetName = presetName;
         payload.mcpServerUrl = this.config.mcp?.servers?.[0]?.["devops-mcp-server"]?.url || "http://localhost:3003";
         
