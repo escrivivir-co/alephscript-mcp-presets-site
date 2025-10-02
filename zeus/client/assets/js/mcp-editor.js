@@ -507,12 +507,32 @@ class MCPEditor {
     event.preventDefault();
     
     const formData = new FormData(event.target);
+    
+    // Ensure we have a valid serverId - fallback to first available server
+    let serverId = this.selectedServer?.id;
+    if (!serverId) {
+      // Try to get the first connected server as fallback
+      try {
+        const response = await fetch('/api/mcp/servers');
+        const data = await response.json();
+        if (data.success && data.servers && data.servers.length > 0) {
+          const firstConnectedServer = data.servers.find(server => server.status === 'connected');
+          if (firstConnectedServer) {
+            serverId = firstConnectedServer.id;
+            console.log('Using fallback serverId:', serverId);
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to get fallback server:', error);
+      }
+    }
+    
     const presetData = {
       name: formData.get('name'),
       description: formData.get('description'),
       category: formData.get('category'),
       prompt: formData.get('prompt') || '',
-      serverId: this.selectedServer?.id,
+      serverId: serverId,
       items: Array.from(this.selectedItems),
       serverContent: this.serverContent
     };
@@ -760,6 +780,15 @@ class MCPEditor {
   renderServers(servers) {
     // Implementation would update the server list in the sidebar
     console.log('Rendering servers:', servers);
+    
+    // Auto-select first connected server if none selected
+    if (!this.selectedServer && servers && servers.length > 0) {
+      const firstConnectedServer = servers.find(server => server.status === 'connected');
+      if (firstConnectedServer) {
+        console.log('Auto-selecting first connected server:', firstConnectedServer.id);
+        this.selectServer(firstConnectedServer.id);
+      }
+    }
   }
 
   /**
