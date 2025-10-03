@@ -13,8 +13,70 @@
         "get_server_status"
       ],
       "createdAt": "2025-10-01T22:52:32.317Z",
-      "updatedAt": "2025-10-02T01:29:30.867Z",
+      "updatedAt": "2025-10-02T23:18:28.441Z",
       "serverContent": {}
+    },
+    {
+      "id": "1759447164477",
+      "name": "test1",
+      "description": "test1",
+      "category": "productivity",
+      "prompt": "what is the status?",
+      "parameters": {},
+      "serverId": null,
+      "items": [
+        "get_server_info",
+        "get_server_status"
+      ],
+      "createdAt": "2025-10-02T23:19:24.477Z",
+      "updatedAt": "2025-10-02T23:25:01.753Z",
+      "serverContent": {}
+    },
+    {
+      "id": "1759447975303",
+      "name": "UI-Test-Preset-E2E",
+      "description": "Preset created via UI automation for end-to-end testing of Zeus to SLMo42 persistence",
+      "category": "development",
+      "prompt": "Get comprehensive server status information including detailed info and project state",
+      "parameters": {},
+      "serverId": null,
+      "items": [
+        "get_server_status",
+        "get_server_info",
+        "Estado del Proyecto"
+      ],
+      "createdAt": "2025-10-02T23:32:55.303Z",
+      "updatedAt": "2025-10-02T23:32:55.303Z"
+    },
+    {
+      "id": "1759448335058",
+      "name": "Fixed-Sync-Test-Preset",
+      "description": "Testing the fix for serverId assignment and SLMo42 synchronization",
+      "category": "development",
+      "prompt": "Please provide comprehensive server status and detailed information about the system",
+      "parameters": {},
+      "serverId": "localhost",
+      "items": [
+        "get_server_status",
+        "get_server_info"
+      ],
+      "createdAt": "2025-10-02T23:38:55.058Z",
+      "updatedAt": "2025-10-02T23:38:55.058Z"
+    },
+    {
+      "id": "1759449029137",
+      "name": "Server-Name-Fix-Test",
+      "description": "Testing preset sync with corrected server name: devops-mcp-server instead of localhost",
+      "category": "development",
+      "prompt": "Get comprehensive server status and detailed system information",
+      "parameters": {},
+      "serverId": "devops-mcp-server",
+      "items": [
+        "get_server_status",
+        "get_server_info"
+      ],
+      "createdAt": "2025-10-02T23:50:29.137Z",
+      "updatedAt": "2025-10-02T23:50:29.137Z"
     }
   ],
   "categories": [
@@ -24,5 +86,5 @@
     "Creative"
   ],
   "defaultPreset": null,
-  "lastUpdated": "2025-10-02T01:29:30.867Z"
+  "lastUpdated": "2025-10-02T23:50:29.137Z"
 }

@@ -533,7 +533,7 @@ class MCPEditor {
       category: formData.get('category'),
       prompt: formData.get('prompt') || '',
       serverId: serverId,
-      items: Array.from(this.selectedItems),
+      items: Array.from(this.selectedItems), // This is already a simple array of tool names 
       serverContent: this.serverContent
     };
     
