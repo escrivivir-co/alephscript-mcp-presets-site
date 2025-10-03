@@ -77,6 +77,21 @@
       ],
       "createdAt": "2025-10-02T23:50:29.137Z",
       "updatedAt": "2025-10-02T23:50:29.137Z"
+    },
+    {
+      "id": "1759451744251",
+      "name": "Function-Call-Debug-Test",
+      "description": "Preset para probar function calling con logging mejorado en SLMo42",
+      "category": "development",
+      "prompt": "Por favor, obtén el estado actual del servidor y toda la información detallada disponible usando las herramientas de monitoreo.",
+      "parameters": {},
+      "serverId": "devops-mcp-server",
+      "items": [
+        "get_server_status",
+        "get_server_info"
+      ],
+      "createdAt": "2025-10-03T00:35:44.251Z",
+      "updatedAt": "2025-10-03T00:35:44.251Z"
     }
   ],
   "categories": [
@@ -86,5 +101,5 @@
     "Creative"
   ],
   "defaultPreset": null,
-  "lastUpdated": "2025-10-02T23:50:29.137Z"
+  "lastUpdated": "2025-10-03T00:35:44.251Z"
 }
