@@ -39,8 +39,19 @@ class AIHandler {
   }
 
   async sendMessage(message, conversationId = null) {
+    // DEPRECATED: AI inference disabled in catalog-only mode
+    // VS Code Copilot Chat handles inference directly via MCP servers
+    if (!this.config.features?.aiConversations) {
+      console.warn('⚠️ AI Conversations disabled - MCPGallery is catalog-only mode');
+      return {
+        success: false,
+        message: 'AI inference disabled. Use VS Code Copilot Chat with configured MCP servers.',
+        mode: 'catalog-only'
+      };
+    }
+    
     try {
-      // Legacy method - now calls the new SLMo42 integration
+      // Legacy method - kept for backward compatibility
       const options = { conversationId };
       return await this.sendMessageToSLMo42(message, options);
     } catch (error) {
@@ -49,11 +60,26 @@ class AIHandler {
     }
   }
 
+  /**
+   * @deprecated SLMo42 inference has been disabled.
+   * MCPGallery now operates in catalog-only mode.
+   * LLM inference is handled by VS Code Copilot Chat.
+   */
   async sendMessageToSLMo42(message, options = {}) {
+    // Check if inference is enabled (legacy support)
+    if (this.config.ai?.mode === 'disabled' || !this.config.features?.aiConversations) {
+      console.warn('⚠️ sendMessageToSLMo42 called but inference is disabled');
+      return {
+        success: false,
+        answer: 'Inference disabled. MCPGallery is in catalog-only mode.',
+        deprecated: true
+      };
+    }
+    
     try {
       const { conversationId, presetName, usePresetTools, engineType } = options;
       
-      // Build MCP payload for SLMo42
+      // Build MCP payload for SLMo42 (legacy)
       const payload = {
         input: message
       };

@@ -7,14 +7,15 @@ class MCPHandler {
   constructor() {
     this.config = getConfig();
     this.servers = [];
-    this.slmo42Endpoint = this.config.ai?.endpoint || 'http://localhost:4001';
+    // Preset Service endpoint (catalog-only, no inference)
+    this.presetServiceEndpoint = this.config.catalog?.endpoint || this.config.ai?.endpoint || 'http://localhost:4001';
     this.mockCatalogPath = path.join(__dirname, '../test/mock_mcp_catalog.json');
   }
 
   async discoverServers() {
     try {
-      console.log('Discovering MCP servers via SLMo42 proxy...');
-      const response = await axios.get(`${this.slmo42Endpoint}/ai/ui/mcp/list`, {
+      console.log('Discovering MCP servers via Preset Service...');
+      const response = await axios.get(`${this.presetServiceEndpoint}/ai/ui/mcp/list`, {
         timeout: this.config.mcp?.timeout || 600000 // 10 minutes for SLM inference
       });
       
