@@ -2,6 +2,7 @@
 
 > **Submódulo**: MCPGallery  
 > **Rama de integración**: `integration/beta/scriptorium`  
+> **Versión**: 0.1.0  
 > **Épica activa**: SCRIPT-2.2.4 (MCP Integration)  
 > **Fecha**: 2025-12-30
 
@@ -165,6 +166,43 @@ curl http://localhost:3012/health  # zeus
 
 # Catálogo MCP
 curl http://localhost:4001/ai/ui/mcp/list | jq '.serversCount, .totalTools'
+```
+
+---
+
+## 🌐 Zeus UI (Catálogo v0.1.0)
+
+Zeus es la UI de gestión que actúa como **fuente de verdad del catálogo MCP**.
+
+> **Nota DRY**: Zeus NO es un submódulo git (no tiene README-SCRIPTORIUM.md propio).
+
+### API Endpoints
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/` | UI principal |
+| `GET` | `/api/catalog` | Catálogo de servidores MCP |
+| `GET` | `/api/presets` | Lista de presets guardados |
+| `POST` | `/api/presets` | Crear/actualizar preset |
+| `DELETE` | `/api/presets/:name` | Eliminar preset |
+
+### Integración con Plugin
+
+```bash
+# El plugin @plugin_ox_mcppresets consulta Zeus
+curl http://localhost:3012/api/catalog
+curl http://localhost:3012/api/presets
+```
+
+### Estructura
+
+```
+zeus/
+├── server/          # Backend Express
+├── client/          # Frontend assets
+├── views/           # Templates EJS
+├── configs/         # Configuración
+└── package.json     # v0.1.0
 ```
 
 ---

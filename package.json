@@ -1,0 +1,56 @@
+{
+  "name": "alephscript-mcp-gallery",
+  "version": "0.1.0",
+  "description": "MCPGallery - Ecosistema de servidores MCP para ALEPH Scriptorium",
+  "private": true,
+  "workspaces": [
+    "mcp-core-sdk",
+    "mcp-mesh-sdk",
+    "mcp-model-sdk",
+    "zeus"
+  ],
+  "scripts": {
+    "start": "npm run start:mesh",
+    "start:mesh": "cd mcp-mesh-sdk && npm start",
+    "start:model": "cd mcp-model-sdk && npm start",
+    "start:zeus": "cd zeus && npm start",
+    "start:all": "npm run start:mesh & npm run start:model & npm run start:zeus",
+    "start:launcher": "cd mcp-mesh-sdk && npm run start:launcher",
+    "install:all": "npm install && cd mcp-core-sdk && npm install && cd ../mcp-mesh-sdk && npm install && cd ../mcp-model-sdk && npm install && cd ../zeus && npm install",
+    "status": "echo 'Checking servers...' && curl -s http://localhost:3003/health 2>/dev/null || echo 'mesh:3003 ❌' && curl -s http://localhost:4001/health 2>/dev/null || echo 'model:4001 ❌' && curl -s http://localhost:3012 2>/dev/null || echo 'zeus:3012 ❌'",
+    "catalog": "curl -s http://localhost:4001/ai/ui/mcp/list | jq '.catalog' 2>/dev/null || echo 'Run start:model first'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/escrivivir-co/alephscript-mcp-gallery.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "alephscript",
+    "scriptorium"
+  ],
+  "author": "escrivivir-co",
+  "license": "AIPL-1.0",
+  "submodules": {
+    "mcp-core-sdk": {
+      "version": "1.0.0",
+      "description": "BaseMCPServer + AlephScriptServer (core library)"
+    },
+    "mcp-mesh-sdk": {
+      "version": "1.0.0",
+      "description": "DevOps + Launcher + Wiki + StateMachine servers"
+    },
+    "mcp-model-sdk": {
+      "version": "1.0.0",
+      "description": "Preset Service (REST API)"
+    },
+    "zeus": {
+      "version": "0.1.0",
+      "description": "UI de gestión de presets MCP"
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
