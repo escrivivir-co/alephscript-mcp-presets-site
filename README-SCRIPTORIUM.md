@@ -3,7 +3,7 @@
 > **Submódulo**: MCPGallery  
 > **Rama de integración**: `integration/beta/scriptorium`  
 > **Versión**: 0.1.0  
-> **Épica activa**: SCRIPT-2.2.4 (MCP Integration)  
+> **Épica activa**: SCRIPT-2.1.0 (TypedPrompting Context Manager)  
 > **Fecha**: 2025-12-30
 
 ---
@@ -122,8 +122,22 @@
 | Plugin | `.github/plugins/mcp-presets/` |
 | Bridge | `.github/agents/plugin_ox_mcppresets.agent.md` |
 | Backlog activo | `ARCHIVO/DISCO/BACKLOG_BORRADORES/Diciembre_29_TypedPrompting_ContextManager/` |
-| Épica | SCRIPT-2.2.4 (MCP Integration) |
+| Épica | SCRIPT-2.1.0 (TypedPrompting Context Manager) |
 | Formación del agente | `08_Formacion_McpPresets_MCP_Server.md` |
+
+---
+
+## 📚 Documentación de Integración
+
+| Documento | Ubicación | Descripción |
+|-----------|-----------|-------------|
+| **Índice Integración** | [.github/docs/scriptorium-integration/INDEX.md](.github/docs/scriptorium-integration/INDEX.md) | Navegación central |
+| **Quick Reference** | [.github/docs/scriptorium-integration/SCRIPTORIUM_QUICKREF.md](.github/docs/scriptorium-integration/SCRIPTORIUM_QUICKREF.md) | Arranque rápido |
+| **Handoffs de Agentes** | [.github/docs/scriptorium-integration/HANDOFFS_SCRIPTORIUM_AGENTS.md](.github/docs/scriptorium-integration/HANDOFFS_SCRIPTORIUM_AGENTS.md) | Cómo invocar agentes |
+| **Respuesta Scriptorium** | [.github/docs/RESPUESTA_SCRIPTORIUM.md](.github/docs/RESPUESTA_SCRIPTORIUM.md) | Respuestas oficiales |
+| **ADR-006** | [zeus/PLANIFICACION/ADR/ADR-006_SCRIPTORIUM_INTEGRATION_UPGRADE.md](zeus/PLANIFICACION/ADR/ADR-006_SCRIPTORIUM_INTEGRATION_UPGRADE.md) | Decisión arquitectónica |
+| **E2E Checkpoints** | [test/e2e-scriptorium/DEMO_CHECKPOINTS_SCRIPTORIUM.md](test/e2e-scriptorium/DEMO_CHECKPOINTS_SCRIPTORIUM.md) | Validación demo |
+| **Commit Protocol** | [.github/prompts/as_commit-message.prompt.md](.github/prompts/as_commit-message.prompt.md) | Formato de commits |
 
 ---
 
@@ -244,6 +258,11 @@ Para usarlo desde ALEPH, copiar o referenciar esta configuración en `ALEPH/.vsc
 
 | Fecha | Cambio |
 |-------|--------|
+| 2025-12-30 | Reorganizar documentación: mover archivos de PLANIFICACION a estructura DRY |
+| 2025-12-30 | Crear .github/docs/scriptorium-integration/ con INDEX.md |
+| 2025-12-30 | Mover ADR-006 a zeus/PLANIFICACION/ADR/ |
+| 2025-12-30 | Mover DEMO_CHECKPOINTS a test/e2e-scriptorium/ |
+| 2025-12-30 | Actualizar épica activa a SCRIPT-2.1.0 |
 | 2025-12-30 | Crear README-SCRIPTORIUM.md (este archivo) |
 | 2025-12-30 | Eliminar src/presets-mcp-server.ts (usar DevOps Server en su lugar) |
 | 2025-12-30 | Documentar flujo Zeus → Plugin |

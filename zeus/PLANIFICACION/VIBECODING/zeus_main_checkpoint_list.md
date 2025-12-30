@@ -6,6 +6,45 @@
 
 ---
 
+## � PENDING: Scriptorium Team Response
+
+**Status**: ⏳ AWAITING RESPONSE  
+**Documents Sent**: 2025-12-30  
+**Blocking**: S2.1+ implementation
+
+| REQ | Description | Response |
+|-----|-------------|----------|
+| REQ-01 | Plugin bridge status | ⏳ |
+| REQ-02 | Agent formation file | ⏳ |
+| REQ-03 | ALEPH mcp.json config | ⏳ |
+| REQ-04 | SCRIPT-2.2.4 epic scope | ⏳ |
+| REQ-05 | Plugin nomenclature | ⏳ |
+| REQ-06 | Endpoint ownership | ⏳ |
+| REQ-07 | Discovery mechanism | ⏳ |
+
+→ See [CARTA_REQUERIMIENTOS_SCRIPTORIUM.md](../CARTA_REQUERIMIENTOS_SCRIPTORIUM.md)
+
+### When Response Arrives
+1. Update this section with responses
+2. Unblock corresponding checkpoints
+3. Activate appropriate agents via [HANDOFFS_SCRIPTORIUM_AGENTS.md](../HANDOFFS_SCRIPTORIUM_AGENTS.md)
+
+---
+
+## 🎯 Demo Checkpoints (Scriptorium Validation)
+
+| # | Checkpoint | Status | Link |
+|---|------------|--------|------|
+| A | MCP Server Config for VS Code | ⬜ | [Demo Doc](../DEMO_CHECKPOINTS_SCRIPTORIUM.md#checkpoint-a) |
+| B | Public Tools Available | ⬜ | [Demo Doc](../DEMO_CHECKPOINTS_SCRIPTORIUM.md#checkpoint-b) |
+| C | Model Catalog Scanning | ⬜ | [Demo Doc](../DEMO_CHECKPOINTS_SCRIPTORIUM.md#checkpoint-c) |
+| D | Zeus Demo Pack Creation | ⬜ | [Demo Doc](../DEMO_CHECKPOINTS_SCRIPTORIUM.md#checkpoint-d) |
+| E | TypedPrompts Integration | ⬜ | [Demo Doc](../DEMO_CHECKPOINTS_SCRIPTORIUM.md#checkpoint-e) |
+
+→ See [DEMO_CHECKPOINTS_SCRIPTORIUM.md](../DEMO_CHECKPOINTS_SCRIPTORIUM.md) for full validation protocol
+
+---
+
 ## 📚 Scriptorium Ecosystem Documentation
 
 This is the **Scrum Index** for Zeus development within MCPGallery. Links to all ecosystem documentation:
@@ -24,6 +63,7 @@ This is the **Scrum Index** for Zeus development within MCPGallery. Links to all
 | Sprint | Status | Date | Entry Point |
 |--------|--------|------|-------------|
 | **S1.1** | ✅ DONE | 2025-12-30 | [sprint_S1.1_scriptorium_foundation.md](ITERATIONS/sprint_S1.1_scriptorium_foundation.md) |
+| **S1.2** | ⏳ BLOCKED | 2025-12-30 | [sprint_S1.2_scriptorium_review.md](ITERATIONS/sprint_S1.2_scriptorium_review.md) |
 | S2.1 | 📋 PLANNED | - | Catalog Service Integration |
 | S2.2 | 📋 PLANNED | - | Preset CRUD Operations |
 | S2.3 | 📋 PLANNED | - | MCP Mesh Integration |
@@ -37,6 +77,16 @@ This is the **Scrum Index** for Zeus development within MCPGallery. Links to all
 | ADR | Status | Description |
 |-----|--------|-------------|
 | [ADR-006](../ADR-006_SCRIPTORIUM_INTEGRATION_UPGRADE.md) | ✅ Active | Scriptorium Integration - Catalog-Only Mode |
+
+### Scriptorium Coordination Documents
+
+| Document | Purpose | Link |
+|----------|---------|------|
+| Reunión Revisión | Meeting minutes 2025-12-30 | [REUNION_REVISION_2025-12-30.md](../REUNION_REVISION_2025-12-30.md) |
+| Análisis DRY | README homogenization | [ANALISIS_README_SCRIPTORIUM_DRY.md](../ANALISIS_README_SCRIPTORIUM_DRY.md) |
+| Carta Requerimientos | Formal requests to Scriptorium | [CARTA_REQUERIMIENTOS_SCRIPTORIUM.md](../CARTA_REQUERIMIENTOS_SCRIPTORIUM.md) |
+| Demo Checkpoints | E2E validation protocol | [DEMO_CHECKPOINTS_SCRIPTORIUM.md](../DEMO_CHECKPOINTS_SCRIPTORIUM.md) |
+| Agent Handoffs | Cross-team agent activation | [HANDOFFS_SCRIPTORIUM_AGENTS.md](../HANDOFFS_SCRIPTORIUM_AGENTS.md) |
 
 ---
 
