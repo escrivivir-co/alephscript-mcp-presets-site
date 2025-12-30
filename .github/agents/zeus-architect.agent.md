@@ -1,7 +1,6 @@
 ---
 description: System architect for MCPGallery ecosystem and Aleph Scriptorium integration
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'todo']
-model: Claude Sonnet 4
+tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'playwright/*', 'agent', 'todo']
 ---
 
 # 🏗️ Zeus Architect — Scriptorium Integration
@@ -168,8 +167,48 @@ MCPGallery/                           # Aleph Scriptorium submódulo
 - **MCPGaia/Mesh**: MCP protocol servers (invoked BY Copilot)
 - **Inference**: VS Code Copilot Chat (cloud-based)
 
+## 🆕 DevOps Server as Context Manager (2025-12-30)
+
+### Architecture Discovery
+The DevOps MCP Server (:3003) has CRUD capabilities for prompts/resources, enabling:
+- **Context Packs**: Stored as MCP prompts (blueprint, scrum, teatro, full)
+- **Dynamic filtering**: @ox/@indice query packs for instruction selection
+- **Token reduction**: 70% savings (~127K → ~40K average)
+
+### Context Packs Available
+| Pack | Domain | Token Savings | Activates |
+|------|--------|---------------|-----------|
+| `context-pack-blueprint` | Impress.js, 3D | ~60% | blueprint-templates, gh-pages |
+| `context-pack-scrum` | Backlogs, sprints | ~70% | scrum-protocol, scrum-workflow |
+| `context-pack-teatro` | Narrative, X+1 | ~65% | teatro-interactivo |
+| `context-pack-full` | Development | 0% | All instructions |
+
+### Integration with Scriptorium Agents
+- **@ox**: Recommends context pack based on user focus
+- **@indice**: Resolves instructions from selected pack
+- **DevOps tools**: `list_prompts`, `get_prompt`, `add_prompt`, `edit_prompt`
+
+### Usage Example
+```
+User: "@ox recomienda pack para blueprints"
+@ox: 
+1. Invokes: mcp_devops_get_prompt("context-pack-blueprint")
+2. Returns pack with:
+   - Instructions to activate: blueprint-templates, gh-pages
+   - Instructions to deactivate: scrum-*, teatro-*
+   - Token savings: ~60%
+```
+
+## Master Documents (VIBECODING)
+
+| Document | Purpose | Location |
+|----------|---------|----------|
+| **Checkpoint List** | Sprint tracking, REQ status | `zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md` |
+| **Context Base** | Architecture overview | `zeus/PLANIFICACION/VIBECODING/zeus_main_context_base.md` |
+| **Iterations** | Sprint files | `zeus/PLANIFICACION/VIBECODING/ITERATIONS/` |
+| **Policies** | VibeCoding rules | `zeus/PLANIFICACION/VIBECODING/POLICIES/` |
+
 ## Reference Documentation
-- [ADR-006 Scriptorium Integration](../../zeus/PLANIFICACION/ADR-006_SCRIPTORIUM_INTEGRATION_UPGRADE.md)
-- [Migration Plan: chatmodes → agents](../MIGRATION_PLAN_CHATMODES_TO_AGENTS.md) ✅ COMPLETED
-- [README-SCRIPTORIUM](../../README-SCRIPTORIUM.md)
+- [README-SCRIPTORIUM](../../README-SCRIPTORIUM.md) (includes ADR-006)
 - [Zeus Architecture Plan](../../zeus/PLANIFICACION/plan_zeus.md)
+- [E2E Test Log](../../test/e2e-scriptorium/TEST_LOG_2025-12-30.md)

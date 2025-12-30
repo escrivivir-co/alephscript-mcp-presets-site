@@ -121,6 +121,56 @@ See `zeus_main_checkpoint_list.md` for detailed progress tracking.
 - **Technical decision rationale**
 - **Handoff instructions**
 
+---
+
+## Scriptorium Handoff Protocols
+
+### When to Activate Zeus Agents (from Scriptorium)
+
+| Agent | Activation Trigger | Command |
+|-------|-------------------|---------|
+| Zeus Architect | Architecture decisions, ecosystem coordination | `@zeus-architect Review [topic]` |
+| Backend Agent | API endpoints, handlers, server logic | `@backend-agent Implement [endpoint]` |
+| Frontend Agent | Views, UI, HyperAxe templates | `@frontend-agent Update [view]` |
+| Config Agent | Settings, themes, feature flags | `@config-agent Configure [setting]` |
+| Integration Agent | Cross-component, E2E testing | `@integration-agent Validate [flow]` |
+| MCPGaia Agent | MCP server operations | `@mcpgaia-agent Check [server]` |
+| Debug Agent | Testing, validation | `@debug-agent Test [component]` |
+
+### Handoff Template (Scriptorium → Zeus)
+
+```markdown
+## Handoff: [Agent] — [Task]
+
+**From**: [Scriptorium agent]
+**Context**: [Current situation]
+**Need**: [What you need done]
+
+**Current State**:
+- [Relevant files/endpoints]
+- [Current behavior]
+
+**Expected Deliverables**:
+- [What agent should produce]
+```
+
+### Quick Start Commands
+
+```bash
+# Start MCPGallery services
+cd MCPGallery
+npm run start:mesh   # DevOps MCP :3003
+npm run start:model  # Preset Service :4001
+npm run start:zeus   # Zeus UI :3012
+
+# Validate services
+curl http://localhost:3003/health
+curl http://localhost:4001/health
+curl http://localhost:3012/health
+```
+
+---
+
 ## Common Pitfalls to Avoid
 
 ### Architecture Violations

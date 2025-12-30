@@ -4,12 +4,14 @@
 
 **Project**: Zeus - MCPGallery UI & Preset Catalog  
 **Branch**: `integration/beta/scriptorium`  
-**Goal**: MCP entry point for Aleph Scriptorium — catalog-only mode (no inference)
+**Goal**: MCP entry point for Aleph Scriptorium — catalog-only mode (no inference)  
+**Last Update**: 2025-12-30 (Post-Scriptorium Review)
 
 ### Key Context
 - **Ecosystem**: MCPGallery monorepo with 4 packages
 - **Role**: UI for MCP preset selection and catalog management
 - **Integration**: Submódulo of Aleph Scriptorium
+- **Status**: ✅ INTEGRATION VALIDATED
 
 ## MCPGallery Ecosystem (4 Packages)
 
@@ -21,13 +23,29 @@ MCPGallery/
 └── zeus/               # UI de gestión + Catálogo (:3012)
 ```
 
-### Service Architecture (Catalog-Only Mode)
+### Service Architecture (Catalog-Only Mode + Context Manager)
 
 ```
-Zeus (:3012) ←→ Preset Service (:4001) ←→ MCP Mesh (:3003+)
-     │                  │                        │
-  UI Gallery       Catalog API             MCP Servers
-  (no inference)   (no inference)      (invoked BY Copilot)
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    SCRIPTORIUM MCP ECOSYSTEM                             │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  Zeus (:3012) ←→ Preset Service (:4001) ←→ MCP Mesh (:3003+)            │
+│       │                  │                        │                      │
+│   UI Gallery        Catalog API             MCP Servers                  │
+│   (no inference)   (no inference)      (invoked BY Copilot)             │
+│                                                                          │
+│  ┌─────────────────────────────────────────────────────────────────┐    │
+│  │  🆕 DevOps Server (:3003) = CONTEXT MANAGER                     │    │
+│  │  • CRUD prompts/resources via MCP tools                         │    │
+│  │  • 4 Context Packs: blueprint, scrum, teatro, full              │    │
+│  │  • @ox/@indice query packs for instruction filtering            │    │
+│  │  • 70% reduction in context tokens (~127K → ~40K)               │    │
+│  └─────────────────────────────────────────────────────────────────┘    │
+│                                                                          │
+│  VS Code Copilot uses MCP servers directly via .vscode/mcp.json         │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 **Critical Insight**: MCPGallery manages the *catalog* — VS Code Copilot handles *inference*.
@@ -109,9 +127,38 @@ zeus/
 - **Pattern**: Copilot uses MCP servers directly
 - **Presets**: Saved to `mcp-model-sdk/PRESETS/mcp_presets.json`
 
+## Quick Reference (Scriptorium Team)
+
+### Start Services
+```bash
+cd MCPGallery
+npm run start:mesh   # DevOps MCP :3003
+npm run start:model  # Preset Service :4001
+npm run start:zeus   # Zeus UI :3012
+```
+
+### Validate Services
+```bash
+curl http://localhost:3003/health  # → {"status":"healthy"}
+curl http://localhost:4001/health  # → {"status":"ok"}
+curl http://localhost:3012/health  # → {"status":"ok"}
+```
+
+### Demo Checkpoints (E2E)
+| # | Test | Expected |
+|---|------|----------|
+| A | DevOps health | 20 tools, 7 resources, 3 prompts |
+| B | Catalog query | `/ai/ui/mcp/list` returns catalog |
+| C | Presets list | `/ai/ui/mcp/presets` returns 7+ presets |
+| D | Zeus UI | http://localhost:3012 loads |
+| E | Copilot tools | `get_server_status` invocable |
+
+### Need Help?
+See `agents.md` for handoff protocols to Zeus agents.
+
 ## Key Reference Files
 
-- `PLANIFICACION/ADR-006_SCRIPTORIUM_INTEGRATION_UPGRADE.md` - Architecture decision
-- `../../README-SCRIPTORIUM.md` - Ecosystem overview
+- `../../README-SCRIPTORIUM.md` - Ecosystem overview (includes ADR-006)
 - `../../.github/agents/` - AI development agents
 - `../../.github/copilot-instructions.md` - Copilot context
+- `test/e2e-scriptorium/` - E2E checkpoints and test logs

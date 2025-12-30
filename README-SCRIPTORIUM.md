@@ -131,13 +131,51 @@
 
 | Documento | Ubicación | Descripción |
 |-----------|-----------|-------------|
-| **Índice Integración** | [.github/docs/scriptorium-integration/INDEX.md](.github/docs/scriptorium-integration/INDEX.md) | Navegación central |
-| **Quick Reference** | [.github/docs/scriptorium-integration/SCRIPTORIUM_QUICKREF.md](.github/docs/scriptorium-integration/SCRIPTORIUM_QUICKREF.md) | Arranque rápido |
-| **Handoffs de Agentes** | [.github/docs/scriptorium-integration/HANDOFFS_SCRIPTORIUM_AGENTS.md](.github/docs/scriptorium-integration/HANDOFFS_SCRIPTORIUM_AGENTS.md) | Cómo invocar agentes |
-| **Respuesta Scriptorium** | [.github/docs/RESPUESTA_SCRIPTORIUM.md](.github/docs/RESPUESTA_SCRIPTORIUM.md) | Respuestas oficiales |
-| **ADR-006** | [zeus/PLANIFICACION/ADR/ADR-006_SCRIPTORIUM_INTEGRATION_UPGRADE.md](zeus/PLANIFICACION/ADR/ADR-006_SCRIPTORIUM_INTEGRATION_UPGRADE.md) | Decisión arquitectónica |
+| **VibeCoding Checkpoint List** | [zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md](zeus/PLANIFICACION/VIBECODING/zeus_main_checkpoint_list.md) | Tracking de sprints |
+| **Context Base** | [zeus/PLANIFICACION/VIBECODING/zeus_main_context_base.md](zeus/PLANIFICACION/VIBECODING/zeus_main_context_base.md) | Arquitectura y quick ref |
+| **Agents Collaboration** | [zeus/PLANIFICACION/VIBECODING/agents.md](zeus/PLANIFICACION/VIBECODING/agents.md) | Handoffs y protocolos |
 | **E2E Checkpoints** | [test/e2e-scriptorium/DEMO_CHECKPOINTS_SCRIPTORIUM.md](test/e2e-scriptorium/DEMO_CHECKPOINTS_SCRIPTORIUM.md) | Validación demo |
+| **Test Log** | [test/e2e-scriptorium/TEST_LOG_2025-12-30.md](test/e2e-scriptorium/TEST_LOG_2025-12-30.md) | Resultados E2E |
 | **Commit Protocol** | [.github/prompts/as_commit-message.prompt.md](.github/prompts/as_commit-message.prompt.md) | Formato de commits |
+
+---
+
+## 🏗️ ADR-006: Decisión Arquitectónica de Integración
+
+> **Status**: APPROVED (2025-12-30)  
+> **Scope**: MCPGallery → Aleph Scriptorium
+
+### Problema
+
+MCPGallery evolucionó de prototipo aislado a componente integrado del Scriptorium. Se requería:
+1. Desconectar Zeus de SLMo42 (inferencia deprecada)
+2. Migrar chatmodes → agents (actualización VS Code Copilot)
+3. Definir MCPGallery como entry point MCP
+
+### Decisión
+
+| Aspecto | Antes | Después |
+|---------|-------|---------|
+| Inferencia | Zeus → SLMo42 (:4001) | ❌ Ninguna (Copilot la maneja) |
+| Modo | Full AI chat | Catalog-only |
+| Agentes | `.github/chatmodes/` | `.github/agents/` |
+| Rol | Prototipo autónomo | Entry point MCP del Scriptorium |
+
+### Endpoints de Catálogo (Preset Service :4001)
+
+| Endpoint | Método | Uso |
+|----------|--------|-----|
+| `/ai/ui/mcp/list` | GET | Catálogo completo MCP |
+| `/ai/ui/mcp/presets` | GET | Lista de presets guardados |
+| `/ai/ui/mcp/preset/:name` | GET | Obtener preset específico |
+| `/ai/ui/mcp/set` | POST | Crear/actualizar preset |
+
+### Key Insight: No Inference
+
+- **Zeus**: UI-only, NO llamadas LLM
+- **Preset Service**: Gestión de catálogo ONLY
+- **MCP Mesh**: Servidores MCP reales (invocados POR Copilot)
+- **Inferencia**: VS Code Copilot Chat (cloud-based)
 
 ---
 
