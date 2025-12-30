@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "start": "npm run start:mesh",
-    "start:mesh": "cd mcp-mesh-sdk && npm start",
+    "start:mesh": "npm run start:launcher",
     "start:model": "cd mcp-model-sdk && npm start",
     "start:zeus": "cd zeus && npm start",
     "start:all": "npm run start:mesh & npm run start:model & npm run start:zeus",
