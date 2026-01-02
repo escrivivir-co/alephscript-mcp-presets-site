@@ -5,6 +5,8 @@
 [submodule "mcp-mesh-sdk"]
 	path = mcp-mesh-sdk
 	url = https://github.com/escrivivir-co/alephscript-mcp-mesh-sdk.git
+	branch = integration/beta/scriptorium
 [submodule "mcp-model-sdk"]
 	path = mcp-model-sdk
 	url = https://github.com/escrivivir-co/alephscript-mcp-model-sdk.git
+	branch = integration/beta/scriptorium
