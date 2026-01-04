@@ -38,6 +38,8 @@
 | `wiki-browser-server` | 3002 | MCPWikiBrowserServer | Wikipedia browsing |
 | `state-machine-server` | 3004 | MCPStateMachineServer | X+1 state machine |
 | `launcher-server` | 3050 | MCPLauncherServer | Server orchestration |
+| `prolog-mcp-server` | 3006 | MCPPrologServer | Prolog logic inference |
+| `typed-prompt-mcp-server` | 3020 | MCPTypedPromptServer | Schema validation & ontology |
 | `xplus1-server` | 3001 | — | X+1 control |
 
 ---
