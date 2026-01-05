@@ -10,3 +10,7 @@
 	path = mcp-model-sdk
 	url = https://github.com/escrivivir-co/alephscript-mcp-model-sdk.git
 	branch = integration/beta/scriptorium
+[submodule "mcp-inspector-sdk"]
+	path = mcp-inspector-sdk
+	url = https://github.com/escrivivir-co/mcp-inspector-sdk
+	branch = integration/scriptorium/beta
