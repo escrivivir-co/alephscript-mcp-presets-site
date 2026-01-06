@@ -14,3 +14,6 @@
 	path = mcp-inspector-sdk
 	url = https://github.com/escrivivir-co/mcp-inspector-sdk
 	branch = integration/scriptorium/beta
+[submodule "mcp-channels-sdk"]
+	path = mcp-channels-sdk
+	url = https://github.com/escrivivir-co/mcp-channels-sdk.git
