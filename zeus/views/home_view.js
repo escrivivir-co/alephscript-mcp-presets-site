@@ -78,9 +78,9 @@ const homeView = (options = {}) => {
         'Theme Preview',
         div({ class: 'theme-preview-section' },
           p({ class: 'text-muted mb-2' },
-            `Current theme: ${config.theme.current || 'Clear-MCP'}`
+            `Current theme: ${config.theme.current || 'Black-White-MCP'}`
           ),
-          themePreview(config.theme.current || 'Clear-MCP')
+          themePreview(config.theme.current || 'Black-White-MCP')
         )
       ),
       
@@ -116,7 +116,7 @@ const featureCard = ({ emoji, title, description, link }) => {
  * Theme preview component
  */
 const themePreview = (currentTheme) => {
-  const themes = ['Clear-MCP', 'Dark-MCP', 'Matrix-MCP', 'Purple-MCP', 'Orange-Dark-MCP'];
+  const themes = ['Black-White-MCP', 'Clear-MCP', 'Dark-MCP', 'Matrix-MCP', 'Purple-MCP', 'Orange-Dark-MCP'];
   
   return div({ class: 'theme-preview-grid' },
     themes.map(theme => 

@@ -16,7 +16,7 @@ if (!fs.existsSync(configFilePath)) {
       "themeSystem": true
     },
     "theme": {
-      "current": "Clear-MCP"
+      "current": "Black-White-MCP"
     },
     "ai": {
       "endpoint": "http://localhost:4001",
@@ -144,7 +144,7 @@ function validateSection(section, data) {
     switch (section) {
       case 'theme':
         if (data.current) {
-          const validThemes = ['Clear-MCP', 'Dark-MCP', 'Matrix-MCP', 'Purple-MCP', 'Orange-Dark-MCP'];
+          const validThemes = ['Black-White-MCP', 'Clear-MCP', 'Dark-MCP', 'Matrix-MCP', 'Purple-MCP', 'Orange-Dark-MCP'];
           if (!validThemes.includes(data.current)) {
             result.isValid = false;
             result.errors.push(`Invalid theme: ${data.current}. Valid themes: ${validThemes.join(', ')}`);
@@ -236,7 +236,7 @@ function getSectionDefaults(section) {
       "themeSystem": true
     },
     "theme": {
-      "current": "Clear-MCP"
+      "current": "Black-White-MCP"
     },
     "ai": {
       "endpoint": "http://localhost:4001",

@@ -125,6 +125,7 @@ const settingsSection = (title, description, content) => {
  */
 const themeSelector = (currentTheme) => {
   const availableThemes = [
+    { value: 'Black-White-MCP', label: 'Black & White MCP', description: 'Monochrome interface with Courier New typography' },
     { value: 'Clear-MCP', label: 'Clear MCP', description: 'Light, clean interface' },
     { value: 'Dark-MCP', label: 'Dark MCP', description: 'Dark theme with blue accents' },
     { value: 'Purple-MCP', label: 'Purple MCP', description: 'Purple gradient theme' },

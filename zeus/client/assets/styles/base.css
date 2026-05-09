@@ -265,6 +265,7 @@ input:focus, select:focus, textarea:focus {
   border: 2px solid var(--border-color);
 }
 
+.theme-sample-Black-White-MCP { background: linear-gradient(135deg, #000000 0%, #ffffff 100%); }
 .theme-sample-Clear-MCP { background: linear-gradient(135deg, #2563EB 0%, #F8FAFC 100%); }
 .theme-sample-Dark-MCP { background: linear-gradient(135deg, #1A1A1A 0%, #00D4FF 100%); }
 .theme-sample-Matrix-MCP { background: linear-gradient(135deg, #000000 0%, #00FF41 100%); }

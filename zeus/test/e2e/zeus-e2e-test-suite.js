@@ -109,7 +109,7 @@ class ZeusE2ETestSuite {
       await this.page.goto(`${this.baseUrl}/settings`);
       await this.page.waitForSelector('#theme-select', { timeout: 5000 });
 
-      const themes = ['Clear-MCP', 'Dark-MCP', 'Purple-MCP', 'Matrix-MCP', 'Orange-Dark-MCP'];
+      const themes = ['Black-White-MCP', 'Clear-MCP', 'Dark-MCP', 'Purple-MCP', 'Matrix-MCP', 'Orange-Dark-MCP'];
       
       for (const theme of themes) {
         // Select theme

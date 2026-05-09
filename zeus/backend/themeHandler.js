@@ -6,6 +6,7 @@ class ThemeHandler {
   constructor() {
     this.themesPath = path.join(__dirname, '..', 'client', 'assets', 'themes');
     this.availableThemes = [
+      'Black-White-MCP',
       'Clear-MCP',
       'Dark-MCP',
       'Matrix-MCP',
@@ -20,7 +21,7 @@ class ThemeHandler {
 
   getCurrentTheme() {
     const config = getConfig();
-    return config.theme.current || 'Clear-MCP';
+    return config.theme.current || 'Black-White-MCP';
   }
 
   switchTheme(themeName) {
@@ -51,8 +52,8 @@ class ThemeHandler {
         return fs.readFileSync(themePath, 'utf8');
       } else {
         console.warn(`Theme file not found: ${themePath}`);
-        // Fallback to Clear-MCP theme
-        const defaultPath = path.join(__dirname, '..', 'client', 'assets', 'themes', 'Clear-MCP.css');
+        // Fallback to Black-White-MCP theme
+        const defaultPath = path.join(__dirname, '..', 'client', 'assets', 'themes', 'Black-White-MCP.css');
         return fs.readFileSync(defaultPath, 'utf8');
       }
     } catch (error) {

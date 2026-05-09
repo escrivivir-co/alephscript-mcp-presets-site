@@ -10,7 +10,7 @@
     "themeSystem": true
   },
   "theme": {
-    "current": "Orange-Dark-MCP"
+    "current": "Black-White-MCP"
   },
   "catalog": {
     "endpoint": "http://localhost:4001",
@@ -33,11 +33,11 @@
         "type": "standard"
       },
       "llama_functions": {
-        "name": "Development", 
+        "name": "Development",
         "emoji": "🔍",
         "description": "Enhanced debugging with detailed logging",
         "cost": "Medium",
-        "speed": "Medium", 
+        "speed": "Medium",
         "type": "development"
       },
       "node_llama_cpp_MCP_functions": {
@@ -50,7 +50,7 @@
       },
       "llama_MCP_functions": {
         "name": "MCP Hybrid",
-        "emoji": "🔀", 
+        "emoji": "🔀",
         "description": "Manual MCP implementation with custom logic",
         "cost": "High",
         "speed": "Medium",
@@ -81,7 +81,7 @@
   },
   "ui": {
     "language": "en",
-    "animations": false,
+    "animations": true,
     "darkMode": false
   },
   "debug": false

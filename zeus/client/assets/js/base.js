@@ -23,7 +23,7 @@ const Zeus = {
       }
     } catch (error) {
       console.warn('Could not load configuration:', error);
-      this.config = { theme: { current: 'Clear-MCP' } };
+      this.config = { theme: { current: 'Black-White-MCP' } };
     }
   },
   

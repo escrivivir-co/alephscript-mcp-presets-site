@@ -6,7 +6,7 @@ const { div, html, head, body, title, meta, link, script, nav, ul, li, a, span, 
  */
 const template = (pageTitle, content, options = {}) => {
   const config = require('../configs/config-manager.js').getConfig();
-  const currentTheme = config.theme.current || 'Clear-MCP';
+  const currentTheme = config.theme.current || 'Black-White-MCP';
   
   return html({ lang: 'en' },
     head(

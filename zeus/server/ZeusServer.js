@@ -31,7 +31,7 @@ try {
         mcpExplorer: true,
         themeSystem: true
       },
-      theme: { current: "Clear-MCP" },
+      theme: { current: "Black-White-MCP" },
       debug: false
     };
     debug("Using default configuration");
@@ -240,10 +240,14 @@ app.get("/editor", async (req, res) => {
     const editorView = require("../views/editor_view");
     const MCPHandler = require("../backend/mcpHandler");
     const mcpHandler = new MCPHandler();
+    const requestedServerId = req.query.server;
     
     // Fetch MCP servers and their data
     const servers = await mcpHandler.getAllServers();
-    const selectedServer = servers.length > 0 ? servers[0] : null;
+    const selectedServer =
+      (requestedServerId && servers.find(server => server.id === requestedServerId)) ||
+      servers.find(server => server.status === 'connected') ||
+      servers[0] || null;
     let serverContent = {};
     
     if (selectedServer) {

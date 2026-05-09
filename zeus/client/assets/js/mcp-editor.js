@@ -5,6 +5,7 @@
 
 class MCPEditor {
   constructor() {
+    this.servers = [];
     this.selectedServer = null;
     this.selectedItems = new Set();
     this.currentTab = 'tools';
@@ -23,10 +24,36 @@ class MCPEditor {
    * Initialize the MCP Editor
    */
   init() {
+    this.hydrateInitialState();
     this.bindEvents();
     this.loadServers();
     this.setupRealTimeUpdates();
     this.handleURLParameters();
+  }
+
+  /**
+   * Hydrate initial state from server-rendered markup and URL params
+   */
+  hydrateInitialState() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlServerId = urlParams.get('server');
+    const selectedServerElement = document.querySelector('.server-item.selected');
+    const selectedServerId = urlServerId || selectedServerElement?.dataset?.serverId;
+
+    if (!selectedServerId) return;
+
+    const sidebarName = selectedServerElement?.querySelector('.server-name')?.textContent?.trim();
+    const sidebarDescription = selectedServerElement?.querySelector('.server-description')?.textContent?.trim();
+    const explorerName = document.querySelector('.explorer-header .server-info h2')?.textContent?.trim();
+    const explorerDescription = document.querySelector('.explorer-header .server-info p')?.textContent?.trim();
+
+    this.selectedServer = {
+      id: selectedServerId,
+      name: explorerName || sidebarName || selectedServerId,
+      description: explorerDescription || sidebarDescription || `MCP Server: ${selectedServerId}`,
+      status: 'connected',
+      type: 'mcp'
+    };
   }
 
   /**
@@ -40,18 +67,27 @@ class MCPEditor {
     document.addEventListener('submit', this.handleFormSubmit.bind(this));
     
     // Search and filtering
-    const searchInput = document.getElementById('content-search');
-    if (searchInput) {
-      searchInput.addEventListener('input', this.handleSearch.bind(this));
-    }
-    
-    const categoryFilter = document.getElementById('content-category-filter');
-    if (categoryFilter) {
-      categoryFilter.addEventListener('change', this.handleCategoryFilter.bind(this));
-    }
+    this.bindDynamicControls();
     
     // Keyboard shortcuts
     document.addEventListener('keydown', this.handleKeyboard.bind(this));
+  }
+
+  /**
+   * Bind controls that can be recreated after re-rendering the explorer
+   */
+  bindDynamicControls() {
+    const searchInput = document.getElementById('content-search');
+    if (searchInput) {
+      searchInput.value = this.searchTerm;
+      searchInput.oninput = this.handleSearch.bind(this);
+    }
+
+    const categoryFilter = document.getElementById('content-category-filter');
+    if (categoryFilter) {
+      categoryFilter.value = this.categoryFilter;
+      categoryFilter.onchange = this.handleCategoryFilter.bind(this);
+    }
   }
 
   /**
@@ -194,7 +230,16 @@ class MCPEditor {
       const data = await response.json();
       
       if (data.success) {
-        this.renderServers(data.servers);
+        this.servers = data.servers || [];
+
+        if (this.selectedServer?.id) {
+          const selectedServer = this.servers.find(server => server.id === this.selectedServer.id);
+          if (selectedServer) {
+            this.selectedServer = selectedServer;
+          }
+        }
+
+        this.renderServers(this.servers);
         this.setError(null);
       } else {
         throw new Error(data.error || 'Failed to load servers');
@@ -221,10 +266,19 @@ class MCPEditor {
       const data = await response.json();
       
       if (data.success) {
-        this.selectedServer = { id: serverId, ...data.server };
-        this.serverContent = data.content;
+        const serverDetails = this.servers.find(server => server.id === serverId);
+
+        this.selectedServer = {
+          ...(serverDetails || {}),
+          ...(data.server || {}),
+          id: serverId,
+          name: serverDetails?.name || data.server?.name || serverId,
+          description: serverDetails?.description || data.server?.description || `MCP Server: ${serverId}`
+        };
+        this.serverContent = data.content || { tools: [], resources: [], prompts: [] };
         this.renderServerContent();
         this.updateServerSelection(serverId);
+        this.updateURLForSelectedServer(serverId);
         this.setError(null);
       } else {
         throw new Error(data.error || 'Failed to load server content');
@@ -778,15 +832,70 @@ class MCPEditor {
    * Render servers in sidebar
    */
   renderServers(servers) {
-    // Implementation would update the server list in the sidebar
     console.log('Rendering servers:', servers);
-    
-    // Auto-select first connected server if none selected
+
+    const serverBrowser = document.querySelector('.server-browser');
+    if (serverBrowser) {
+      serverBrowser.innerHTML = `
+        <div class="browser-header">
+          <h3>MCP Servers</h3>
+          <span class="server-count">${servers.length} server${servers.length !== 1 ? 's' : ''}</span>
+        </div>
+        ${servers.length > 0 ? `
+          <ul class="server-list">
+            ${servers.map(server => {
+              const isSelected = this.selectedServer?.id === server.id;
+              const statusClass = server.status === 'connected' ? 'connected' : 'disconnected';
+              const toggleAction = server.status === 'connected' ? 'disconnect-server' : 'connect-server';
+              const toggleIcon = server.status === 'connected' ? '⏸️' : '▶️';
+              const capabilitySummary = [
+                typeof server.toolsCount === 'number' ? `${server.toolsCount} tools` : null,
+                typeof server.resourcesCount === 'number' ? `${server.resourcesCount} resources` : null,
+                typeof server.promptsCount === 'number' ? `${server.promptsCount} prompts` : null
+              ].filter(Boolean).join(', ');
+
+              return `
+                <li class="server-item ${isSelected ? 'selected' : ''} ${statusClass}" data-server-id="${this.escapeAttribute(server.id)}" data-action="select-server">
+                  <div class="server-info">
+                    <div class="server-header">
+                      <h4 class="server-name">${this.escapeHtml(server.name || server.id)}</h4>
+                      <span class="server-status ${statusClass}">${server.status === 'connected' ? '🟢' : '🔴'}</span>
+                    </div>
+                    ${server.description ? `<p class="server-description">${this.escapeHtml(server.description)}</p>` : ''}
+                    <div class="server-stats">
+                      <span class="server-type">${this.escapeHtml(server.type || 'mcp')}</span>
+                      ${capabilitySummary ? `<span class="server-capabilities">${this.escapeHtml(capabilitySummary)}</span>` : ''}
+                    </div>
+                  </div>
+                  <div class="server-actions">
+                    <button class="btn-icon" data-action="${toggleAction}" data-server-id="${this.escapeAttribute(server.id)}" title="${server.status === 'connected' ? 'Disconnect' : 'Connect'} server">${toggleIcon}</button>
+                    <button class="btn-icon" data-action="server-settings" data-server-id="${this.escapeAttribute(server.id)}" title="Configure server">⚙️</button>
+                  </div>
+                </li>
+              `;
+            }).join('')}
+          </ul>
+        ` : `
+          <div class="empty-state">
+            <div class="empty-icon">🔌</div>
+            <h3>No MCP Servers</h3>
+            <p>Connect to an MCP server to explore tools, resources, and prompts.</p>
+            <button class="btn btn-primary" data-action="add-server">Add Server</button>
+          </div>
+        `}
+      `;
+    }
+
     if (!this.selectedServer && servers && servers.length > 0) {
-      const firstConnectedServer = servers.find(server => server.status === 'connected');
-      if (firstConnectedServer) {
-        console.log('Auto-selecting first connected server:', firstConnectedServer.id);
-        this.selectServer(firstConnectedServer.id);
+      const urlServerId = new URLSearchParams(window.location.search).get('server');
+      const initialServer =
+        servers.find(server => server.id === urlServerId) ||
+        servers.find(server => server.status === 'connected') ||
+        servers[0];
+
+      if (initialServer) {
+        console.log('Auto-selecting initial server:', initialServer.id);
+        this.selectServer(initialServer.id);
       }
     }
   }
@@ -795,16 +904,218 @@ class MCPEditor {
    * Render server content in explorer
    */
   renderServerContent() {
-    // Implementation would update the content explorer
     console.log('Rendering content for server:', this.selectedServer);
+
+    const explorer = document.querySelector('.content-explorer');
+    if (!explorer || !this.selectedServer) return;
+
+    const selectedCount = this.selectedItems.size;
+    const tools = Array.isArray(this.serverContent?.tools) ? this.serverContent.tools : [];
+    const resources = Array.isArray(this.serverContent?.resources) ? this.serverContent.resources : [];
+    const prompts = Array.isArray(this.serverContent?.prompts) ? this.serverContent.prompts : [];
+
+    explorer.innerHTML = `
+      <div class="explorer-header">
+        <div class="server-info">
+          <h2>${this.escapeHtml(this.selectedServer.name || this.selectedServer.id)}</h2>
+          <p>${this.escapeHtml(this.selectedServer.description || `MCP Server: ${this.selectedServer.id}`)}</p>
+          <span class="server-status ${this.selectedServer.status === 'connected' ? 'connected' : 'disconnected'}">${this.selectedServer.status === 'connected' ? '🟢 Connected' : '🔴 Disconnected'}</span>
+        </div>
+        <div class="selection-info">
+          <span class="selection-count">${selectedCount} items selected</span>
+          <div class="selection-actions" style="display: ${selectedCount > 0 ? 'flex' : 'none'};">
+            <button class="btn btn-secondary btn-small" data-action="clear-selection">Clear Selection</button>
+            <button class="btn btn-primary btn-small" data-action="create-preset-from-selection">Create Preset</button>
+          </div>
+        </div>
+      </div>
+      <nav class="explorer-tabs">
+        <button class="tab-button ${this.currentTab === 'tools' ? 'active' : ''}" data-tab="tools" data-action="switch-tab">Tools (${tools.length})</button>
+        <button class="tab-button ${this.currentTab === 'resources' ? 'active' : ''}" data-tab="resources" data-action="switch-tab">Resources (${resources.length})</button>
+        <button class="tab-button ${this.currentTab === 'prompts' ? 'active' : ''}" data-tab="prompts" data-action="switch-tab">Prompts (${prompts.length})</button>
+      </nav>
+      <div class="explorer-content">
+        <div class="content-controls">
+          <div class="search-filter">
+            <input type="text" id="content-search" class="search-input" placeholder="Search items..." value="${this.escapeAttribute(this.searchTerm)}">
+            <select id="content-category-filter" class="category-filter">
+              <option value="" ${this.categoryFilter === '' ? 'selected' : ''}>All Categories</option>
+              <option value="file" ${this.categoryFilter === 'file' ? 'selected' : ''}>File Operations</option>
+              <option value="web" ${this.categoryFilter === 'web' ? 'selected' : ''}>Web Operations</option>
+              <option value="analysis" ${this.categoryFilter === 'analysis' ? 'selected' : ''}>Analysis</option>
+              <option value="development" ${this.categoryFilter === 'development' ? 'selected' : ''}>Development</option>
+            </select>
+          </div>
+          <div class="view-controls">
+            <button class="view-btn grid-view ${this.currentView === 'grid' ? 'active' : ''}" data-view="grid" data-action="change-content-view">⊞</button>
+            <button class="view-btn list-view ${this.currentView === 'list' ? 'active' : ''}" data-view="list" data-action="change-content-view">☰</button>
+          </div>
+        </div>
+        <div class="tab-content ${this.currentTab === 'tools' ? 'active' : ''}" data-tab-content="tools">
+          ${tools.length > 0 ? this.renderItemsGrid(tools, 'tool') : this.renderEmptyTabState('tools')}
+        </div>
+        <div class="tab-content ${this.currentTab === 'resources' ? 'active' : ''}" data-tab-content="resources">
+          ${resources.length > 0 ? this.renderItemsGrid(resources, 'resource') : this.renderEmptyTabState('resources')}
+        </div>
+        <div class="tab-content ${this.currentTab === 'prompts' ? 'active' : ''}" data-tab-content="prompts">
+          ${prompts.length > 0 ? this.renderItemsGrid(prompts, 'prompt') : this.renderEmptyTabState('prompts')}
+        </div>
+      </div>
+    `;
+
+    this.bindDynamicControls();
+    this.changeContentView(this.currentView);
+    this.filterContent();
+    this.updateSelectionUI();
   }
 
   /**
    * Render welcome state
    */
   renderWelcome() {
-    // Implementation would show welcome state
     console.log('Rendering welcome state');
+
+    const explorer = document.querySelector('.content-explorer');
+    if (!explorer) return;
+
+    explorer.innerHTML = `
+      <div class="explorer-welcome">
+        <div class="welcome-content">
+          <h2>Select an MCP Server</h2>
+          <p>Choose a server from the sidebar to explore its tools, resources, and prompts.</p>
+          <div class="welcome-features">
+            <div class="feature-item">
+              <span class="feature-icon">🛠️</span>
+              <div>
+                <h4>Tools</h4>
+                <p>Executable functions and operations</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">📦</span>
+              <div>
+                <h4>Resources</h4>
+                <p>Data sources and file references</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">💭</span>
+              <div>
+                <h4>Prompts</h4>
+                <p>Pre-configured AI prompt templates</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Render the grid/list of items for the active tab
+   */
+  renderItemsGrid(items, itemType) {
+    const viewClass = this.currentView === 'list' ? 'items-grid list-view' : 'items-grid';
+    return `
+      <div class="${viewClass}">
+        ${items.map(item => this.renderItemCard(item, itemType)).join('')}
+      </div>
+    `;
+  }
+
+  /**
+   * Render a single tool/resource/prompt card
+   */
+  renderItemCard(item, itemType) {
+    const itemId = item.id || item.name;
+    const isSelected = this.selectedItems.has(itemId);
+    const iconMap = { tool: '🛠️', resource: '📦', prompt: '💭' };
+    const actionMap = {
+      tool: { action: 'test-tool', attribute: 'data-tool-name', icon: '▶️', title: 'Test tool' },
+      resource: { action: 'preview-resource', attribute: 'data-resource-name', icon: '👁️', title: 'Preview resource' },
+      prompt: { action: 'use-prompt', attribute: 'data-prompt-name', icon: '🚀', title: 'Use prompt' }
+    };
+    const actionConfig = actionMap[itemType];
+    const metaLabel = item.type || (itemType.charAt(0).toUpperCase() + itemType.slice(1));
+
+    return `
+      <div class="item-card ${itemType}-item ${isSelected ? 'selected' : ''}" data-item-id="${this.escapeAttribute(itemId)}" data-item-type="${itemType}" data-action="toggle-selection">
+        <div class="item-header">
+          <div class="item-icon ${itemType}-icon">${iconMap[itemType]}</div>
+          <h4 class="item-name">${this.escapeHtml(item.name || itemId)}</h4>
+          <div class="item-actions">
+            <button class="btn-icon" ${actionConfig.attribute}="${this.escapeAttribute(item.name || itemId)}" data-action="${actionConfig.action}" title="${actionConfig.title}">${actionConfig.icon}</button>
+            ${isSelected ? '<span class="selected-indicator">✓</span>' : ''}
+          </div>
+        </div>
+        ${item.description ? `<p class="item-description">${this.escapeHtml(item.description)}</p>` : ''}
+        <div class="item-meta">
+          ${item.category ? `<span class="item-category">${this.escapeHtml(item.category)}</span>` : '<span></span>'}
+          <span class="item-type">${this.escapeHtml(metaLabel)}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Render empty state for tabs without items
+   */
+  renderEmptyTabState(type) {
+    const config = {
+      tools: { icon: '🛠️', title: 'No tools available', description: 'This server doesn\'t expose any tools.' },
+      resources: { icon: '📦', title: 'No resources available', description: 'This server doesn\'t provide any resources.' },
+      prompts: { icon: '💭', title: 'No prompts available', description: 'This server doesn\'t offer any prompt templates.' }
+    };
+    const state = config[type] || config.tools;
+    return `
+      <div class="empty-tab-state">
+        <div class="empty-icon">${state.icon}</div>
+        <h3>${state.title}</h3>
+        <p>${state.description}</p>
+      </div>
+    `;
+  }
+
+  /**
+   * Keep selected server synchronized with the URL for deep-linking
+   */
+  updateURLForSelectedServer(serverId) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('server', serverId);
+    window.history.replaceState({}, '', url);
+  }
+
+  /**
+   * Escape HTML for safe client-side rendering
+   */
+  escapeHtml(value) {
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  /**
+   * Escape attribute values
+   */
+  escapeAttribute(value) {
+    return this.escapeHtml(value).replace(/`/g, '&#96;');
+  }
+
+  /**
+   * Backward-compatible wrapper used by edit/preload flows
+   */
+  async loadServerContent(serverId) {
+    return this.selectServer(serverId);
+  }
+
+  /**
+   * Backward-compatible wrapper used by edit/preload flows
+   */
+  async handleServerSelect(serverId) {
+    return this.selectServer(serverId);
   }
 
   /**
@@ -1091,7 +1402,14 @@ class MCPEditor {
    * Ensure server content is loaded
    */
   async ensureServerContentLoaded(serverId) {
-    if (!this.serverContent[serverId]) {
+    const hasLoadedCurrentServer =
+      this.selectedServer?.id === serverId &&
+      this.serverContent &&
+      Array.isArray(this.serverContent.tools) &&
+      Array.isArray(this.serverContent.resources) &&
+      Array.isArray(this.serverContent.prompts);
+
+    if (!hasLoadedCurrentServer) {
       console.log('⏳ Loading server content for preselection...');
       await this.loadServerContent(serverId);
     }

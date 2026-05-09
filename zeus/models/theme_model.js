@@ -2,9 +2,9 @@
 
 class ThemeModel {
   constructor(data = {}) {
-    this.name = data.name || 'Clear-MCP';
-    this.displayName = data.displayName || 'Clear MCP';
-    this.description = data.description || 'Default MCP theme for Zeus';
+    this.name = data.name || 'Black-White-MCP';
+    this.displayName = data.displayName || 'Black & White MCP';
+    this.description = data.description || 'Default monochrome MCP theme for Zeus with Courier New typography';
     this.colors = data.colors || this.getDefaultColors();
     this.fonts = data.fonts || this.getDefaultFonts();
     this.layout = data.layout || this.getDefaultLayout();
@@ -20,25 +20,25 @@ class ThemeModel {
 
   getDefaultColors() {
     return {
-      primary: '#007bff',
-      secondary: '#6c757d',
-      success: '#28a745',
-      danger: '#dc3545',
-      warning: '#ffc107',
-      info: '#17a2b8',
-      light: '#f8f9fa',
-      dark: '#343a40',
+      primary: '#000000',
+      secondary: '#3a3a3a',
+      success: '#111111',
+      danger: '#000000',
+      warning: '#555555',
+      info: '#333333',
+      light: '#f7f7f7',
+      dark: '#000000',
       background: '#ffffff',
-      text: '#212529',
-      textMuted: '#6c757d',
-      border: '#dee2e6'
+      text: '#000000',
+      textMuted: '#3a3a3a',
+      border: '#000000'
     };
   }
 
   getDefaultFonts() {
     return {
-      primary: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      monospace: "'Consolas', 'Monaco', 'Lucida Console', monospace",
+      primary: "'Courier New', Courier, monospace",
+      monospace: "'Courier New', Courier, monospace",
       sizes: {
         small: '0.875rem',
         normal: '1rem',

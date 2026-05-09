@@ -92,6 +92,28 @@
       ],
       "createdAt": "2025-10-03T00:35:44.251Z",
       "updatedAt": "2025-10-03T00:35:44.251Z"
+    },
+    {
+      "id": "1777738351433",
+      "name": "ggggggg",
+      "description": "",
+      "category": "productivity",
+      "prompt": "fdgdgdgdg",
+      "parameters": {},
+      "serverId": "state-machine-server",
+      "items": [
+        "launch_mcp_server",
+        "stop_mcp_server",
+        "get_server_status",
+        "restart_mcp_server",
+        "launch-session",
+        "available-servers",
+        "launcher-status",
+        "launch-status",
+        "launch-recommendations"
+      ],
+      "createdAt": "2026-05-02T16:12:31.433Z",
+      "updatedAt": "2026-05-02T16:12:31.433Z"
     }
   ],
   "categories": [
@@ -101,5 +123,5 @@
     "Creative"
   ],
   "defaultPreset": null,
-  "lastUpdated": "2025-10-03T00:35:44.251Z"
+  "lastUpdated": "2026-05-02T16:12:31.433Z"
 }
